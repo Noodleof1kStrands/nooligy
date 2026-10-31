@@ -176,18 +176,6 @@
         description = "What systemd-logind does when the laptop lid closes.";
       };
 
-      options.ojuny.mango.flag.idle_inhibit_ignore_visible = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "mango global idle_inhibit_ignore_visible, stored as 0/1.";
-      };
-
-      options.ojuny.mango.flag.idle_inhibit_when_fullscreen = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "mango global idle_inhibit_when_fullscreen, stored as 0/1.";
-      };
-
       config = {
 
         assertions = lib.concatMap (

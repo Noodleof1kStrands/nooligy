@@ -36,6 +36,8 @@
         disable_middle_paste = false;
         sync_obj_enable = true;
         xwayland_persistence = true;
+        idle_inhibit_ignore_visible = false;
+        idle_inhibit_when_fullscreen = false;
       };
 
       # mango mode integers, exposed as named choices under ojuny.mango.enum and
