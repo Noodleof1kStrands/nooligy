@@ -62,6 +62,10 @@ in
     programs.micro.enable = true;
     programs.micro.settings.colorscheme = "ojuny";
 
+    # Stylix's micro target hard-codes the "simple" colorscheme; disable it so
+    # the generated scheme is the only definition.
+    stylix.targets.micro.enable = lib.mkForce false;
+
     xdg.configFile."micro/colorschemes/ojuny.micro".text =
       microColorscheme config.lib.stylix.colors.withHashtag;
 
