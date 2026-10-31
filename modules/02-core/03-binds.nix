@@ -672,24 +672,6 @@
 
       # @option widget = "keybinds"; label = "Group binds"; group = "Binds"; groupOrder = 10; order = 30; description = "Group and workspace-visibility mode. Enter with SUPER+F2; press Backspace to return to default.";
       desktop.ojuny.mango.binds.groups = {
-        groupAll = {
-          modifier = [ "SHIFT" ];
-          keys = [ "G" ];
-          dispatcher = "groupall";
-          args = "";
-          description = "Group all visible windows";
-          group = "System";
-          subcat = "Groups";
-        };
-        groupDisband = {
-          modifier = [ "CTRL" ];
-          keys = [ "G" ];
-          dispatcher = "groupdisband";
-          args = "";
-          description = "Disband the focused group";
-          group = "System";
-          subcat = "Groups";
-        };
         groupFocusNext = {
           modifier = [ "none" ];
           keys = [ "L" ];
@@ -708,15 +690,6 @@
           group = "System";
           subcat = "Groups";
         };
-        groupInit = {
-          modifier = [ "none" ];
-          keys = [ "G" ];
-          dispatcher = "groupinit";
-          args = "";
-          description = "Start a group with the focused window";
-          group = "System";
-          subcat = "Groups";
-        };
         groupLeave = {
           modifier = [ "none" ];
           keys = [ "Z" ];
@@ -729,36 +702,36 @@
         groupSmartDown = {
           modifier = [ "none" ];
           keys = [ "S" ];
-          dispatcher = "groupsmart";
+          dispatcher = "groupjoin";
           args = "down";
-          description = "Join or merge group downward";
+          description = "Join the group in the direction below";
           group = "System";
           subcat = "Groups";
         };
         groupSmartLeft = {
           modifier = [ "none" ];
           keys = [ "A" ];
-          dispatcher = "groupsmart";
+          dispatcher = "groupjoin";
           args = "left";
-          description = "Join or merge group to the left";
+          description = "Join the group to the left";
           group = "System";
           subcat = "Groups";
         };
         groupSmartRight = {
           modifier = [ "none" ];
           keys = [ "D" ];
-          dispatcher = "groupsmart";
+          dispatcher = "groupjoin";
           args = "right";
-          description = "Join or merge group to the right";
+          description = "Join the group to the right";
           group = "System";
           subcat = "Groups";
         };
         groupSmartUp = {
           modifier = [ "none" ];
           keys = [ "W" ];
-          dispatcher = "groupsmart";
+          dispatcher = "groupjoin";
           args = "up";
-          description = "Join or merge group upward";
+          description = "Join the group above";
           group = "System";
           subcat = "Groups";
         };
