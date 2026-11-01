@@ -120,7 +120,8 @@
         };
 
         fonts.packages =
-          lib.optionals cfg.cjk [
+          [ pkgs.material-symbols ]
+          ++ lib.optionals cfg.cjk [
             pkgs.noto-fonts-cjk-sans
             pkgs.noto-fonts-cjk-serif
           ]
