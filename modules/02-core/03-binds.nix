@@ -368,7 +368,7 @@
           dispatcher = "spawn";
           args = "dms ipc call spotlight toggleQuery ':e '";
           description = "Emoji picker";
-          group = "System";
+          group = "Applications";
           subcat = "Utilities";
         };
 
@@ -446,8 +446,8 @@
           dispatcher = "spawn";
           args = "dms ipc call keybinds open binds";
           description = "Show Keybinds";
-          group = "System";
-          subcat = "Common";
+          group = "Applications";
+          subcat = "Utilities";
         };
         switchKeyboardLayout = {
           modifier = [
@@ -467,8 +467,7 @@
           dispatcher = "overcircle";
           args = "next";
           description = "Toggle/cycle overview";
-          group = "System";
-          subcat = "Common";
+          group = "Navigation";
         };
         quit = {
           modifier = [
@@ -497,7 +496,7 @@
           dispatcher = "groupleave";
           args = "";
           description = "Leave group";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         brightnessUp = {
@@ -506,8 +505,8 @@
           dispatcher = "spawn";
           args = [ "brightnessctl set +5%" ];
           description = "Increase screen brightness";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Hardware";
         };
         brightnessDown = {
           modifier = [ ];
@@ -515,8 +514,8 @@
           dispatcher = "spawn";
           args = [ "brightnessctl set 5%-" ];
           description = "Decrease screen brightness";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Hardware";
         };
         volumeUp = {
           modifier = [ ];
@@ -524,8 +523,8 @@
           dispatcher = "spawn";
           args = [ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+" ];
           description = "Raise output volume";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Hardware";
         };
         volumeDown = {
           modifier = [ ];
@@ -533,8 +532,8 @@
           dispatcher = "spawn";
           args = [ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" ];
           description = "Lower output volume";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Hardware";
         };
         mute = {
           modifier = [ ];
@@ -542,8 +541,8 @@
           dispatcher = "spawn";
           args = [ "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" ];
           description = "Mute output";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Hardware";
         };
         micMute = {
           modifier = [ ];
@@ -551,8 +550,8 @@
           dispatcher = "spawn";
           args = [ "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle" ];
           description = "Mute microphone";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Hardware";
         };
         playPause = {
           modifier = [ ];
@@ -560,8 +559,8 @@
           dispatcher = "spawn";
           args = [ "playerctl play-pause" ];
           description = "Play or pause media";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Playback";
         };
         nextTrack = {
           modifier = [ ];
@@ -569,8 +568,8 @@
           dispatcher = "spawn";
           args = [ "playerctl next" ];
           description = "Next track";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Playback";
         };
         previousTrack = {
           modifier = [ ];
@@ -578,8 +577,8 @@
           dispatcher = "spawn";
           args = [ "playerctl previous" ];
           description = "Previous track";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Playback";
         };
         stopTrack = {
           modifier = [ ];
@@ -587,8 +586,8 @@
           dispatcher = "spawn";
           args = [ "playerctl stop" ];
           description = "Stop playback";
-          group = "System";
-          subcat = "Media";
+          group = "Media";
+          subcat = "Playback";
         };
         clipboardHistory = {
           modifier = [
@@ -599,7 +598,7 @@
           dispatcher = "spawn";
           args = [ "dms ipc call clipboard toggle" ];
           description = "Clipboard history (Super+Shift+V)";
-          group = "System";
+          group = "Applications";
           subcat = "Utilities";
         };
         layoutbutton = {
@@ -678,7 +677,7 @@
           dispatcher = "groupfocus";
           args = "next";
           description = "Focus next window in group";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         groupFocusPrev = {
@@ -687,7 +686,7 @@
           dispatcher = "groupfocus";
           args = "prev";
           description = "Focus previous window in group";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         groupLeave = {
@@ -696,7 +695,7 @@
           dispatcher = "groupleave";
           args = "";
           description = "Remove focused window from group";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         groupSmartDown = {
@@ -705,7 +704,7 @@
           dispatcher = "groupjoin";
           args = "down";
           description = "Join the group in the direction below";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         groupSmartLeft = {
@@ -714,7 +713,7 @@
           dispatcher = "groupjoin";
           args = "left";
           description = "Join the group to the left";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         groupSmartRight = {
@@ -723,7 +722,7 @@
           dispatcher = "groupjoin";
           args = "right";
           description = "Join the group to the right";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         groupSmartUp = {
@@ -732,7 +731,7 @@
           dispatcher = "groupjoin";
           args = "up";
           description = "Join the group above";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         leaveGroupsMode = {
@@ -741,7 +740,7 @@
           dispatcher = "setkeymode";
           args = "default";
           description = "Return to default mode";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         toggleGroupBar = {
@@ -750,7 +749,7 @@
           dispatcher = "togglegroupbar";
           args = "";
           description = "Toggle the group bar";
-          group = "System";
+          group = "Windows";
           subcat = "Groups";
         };
         toggleview1 = {
@@ -759,8 +758,8 @@
           dispatcher = "toggleview";
           args = "1";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview10 = {
           modifier = [ "none" ];
@@ -768,8 +767,8 @@
           dispatcher = "toggleview";
           args = "10";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview2 = {
           modifier = [ "none" ];
@@ -777,8 +776,8 @@
           dispatcher = "toggleview";
           args = "2";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview3 = {
           modifier = [ "none" ];
@@ -786,8 +785,8 @@
           dispatcher = "toggleview";
           args = "3";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview4 = {
           modifier = [ "none" ];
@@ -795,8 +794,8 @@
           dispatcher = "toggleview";
           args = "4";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview5 = {
           modifier = [ "none" ];
@@ -804,8 +803,8 @@
           dispatcher = "toggleview";
           args = "5";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview6 = {
           modifier = [ "none" ];
@@ -813,8 +812,8 @@
           dispatcher = "toggleview";
           args = "6";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview7 = {
           modifier = [ "none" ];
@@ -822,8 +821,8 @@
           dispatcher = "toggleview";
           args = "7";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview8 = {
           modifier = [ "none" ];
@@ -831,8 +830,8 @@
           dispatcher = "toggleview";
           args = "8";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
         toggleview9 = {
           modifier = [ "none" ];
@@ -840,8 +839,8 @@
           dispatcher = "toggleview";
           args = "9";
           description = "Toggle workspace visibility";
-          group = "System";
-          subcat = "Groups";
+          group = "Navigation";
+          subcat = "Workspaces";
         };
       };
 

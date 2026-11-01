@@ -107,7 +107,7 @@
     # @option widget = "switch"; label = "Install Nix Regedit"; group = "Tools"; groupOrder = 90; order = 200;
     services.nix-regedit.enable = true;
 
-    # @option widget = "switch"; label = "Install Nix Cleaner"; group - "Tools"; groupOrder = 90; order = 300;
+    # @option widget = "switch"; label = "Install Nix Cleaner"; group = "Tools"; groupOrder = 90; order = 300;
     programs.nix-cleaner.enable = true;
 
     environment.systemPackages = with pkgs; [ nix-output-monitor ];

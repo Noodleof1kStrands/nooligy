@@ -35,7 +35,17 @@ in
         default = "top-right";
       };
 
+      options.ojuny.apps.kalarm.enable = lib.mkEnableOption "KAlarm scheduled notices";
+
       config = {
+
+        # @option widget = "switch"; label = "KAlarm"; group = "Notices"; groupOrder = 70; order = 10; description = "Date, time and recurring notices with command alarms. Battery alerts remain on the Power page.";
+        ojuny.apps.kalarm.enable = false;
+
+        environment.systemPackages = lib.optional config.ojuny.apps.kalarm.enable pkgs.kdePackages.kalarm;
+
+        desktop.ojuny.mango.execOnce =
+          lib.optional config.ojuny.apps.kalarm.enable "${pkgs.kdePackages.kalarm}/bin/kalarm --tray";
 
         # @option widget = "dropdown"; label = "Notification popup position"; group = "Popups"; groupOrder = 10; order = 5; choices = [ "top-right" "top-left" "top-center" "bottom-center" "bottom-right" "bottom-left" ];
         ojuny.dux.notificationPopupPosition = "top-right";

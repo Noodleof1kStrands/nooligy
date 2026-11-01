@@ -1,6 +1,6 @@
 /*
   @menu
-  displayname = "Hardware report";
+  displayname = "Hardware profile";
   icon = "computer-symbolic";
   order = 46;
   description = "Detected hardware and nixos-hardware profile. Coverage: docs/hardware-coverage.md. Apply a change with: nix run .#regenerate-hardware -- --profile-only";

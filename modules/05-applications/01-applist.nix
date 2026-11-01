@@ -47,13 +47,10 @@
           libnotify
           wtype
           ydotool
-        ] ++ lib.optional config.ojuny.apps.kalarm.enable pkgs.kdePackages.kalarm;
+        ];
         services.upower.enable = true;
 
         xdg.mime.enable = true;
-
-        # @option widget = "switch"; label = "KAlarm"; group = "Notices"; description = "Date, time and recurring notices with command alarms. Battery alerts remain on the Power page.";
-        ojuny.apps.kalarm.enable = false;
 
         # @option widget = "dropdown"; label = "File manager"; group = "Default applications"; choices = [ "dux-files" "nautilus" "custom" ]; description = "File manager used for directories and remote schemes."; applyCommand = "case %%val%% in dux-files) xdg-mime default dev.duxlabs.files.desktop inode/directory;; esac";
         desktop.ojuny.fileManager.package = "dux-files";

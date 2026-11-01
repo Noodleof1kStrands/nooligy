@@ -115,7 +115,7 @@
         action = "ojuny-capture-qr";
       };
       "trigger.capture.scroll" = {
-        icon = "screenshot_region";
+        icon = "scrollable_page";
         label = "Scroll Capture";
         aliases = [ "scroll" ];
         action = "dms screenshot scroll";
@@ -182,7 +182,7 @@
         when = "test -d /sys/class/power_supply/BAT0";
       };
       "trigger.toggle.float" = {
-        icon = "screenshot_region";
+        icon = "picture_in_picture_alt";
         label = "Float Window";
         aliases = [
           "float"
@@ -191,12 +191,12 @@
         action = "sleep 0.5 && mmsg dispatch togglefloating";
       };
       "trigger.toggle.maximize" = {
-        icon = "screenshot_region";
+        icon = "open_in_full";
         label = "Maximize Window";
         action = "sleep 0.5 && mmsg dispatch togglemaximizescreen";
       };
       "trigger.toggle.floatall" = {
-        icon = "screenshot_region";
+        icon = "picture_in_picture";
         label = "Float All Windows";
         aliases = [
           "floatall"
@@ -205,7 +205,7 @@
         action = "sleep 0.5 && mmsg dispatch toggle_all_floating";
       };
       "trigger.toggle.fullscreen" = {
-        icon = "screenshot_region";
+        icon = "fullscreen";
         label = "Fullscreen Window";
         aliases = [
           "full"
@@ -214,7 +214,7 @@
         action = "sleep 0.5 && mmsg dispatch togglefullscreen";
       };
       "trigger.toggle.minimize" = {
-        icon = "screenshot_region";
+        icon = "minimize";
         label = "Minimize Window";
         aliases = [
           "scratchpad"
@@ -223,7 +223,7 @@
         action = "sleep 0.5 && mmsg dispatch minimized";
       };
       "trigger.toggle.recover" = {
-        icon = "screenshot_region";
+        icon = "settings_backup_restore";
         label = "Restore Minimized Window";
         aliases = [
           "restore"
@@ -291,7 +291,7 @@
         action = "systemctl poweroff";
       };
       "setup.settings-menu" = {
-        icon = "";
+        icon = "settings";
         label = "System Settings";
         action = "nix-settings-gui";
       };
