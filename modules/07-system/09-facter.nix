@@ -54,15 +54,6 @@
            ]; */
         ojuny.hardware.profile = "auto";
 
-        /* @option widget = "text"; label = "Detected model"; readonly = true; */
-        ojuny.hardware.detectedModel = self.lib.hardware-detection.model;
-
-        /* @option widget = "text"; label = "Detected profile"; readonly = true; */
-        ojuny.hardware.detectedProfile = self.lib.hardware-detection.profile;
-
-        /* @option widget = "text"; label = "Detection state"; readonly = true; */
-        ojuny.hardware.detectedState = self.lib.hardware-detection.state;
-
         hardware.facter.reportPath = lib.mkIf (builtins.pathExists ./facter.json) ./facter.json;
       };
     };

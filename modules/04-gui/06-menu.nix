@@ -115,7 +115,7 @@
         action = "ojuny-capture-qr";
       };
       "trigger.capture.scroll" = {
-        icon = "scrollable_page";
+        icon = "scrollable_header";
         label = "Scroll Capture";
         aliases = [ "scroll" ];
         action = "dms screenshot scroll";
