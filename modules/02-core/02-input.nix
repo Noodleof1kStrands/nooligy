@@ -176,6 +176,11 @@
                 default = "";
                 description = "libinput send-events mode: empty, 0, 1 or 2.";
               };
+              calibration = lib.mkOption {
+                type = lib.types.str;
+                default = "";
+                description = "libinput calibration matrix for a touch row; six space-separated numbers, empty for the default.";
+              };
             };
           }
         );
@@ -316,14 +321,14 @@
         # Swipe gesture tuning lives on the Gestures page (17-gestures.nix).
 
         # Touch
-        # @option widget = "switch"; label = "Enable touchscreen"; group = "Touch";
+        # @option widget = "switch"; label = "Enable touchscreen"; group = "Touch"; description = "Touch input for clients that support touch. On by default.";
         ojuny.mango.flag.touch_enable = true;
 
-        # @option widget = "switch"; label = "Mouse emulation for touch"; group = "Touch"; hidden = true;
+        # @option widget = "switch"; label = "Mouse emulation for touch"; group = "Touch"; description = "Turn touches on surfaces that do not accept touch, including XWayland clients, into pointer clicks. Off means those touches are ignored.";
         ojuny.mango.flag.touch_enable_mouse_emulation = true;
 
         # Device rules, shared by keyboard and touch rows
-        # @option widget = "table-list"; label = "Device rules"; group = "Devices"; advanced = true; firstValueEditable = true; columns = [ "name" "type" "kb_layout" "kb_variant" "kb_options" "kb_model" "monitor" "send_events_mode" ]; columnTypes = [ "str" "str" "str" "str" "str" "str" "str" "str" ]; description = "Per-device mango device_rule rows. Empty fields are omitted from the generated rule. type accepts keyboard, pointer, trackpad, touch, switch, tablet or pad. Every row needs a name or a type.";
+        # @option widget = "table-list"; label = "Device rules"; group = "Devices"; advanced = true; firstValueEditable = true; columns = [ "name" "type" "kb_layout" "kb_variant" "kb_options" "kb_model" "monitor" "send_events_mode" "calibration" ]; columnTypes = [ "str" "str" "str" "str" "str" "str" "str" "str" "str" ]; description = "Per-device mango device_rule rows. Empty fields are omitted from the generated rule. type accepts keyboard, pointer, trackpad, touch, switch, tablet or pad. Every row needs a name or a type. Touch is on by default; add a row only to pin a panel or to calibrate one. Use type = touch for the built-in panel, or name to target one device. monitor is an output name from the Monitors page. calibration is six libinput numbers, touch rows only, matched by the device name rather than the vendor:product identifier; a wrong matrix can make the panel unusable, and clearing the cell restores the default.";
         ojuny.input.devices = [ ];
 
         desktop.ojuny.mango.rules.device_rule = map (
@@ -334,6 +339,27 @@
               if device.send_events_mode == "" then "" else lib.toInt device.send_events_mode;
           }
         ) config.ojuny.input.devices;
+
+        services.udev.extraRules = lib.concatStringsSep "\n" (
+          let
+            calibrated = lib.filter (
+              device: device.type == "touch" && device.calibration != ""
+            ) config.ojuny.input.devices;
+
+            ruleFor = device:
+              let
+                match =
+                  if device.name == ""
+                  then ''ENV{ID_INPUT_TOUCHSCREEN}=="1"''
+                  else ''ATTRS{name}=="${device.name}"'';
+              in
+              ''ACTION!="remove", KERNEL=="event[0-9]*", SUBSYSTEM=="input", ${match}, ENV{LIBINPUT_CALIBRATION_MATRIX}="${device.calibration}"'';
+
+            unnamed = lib.filter (device: device.name == "") calibrated;
+            named = lib.filter (device: device.name != "") calibrated;
+          in
+          map ruleFor (unnamed ++ named)
+        );
 
         assertions = [
           {
@@ -361,6 +387,33 @@
               device: lib.elem device.send_events_mode [ "" "0" "1" "2" ]
             ) config.ojuny.input.devices;
             message = "ojuny.input.devices: send_events_mode must be empty, 0, 1 or 2.";
+          }
+          {
+            assertion = lib.all (
+              device:
+              device.calibration == ""
+              || builtins.match "-?[0-9]+(\\.[0-9]+)?( -?[0-9]+(\\.[0-9]+)?){5}" device.calibration != null
+            ) config.ojuny.input.devices;
+            message = "ojuny.input.devices: calibration must be six space-separated numbers.";
+          }
+          {
+            assertion = lib.all (
+              device: device.calibration == "" || device.type == "touch"
+            ) config.ojuny.input.devices;
+            message = "ojuny.input.devices: calibration is only allowed on touch rows.";
+          }
+          {
+            assertion =
+              lib.count (device: device.calibration != "" && device.name == "")
+                config.ojuny.input.devices
+              <= 1;
+            message = "ojuny.input.devices: only one unnamed touch row may set calibration; give additional rows a name.";
+          }
+          {
+            assertion = lib.all (
+              device: device.calibration == "" || !(lib.hasInfix "\"" device.name)
+            ) config.ojuny.input.devices;
+            message = "ojuny.input.devices: a calibration row name must not contain a double quote.";
           }
         ];
 

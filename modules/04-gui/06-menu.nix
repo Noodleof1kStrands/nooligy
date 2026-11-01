@@ -231,6 +231,15 @@
         ];
         action = "sleep 0.5 && mmsg dispatch restore_minimized";
       };
+      "trigger.toggle.wallpaper" = {
+        icon = "wallpaper";
+        label = "Wallpaper";
+        aliases = [
+          "wallpapers"
+          "background"
+        ];
+        action = "dms ipc call dash toggle wallpaper";
+      };
       "setup.network" = {
         icon = "wifi";
         label = "Network";
