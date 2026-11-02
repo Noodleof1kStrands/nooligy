@@ -26,9 +26,14 @@
 
       environment.systemPackages = [ pkgs.sbctl ];
 
+      # Keep the condition on boot.lanzaboote.enable alone. Reading
+      # config.boot.loader.grub.enable here recurses through systemd-boot's
+      # own default that disables GRUB.
       boot.loader.systemd-boot.enable =
-        lib.mkIf (config.boot.lanzaboote.enable && !config.boot.loader.grub.enable)
-          (lib.mkForce false);
+        lib.mkIf config.boot.lanzaboote.enable (lib.mkForce false);
+
+      boot.loader.grub.enable =
+        lib.mkIf config.boot.lanzaboote.enable (lib.mkForce false);
 
       assertions = [
         {
