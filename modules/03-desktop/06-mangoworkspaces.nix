@@ -40,46 +40,24 @@
         "center_tile"
       ];
 
-      tagFields = {
-        layout = lib.mkOption {
-          type = lib.types.enum layoutChoices;
-          default = "tile";
-          description = "Mango layout name.";
-        };
-
-        masterCount = lib.mkOption {
-          type = lib.types.ints.between 0 99;
-          default = 0;
-          description = "Master count. 0 leaves the Mango per-tag default.";
-        };
-
-        masterFactor = lib.mkOption {
-          type = lib.types.numbers.between 0.0 0.9;
-          default = 0.0;
-          description = "Master factor. 0.0 leaves the Mango per-tag default.";
-        };
-
-        monitor = lib.mkOption {
-          type = lib.types.str;
-          default = "";
-          description = "Monitor name. Empty applies to every monitor.";
-        };
-      };
-
-      tagSpec = lib.types.submodule {
-        options = tagFields;
-      };
-
-      savedSpec = lib.types.submodule {
-        options = tagFields // {
-          preset = lib.mkOption {
-            type = lib.types.nonEmptyStr;
-            description = "Name of the saved layout this row belongs to.";
-          };
-
+      tagRuleSpec = lib.types.submodule {
+        options = {
           tag = lib.mkOption {
             type = lib.types.ints.between 0 99;
-            description = "Tag id.";
+            default = 0;
+            description = "Tag id. 0 is the special workspace.";
+          };
+
+          name = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+            description = "Display name for the table row. Not sent to Mango.";
+          };
+
+          layout = lib.mkOption {
+            type = lib.types.enum layoutChoices;
+            default = "tile";
+            description = "Mango layout name.";
           };
         };
       };
@@ -120,44 +98,12 @@
         options = scratchpadFields;
       };
 
-      mkTagRule =
-        { tag, spec }:
-        { id = lib.toInt tag; layout_name = spec.layout; }
-        // lib.optionalAttrs (spec.masterCount > 0) { master_count = spec.masterCount; }
-        // lib.optionalAttrs (spec.masterFactor > 0.0) { master_factor = spec.masterFactor; }
-        // lib.optionalAttrs (spec.monitor != "") { monitor_name = spec.monitor; };
-
-      rowToTag = row: {
-        name = toString row.tag;
-        value = row;
-      };
-
       cfg = config.ojuny.workspaces;
       tagNum = config.desktop.ojuny.mango.global.tag_num or 10;
-      savedRows = lib.attrValues cfg.saved;
-
-      presetRows =
-        if cfg.preset == null then
-          [ ]
-        else
-          lib.filter (row: row.preset == cfg.preset) savedRows;
-
-      presetTags = lib.listToAttrs (map rowToTag presetRows);
-      effectiveTags = presetTags // cfg.tags;
-      orderedTags = lib.sort (a: b: lib.toInt a < lib.toInt b) (lib.attrNames effectiveTags);
-
-      tagRules = map (
-        tag: mkTagRule { inherit tag; spec = effectiveTags.${tag}; }
-      ) orderedTags;
-
-      presetNames = lib.unique (map (row: row.preset) savedRows);
-
-      presetHasDuplicateTags =
-        name:
-        let
-          rows = lib.filter (row: row.preset == name) savedRows;
-        in
-        lib.length rows != lib.length (lib.unique (map (row: row.tag) rows));
+      tagRules = map (rule: {
+        id = rule.tag;
+        layout_name = rule.layout;
+      }) cfg.tags;
 
       scratchpadRows = lib.mapAttrsToList (name: row: row // { inherit name; }) config.ojuny.scratchpads;
 
@@ -249,24 +195,10 @@
         description = "Named scratchpads, keyed by a stable name. Each enabled row generates one bind and one window rule.";
       };
 
-      options.ojuny.workspaces = {
-        tags = lib.mkOption {
-          type = lib.types.attrsOf tagSpec;
-          default = { };
-          description = "Per-tag layout assignments, keyed by tag id.";
-        };
-
-        saved = lib.mkOption {
-          type = lib.types.attrsOf savedSpec;
-          default = { };
-          description = "Saved layout rows, grouped by preset name.";
-        };
-
-        preset = lib.mkOption {
-          type = lib.types.nullOr lib.types.nonEmptyStr;
-          default = null;
-          description = "Saved layout name used as the baseline. tags overrides it.";
-        };
+      options.ojuny.workspaces.tags = lib.mkOption {
+        type = lib.types.listOf tagRuleSpec;
+        default = [ ];
+        description = "Tag rules in application order. Specific tags override the wildcard rule.";
       };
 
       config = {
@@ -309,36 +241,43 @@
         # @option widget = "switch"; label = "Tag carousel"; group = "Workspaces"; hidden = true; applyCommand = "mmsg dispatch setoption,tag_carousel,$(case %%val%% in true) echo 1;; *) echo 0;; esac)";
         ojuny.mango.flag.tag_carousel = false;
 
-        # Layout presets
-        # @option widget = "text"; label = "Active saved layout"; group = "Layout presets"; groupOrder = 20; order = 10; nullable = true; description = "Saved layout used as the baseline. Per-tag layouts override the same tag. Empty leaves only per-tag layouts.";
-        ojuny.workspaces.preset = null;
-
-        # @option widget = "table-attrset"; label = "Per-tag layouts"; group = "Layout presets"; groupOrder = 20; order = 20; columns = [ "layout" "masterCount" "masterFactor" "monitor" ]; columnTypes = [ "str" "int" "float" "str" ]; keyEditable = true; firstValueEditable = true; description = "Tag id to layout. masterCount 0 and masterFactor 0 leave Mango defaults. Empty monitor applies to every monitor.";
-        ojuny.workspaces.tags = { };
-
-        # @option widget = "table-attrset"; label = "Saved layouts"; group = "Layout presets"; groupOrder = 20; order = 30; advanced = true; columns = [ "preset" "tag" "layout" "masterCount" "masterFactor" "monitor" ]; columnTypes = [ "str" "int" "str" "int" "float" "str" ]; keyEditable = false; firstValueEditable = true; description = "Rows sharing a preset name form one saved layout. Select it with Active saved layout.";
-        ojuny.workspaces.saved = { };
+        # Tag rules
+        # @option widget = "table-list"; label = "Tag rules"; group = "Tag rules"; groupOrder = 20; columns = [ "tag" "name" "layout" ]; columnTypes = [ "int" "str" "str" ]; firstValueEditable = true; description = "One row per tag. tag is 0 for the special workspace or a number up to the tag count. name is a display label only. layout is the Mango layout. Rows apply in table order after the default wildcard rule, so a specific tag overrides the wildcard.";
+        ojuny.workspaces.tags = [
+          {
+            tag = 0;
+            name = "special";
+            layout = "tile";
+          }
+          {
+            tag = 1;
+            name = "";
+            layout = "tile";
+          }
+          {
+            tag = 2;
+            name = "";
+            layout = "tile";
+          }
+          {
+            tag = 3;
+            name = "";
+            layout = "tile";
+          }
+        ];
 
         assertions = [
           {
-            assertion = lib.all (tag: builtins.match "[0-9]+" tag != null) (lib.attrNames cfg.tags);
-            message = "ojuny.workspaces.tags keys must be numeric tag ids.";
-          }
-          {
-            assertion = lib.all (tag: lib.toInt tag <= tagNum) (lib.attrNames cfg.tags);
+            assertion = lib.all (rule: rule.tag <= tagNum) cfg.tags;
             message = "ojuny.workspaces.tags contains a tag id above desktop.ojuny.mango.global.tag_num.";
           }
           {
-            assertion = lib.all (row: row.tag <= tagNum) savedRows;
-            message = "ojuny.workspaces.saved contains a tag id above desktop.ojuny.mango.global.tag_num.";
-          }
-          {
-            assertion = cfg.preset == null || lib.any (row: row.preset == cfg.preset) savedRows;
-            message = "ojuny.workspaces.preset does not name a saved layout.";
-          }
-          {
-            assertion = lib.all (name: !presetHasDuplicateTags name) presetNames;
-            message = "ojuny.workspaces.saved has duplicate tag ids inside one preset.";
+            assertion =
+              let
+                tags = map (rule: rule.tag) cfg.tags;
+              in
+              lib.length tags == lib.length (lib.unique tags);
+            message = "ojuny.workspaces.tags has duplicate tag ids.";
           }
           {
             assertion = lib.all (row: row.appId != "" || row.title != "") allScratchpads;
@@ -381,7 +320,7 @@
 
         desktop.ojuny.mango.rules.window_rule = lib.mkAfter (map scratchpadWindowRule activeScratchpads);
 
-        desktop.ojuny.mango.rules.tag_rule = lib.mkIf (tagRules != [ ]) (lib.mkForce tagRules);
+        desktop.ojuny.mango.rules.tag_rule = tagRules;
 
         # Special workspace (tag 0)
         # @option widget = "slider"; label = "Background dim"; group = "Special workspace"; min = 0.0; max = 1.0; step = 0.05; applyCommand = "mmsg dispatch setoption,special_dim,%%val%%";

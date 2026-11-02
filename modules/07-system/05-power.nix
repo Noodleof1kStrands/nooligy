@@ -134,6 +134,86 @@
           field = idleInhibitField row;
         in
         if field == "" then "" else "${field}:${row.${field}}";
+
+      lidScript = pkgs.writeShellScript "ojuny-lid" ''
+        export PATH=${lib.makeBinPath [ pkgs.jq pkgs.util-linux ]}:$PATH
+
+        mode="''${1:-}"
+        tag="ojuny-lid"
+
+        log() {
+          logger -t "$tag" "$*"
+        }
+
+        if [ -z "''${MANGO_INSTANCE_SIGNATURE:-}" ]; then
+          log "missing MANGO_INSTANCE_SIGNATURE; leaving the panel unchanged"
+          exit 1
+        fi
+
+        if ! monitors=$(mmsg get all-monitors 2>/dev/null); then
+          log "mmsg get all-monitors failed; leaving the panel unchanged"
+          exit 1
+        fi
+
+        if ! names=$(printf '%s' "$monitors" | jq -r '.monitors[] | select(.active == true) | .name' 2>/dev/null); then
+          log "could not parse mmsg output; leaving the panel unchanged"
+          exit 1
+        fi
+
+        if [ -z "$names" ]; then
+          log "no active monitors; leaving the panel unchanged"
+          exit 1
+        fi
+
+        internal=$(printf '%s\n' "$names" | grep -E '^(eDP|LVDS|DSI)-' | head -n 1)
+        external=$(printf '%s\n' "$names" | grep -Ev '^(eDP|LVDS|DSI|HEADLESS)-' | head -n 1)
+
+        case "$mode" in
+          fold)
+            if [ -z "$internal" ]; then
+              log "no internal panel; nothing to sleep"
+              exit 0
+            fi
+            if [ -z "$external" ]; then
+              log "no external display; logind will handle suspend"
+              exit 0
+            fi
+            if mmsg dispatch "sleep_monitor,$internal" >/dev/null 2>&1; then
+              log "external display $external present; slept internal panel $internal"
+            else
+              log "failed to sleep internal panel $internal"
+              exit 1
+            fi
+            ;;
+          unfold)
+            if [ -z "$internal" ]; then
+              log "no internal panel; nothing to wake"
+              exit 0
+            fi
+            if mmsg dispatch "wakeup_monitor,$internal" >/dev/null 2>&1; then
+              log "woke internal panel $internal"
+            else
+              log "failed to wake internal panel $internal"
+              exit 1
+            fi
+            ;;
+          *)
+            log "unknown mode '$mode'; expected fold or unfold"
+            exit 1
+            ;;
+        esac
+      '';
+
+      lidAction =
+        if config.ojuny.power.lidPolicy == "clamshell" then {
+          HandleLidSwitch = "suspend";
+          HandleLidSwitchExternalPower = "suspend";
+          HandleLidSwitchDocked = "ignore";
+        } else {
+          HandleLidSwitch = config.ojuny.power.lidPolicy;
+          HandleLidSwitchExternalPower = config.ojuny.power.lidPolicy;
+          HandleLidSwitchDocked = config.ojuny.power.lidPolicy;
+        };
     in
     {
 
@@ -171,9 +251,10 @@
         type = lib.types.enum [
           "suspend"
           "ignore"
+          "clamshell"
         ];
         default = "suspend";
-        description = "What systemd-logind does when the laptop lid closes.";
+        description = "What systemd-logind does when the laptop lid closes: suspend, ignore, or clamshell.";
       };
 
       config = {
@@ -261,12 +342,19 @@
           powerProfiles.${config.ojuny.dux.batteryProfileName};
 
         # Lid
-        # @option widget = "dropdown"; label = "When the lid closes"; group = "Lid"; groupOrder = 32; order = 10; choices = [ "suspend" "ignore" ]; description = "Sets services.logind.settings.Login.HandleLidSwitch, HandleLidSwitchExternalPower and HandleLidSwitchDocked from this choice, so no stock branch survives. Docked means docked or more than one display, not any external display; one HDMI monitor may not produce the docked signal. Ignore keeps the system running with the lid closed. Mango switchbind for fold and unfold is not configured; it requires all three keys to be ignore first.";
+        # @option widget = "dropdown"; label = "When the lid closes"; group = "Lid"; groupOrder = 32; order = 10; choices = [ "suspend" "ignore" "clamshell" ]; description = "Suspend always, never, or only when no external display is attached. Clamshell sets HandleLidSwitch and HandleLidSwitchExternalPower to suspend and HandleLidSwitchDocked to ignore, so logind keeps running when it reports a dock or an enabled external display. Logind counts an enabled HDMI, DP, DVI or VGA output as docked; a connected but disabled output does not count. With an external display, Mango switchbind sleeps the internal panel on lid close and wakes it on lid open. The script runs only while Mango is logged in, unplugging the external display after the lid is closed does not suspend, and a lid already closed when Mango starts does not trigger the panel script.";
         ojuny.power.lidPolicy = "suspend";
 
-        services.logind.settings.Login.HandleLidSwitch = config.ojuny.power.lidPolicy;
-        services.logind.settings.Login.HandleLidSwitchExternalPower = config.ojuny.power.lidPolicy;
-        services.logind.settings.Login.HandleLidSwitchDocked = config.ojuny.power.lidPolicy;
+        services.logind.settings.Login.HandleLidSwitch = lidAction.HandleLidSwitch;
+        services.logind.settings.Login.HandleLidSwitchExternalPower = lidAction.HandleLidSwitchExternalPower;
+        services.logind.settings.Login.HandleLidSwitchDocked = lidAction.HandleLidSwitchDocked;
+
+        desktop.ojuny.mango.switchbind = lib.mkIf (config.ojuny.power.lidPolicy == "clamshell") {
+          default = {
+            fold = "spawn,${lidScript} fold";
+            unfold = "spawn,${lidScript} unfold";
+          };
+        };
 
         # Stay awake
         # @option widget = "table-list"; label = "Programs that keep the system awake"; group = "Stay awake"; groupOrder = 34; order = 10; columns = [ "appId" "title" ]; columnTypes = [ "str" "str" ]; firstValueEditable = true; description = "App-ID and title regex patterns that keep the system awake while a matching window is focused. Use one column per row: appId matches the Mango class (app_id), title matches the window title. The Dux control-center Stay Awake tile owns the timers (15, 30, 60, 120, 240 and 480 minutes, or Until I turn it off); the controlCenterButton.showIdleInhibitorIcon bar icon shows the state, so no second bar widget exists. This page owns only this list and the two global switches below; disable is Off. An indefinite or unexpired timed inhibit survives a shell restart and a reboot because the generated session state is replaced only when its source changes; an expired timer is cleared on load. Mango rejects an invalid regex when it parses the generated config.";

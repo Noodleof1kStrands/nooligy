@@ -168,7 +168,7 @@
           }
         ];
 
-        desktop.ojuny.mango.rules.tag_rule = [
+        desktop.ojuny.mango.rules.tag_rule = lib.mkBefore [
           {
             id = "*";
             layout_name = defaultLayout;

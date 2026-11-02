@@ -18,7 +18,7 @@
         _order = 10;
         col = 0;
         row = 0;
-        w = 5;
+        w = 4;
         h = 1;
         # @option widget = "dropdown"; label = "User shape"; group = "Widgets"; groupOrder = 10; order = 20; choices = [ "circle" "cookie4" "cookie7" "cookie12" "clover4" "clover8" "sunny" "pentagon" "arch" "slanted" "gem" "square" ]; description = "Avatar shape on the user tile.";
         shape = "circle";
@@ -26,7 +26,7 @@
       battery = {
         enabled = true;
         _order = 20;
-        col = 5;
+        col = 4;
         row = 0;
         w = 1;
         h = 1;
@@ -35,14 +35,23 @@
         # @option widget = "dropdown"; label = "Battery color"; group = "Widgets"; groupOrder = 10; order = 22; choices = [ "level" "theme" ]; description = "level colors the gauge by charge level, theme uses the accent color.";
         batteryColorMode = "level";
       };
-      power = {
-        small = true;
+      lock = {
         enabled = true;
-        _order = 50;
+        _order = 30;
+        col = 6;
+        row = 0;
+        w = 1;
+        h = 1;
+        small = true;
+      };
+      power = {
+        enabled = true;
+        _order = 40;
         col = 7;
         row = 0;
         w = 1;
         h = 1;
+        small = true;
       };
       brightnessSlider = {
         enabled = true;
@@ -110,59 +119,57 @@
         # @option widget = "text"; label = "Mount"; group = "Widgets"; groupOrder = 10; order = 23; description = "Filesystem path to report.";
         mountPath = "/";
       };
-      nightMode = {
-        footer = true;
-        enabled = true;
-        _order = 140;
-        col = 4;
-        row = 6;
-        w = 2;
-        h = 1;
-      };
-      doNotDisturb = {
-        footer = true;
-        enabled = true;
-        _order = 150;
-        col = 4;
-        row = 7;
-        w = 2;
-        h = 1;
-      };
-      idleInhibitor = {
-        footer = true;
-        enabled = true;
-        _order = 160;
-        col = 4;
-        row = 6;
-        w = 2;
-        h = 1;
-      };
-      runningApps = {
-        footer = true;
-        enabled = true;
-        _order = 170;
-        col = 0;
-        row = 0;
-        w = 4;
-        h = 1;
-      };
       quickTiles = {
         enabled = true;
-        _order = 180;
+        _order = 140;
         col = 0;
         row = 6;
         w = 8;
         h = 1;
-        # @option widget = "list"; label = "Quick tiles"; group = "Widgets"; groupOrder = 10; order = 24; description = "Tile ids held by the quick tiles row.";
-        tiles = [ ];
+        small = true;
+        instanceId = "quickTiles";
       };
-      lock = {
+      idleInhibitor = {
         enabled = true;
-        _order = 190;
-        col = 6;
-        row = 0;
+        _order = 150;
         w = 1;
         h = 1;
+        small = true;
+        group = "quickTiles";
+      };
+      nightMode = {
+        enabled = true;
+        _order = 160;
+        w = 1;
+        h = 1;
+        small = false;
+        group = "quickTiles";
+      };
+      doNotDisturb = {
+        enabled = true;
+        _order = 170;
+        w = 1;
+        h = 1;
+        small = true;
+        group = "quickTiles";
+      };
+      runningApps = {
+        enabled = true;
+        _order = 180;
+        w = 4;
+        h = 1;
+        small = true;
+        group = "quickTiles";
+      };
+      # The edit action is part of the saved layout but the GUI keeps it locked,
+      # hidden and permanently disabled so it cannot be removed or rearranged.
+      edit = {
+        enabled = false;
+        _order = 190;
+        w = 1;
+        h = 1;
+        small = true;
+        group = "quickTiles";
       };
     };
 
