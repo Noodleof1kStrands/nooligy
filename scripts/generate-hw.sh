@@ -74,7 +74,7 @@ luks_device_lines() {
   local line name type uuid pkname
   local -A uuid_by_name=()
   while IFS= read -r line; do
-    name= type= uuid=
+    name='' type='' uuid=''
     for field in $line; do
       case "$field" in
       NAME=*) name=${field#NAME=}; name=${name//\"/} ;;
@@ -85,7 +85,7 @@ luks_device_lines() {
     [ -n "$name" ] && uuid_by_name["$name"]="$uuid"
   done < <(lsblk -P -o NAME,TYPE,UUID 2>/dev/null || true)
   while IFS= read -r line; do
-    name= type= uuid= pkname=
+    name='' type='' uuid='' pkname=''
     for field in $line; do
       case "$field" in
       NAME=*) name=${field#NAME=}; name=${name//\"/} ;;
