@@ -121,7 +121,6 @@
           wantedBy = [ "multi-user.target" ];
           pathConfig = {
             PathChanged = watchDir;
-            PathExists = watchDir;
           };
         };
 
