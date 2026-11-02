@@ -75,7 +75,9 @@ the flake.
   user to supply hardware data.
 - `nixos-facter` must be on `PATH` for `generate-hw` and
   `regenerate-hardware` to write `facter.json`. The setup app provides it
-  through its `generate-hw` wrapper.
+  through its `generate-hw` wrapper. `nixos-facter` needs root; `generate-hw`
+  runs it with `sudo` when it is not already root, and keeps the existing
+  report if the probe cannot run.
 
 ## 6. Packaging
 
@@ -91,8 +93,9 @@ the flake.
   the user can manage accounts and per-user home-manager settings in the GUI.
   The generated `07-system/00-hardware.nix` has no `@menu` header and never
   appears (D5, D6a).
-- `07-system/09-facter.nix` is the Hardware report page. It shows the detected
-  model, profile and state, and the profile dropdown. The generated
+- `07-system/09-facter.nix` is the Hardware profile page. It has the profile
+  dropdown and the facter wiring; the detected model, profile and state are not
+  rendered as controls because the GUI is a source editor. The generated
   `07-system/00-hardware-quirks.nix` has no `@menu` header and never appears.
 - The script never edits files that the GUI owns (the hand-written page files);
   it only creates the generated file and fills the templates.
@@ -108,6 +111,12 @@ the flake.
 ```nix
 imports = [ inputs.nixos-hardware.nixosModules.<slug> ];
 ```
+
+Both scripts also write one `boot.initrd.luks.devices."<mapper>".device` line
+per open LUKS device, using the encrypted parent partition's UUID rather than
+the filesystem UUID inside the mapper. This includes encrypted swap, so stage 1
+can unlock it without the boot delay or missing-device failure. Lines that the
+`nixos-generate-config` output already contains are not duplicated.
 
 The Hardware report page (`09-facter.nix`) shows the detected model, profile
 and state, and a profile dropdown. `auto` uses the mapping. A non-`auto` value

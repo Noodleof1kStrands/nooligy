@@ -209,6 +209,36 @@ def root_is_btrfs(hardware):
     ) is not None
 
 
+def luks_device_lines(hardware=""):
+    """One boot.initrd.luks.devices line per open LUKS device.
+
+    The mapper name comes from the crypt node; the UUID is the encrypted
+    parent partition's UUID, not the filesystem UUID inside the mapper.
+    """
+    try:
+        report = json.loads(run(["lsblk", "-J", "-o", "NAME,TYPE,UUID"]))
+    except Exception:
+        return []
+    lines = []
+
+    def walk(node, parent_uuid=None):
+        if node.get("type") == "crypt":
+            name = node.get("name")
+            uuid = parent_uuid or node.get("uuid")
+            if name and uuid and 'boot.initrd.luks.devices."{}"'.format(name) not in hardware:
+                line = 'boot.initrd.luks.devices."{}".device = "/dev/disk/by-uuid/{}";'.format(
+                    name, uuid
+                )
+                if line not in lines:
+                    lines.append(line)
+        for child in node.get("children") or []:
+            walk(child, node.get("uuid") or parent_uuid)
+
+    for node in report.get("blockdevices", []):
+        walk(node)
+    return lines
+
+
 def bootloader_module(firmware, device, extra_lines, btrfs_root):
     lines = []
     if firmware == "efi":
@@ -467,6 +497,7 @@ def main():
     if args.extra_boot_config:
         with open(args.extra_boot_config) as handle:
             extra_lines = [line.rstrip() for line in handle if line.strip()]
+    extra_lines += luks_device_lines(hardware)
 
     facter_path = os.path.join(root, "modules/07-system/facter.json")
     try:

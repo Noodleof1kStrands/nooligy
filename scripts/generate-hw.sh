@@ -70,10 +70,70 @@ else
     boot.loader.grub.device = \"$disk\";"
 fi
 
+luks_device_lines() {
+  local line name type uuid pkname
+  local -A uuid_by_name=()
+  while IFS= read -r line; do
+    name= type= uuid=
+    for field in $line; do
+      case "$field" in
+      NAME=*) name=${field#NAME=}; name=${name//\"/} ;;
+      TYPE=*) type=${field#TYPE=}; type=${type//\"/} ;;
+      UUID=*) uuid=${field#UUID=}; uuid=${uuid//\"/} ;;
+      esac
+    done
+    [ -n "$name" ] && uuid_by_name["$name"]="$uuid"
+  done < <(lsblk -P -o NAME,TYPE,UUID 2>/dev/null || true)
+  while IFS= read -r line; do
+    name= type= uuid= pkname=
+    for field in $line; do
+      case "$field" in
+      NAME=*) name=${field#NAME=}; name=${name//\"/} ;;
+      TYPE=*) type=${field#TYPE=}; type=${type//\"/} ;;
+      UUID=*) uuid=${field#UUID=}; uuid=${uuid//\"/} ;;
+      PKNAME=*) pkname=${field#PKNAME=}; pkname=${pkname//\"/} ;;
+      esac
+    done
+    [ "$type" = "crypt" ] || continue
+    [ -n "$name" ] || continue
+    if [ -n "$pkname" ] && [ -n "${uuid_by_name[$pkname]:-}" ]; then
+      uuid="${uuid_by_name[$pkname]}"
+    fi
+    [ -n "$uuid" ] || continue
+    if printf '%s\n' "$raw" | grep -Fq "boot.initrd.luks.devices.\"$name\""; then
+      continue
+    fi
+    printf '    boot.initrd.luks.devices."%s".device = "/dev/disk/by-uuid/%s";\n' "$name" "$uuid"
+  done < <(lsblk -P -o NAME,TYPE,UUID,PKNAME 2>/dev/null || true)
+}
+
+boot_luks="$(luks_device_lines)"
+if [ -n "$boot_luks" ]; then
+  boot_module="$boot_module
+$boot_luks"
+fi
+
 FACTER="$REPO_ROOT/modules/07-system/facter.json"
+facter_ok=0
 if command -v nixos-facter >/dev/null 2>&1; then
   echo "generate-hw: running nixos-facter"
-  nixos-facter >"$FACTER"
+  if [ "$(id -u)" -eq 0 ]; then
+    if facter_json="$(nixos-facter)"; then
+      printf '%s\n' "$facter_json" >"$FACTER"
+      facter_ok=1
+    fi
+  elif command -v sudo >/dev/null 2>&1; then
+    echo "generate-hw: nixos-facter needs root; using sudo"
+    if facter_json="$(sudo nixos-facter)"; then
+      printf '%s\n' "$facter_json" >"$FACTER"
+      facter_ok=1
+    fi
+  else
+    echo "generate-hw: nixos-facter needs root and sudo is unavailable; keeping the existing $FACTER" >&2
+  fi
+  if [ "$facter_ok" -ne 1 ]; then
+    echo "generate-hw: could not write $FACTER; the profile will be auto/unmatched" >&2
+  fi
 else
   echo "generate-hw: nixos-facter not found; not writing $FACTER" >&2
 fi
