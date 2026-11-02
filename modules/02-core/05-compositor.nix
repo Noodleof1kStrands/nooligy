@@ -530,7 +530,13 @@
         desktop.ojuny.mango.global.no_radius_when_single =
           if config.ojuny.mango.flag.no_radius_when_single then 1 else 0;
         desktop.ojuny.mango.global.smart_gaps = if config.ojuny.mango.flag.smart_gaps then 1 else 0;
-        desktop.ojuny.mango.global.animations = if config.ojuny.mango.flag.animations then 1 else 0;
+        desktop.ojuny.mango.global.animations =
+          if config.ojuny.accessibility.reduceMotion then
+            0
+          else if config.ojuny.mango.flag.animations then
+            1
+          else
+            0;
         desktop.ojuny.mango.global.layer_animations =
           if config.ojuny.mango.flag.layer_animations then 1 else 0;
         desktop.ojuny.mango.global.animation_fade_in =

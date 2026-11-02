@@ -10,7 +10,7 @@
 { self, inputs, ... }: {
 
   flake.modules.nixos.desktop-style-shell =
-    { ... }:
+    { config, ... }:
     {
       config = {
         # Shape and surface
@@ -131,9 +131,8 @@
         # @option widget = "text"; label = "Widget background color"; group = "Desktop shell"; description = "A theme role name, e.g. sch for the scheme background."; hidden = true; groupOrder = 130; order = 70; applyCommand = "dms ipc call settings set widgetBackgroundColor %%val%%";
         desktop.ojuny.dux.settings.widgetBackgroundColor = "sch";
 
-        # Motion
-        # @option widget = "switch"; label = "Reduce motion"; group = "Motion"; groupOrder = 150; order = 10; applyCommand = "dms ipc call settings set reduceMotion %%val%%";
-        desktop.ojuny.dux.settings.reduceMotion = false;
+        # Motion. The switch lives on the Accessibility page.
+        desktop.ojuny.dux.settings.reduceMotion = config.ojuny.accessibility.reduceMotion;
 
         # @option widget = "dropdown"; label = "Spring bounce"; group = "Motion"; groupOrder = 150; order = 20; choices = [ "0" "1" "2" ]; advanced = true; description = "0 = smooth, 1 = balanced, 2 = playful."; applyCommand = "dms ipc call settings set springBounce %%val%%";
         desktop.ojuny.dux.settings.springBounce = 1;

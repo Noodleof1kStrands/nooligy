@@ -15,6 +15,7 @@
       self.modules.nixos.system-plymouth
       self.modules.nixos.system-power
       self.modules.nixos.system-lock
+      self.modules.nixos.system-accessibility
       self.modules.nixos.system-nixsettings
       self.modules.nixos.system-updates
       self.modules.nixos.system-ojuny-cli

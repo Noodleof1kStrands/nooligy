@@ -36,6 +36,22 @@
           scanSubdirectories = true;
         };
       };
+      worldClock = {
+        enable = true;
+        settings = {
+          timezones = [
+            {
+              timezone = config.time.timeZone;
+              label = "";
+              showOnBar = true;
+            }
+          ];
+          showAll = true;
+          cycleInterval = 15;
+          use24h = true;
+          iconOnly = false;
+        };
+      };
       nixMonitor = {
         enable = true;
         settings = {
@@ -91,6 +107,12 @@
         };
       };
       webSearch = {
+        enable = true;
+      };
+      virtualKeyboard = {
+        enable = true;
+      };
+      dankCalendarAgenda = {
         enable = true;
       };
     };

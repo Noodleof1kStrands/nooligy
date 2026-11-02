@@ -900,6 +900,20 @@
 */
 /*
   @widget-preset
+  id = "worldClock"; label = "World clock";
+  description = "Multiple cities and time zones from the World Clock plugin";
+  icon = "public"; sections = [ "left" "right" "center" "dock" ];
+  hasSettings = false;
+*/
+/*
+  @widget-preset
+  id = "dankCalendarAgenda"; label = "Calendar agenda";
+  description = "Dux Calendar next event and agenda";
+  icon = "calendar_today"; sections = [ "left" "right" "center" "dock" ];
+  hasSettings = false;
+*/
+/*
+  @widget-preset
   id = "weather"; label = "Weather";
   description = "Current weather conditions and temperature";
   icon = "weather-clear-symbolic"; sections = [ "left" "right" "center" "dock" ];
@@ -1424,6 +1438,21 @@
 
         desktop.ojuny.dux.barPreset = config.ojuny.dux.barPreset;
 
+        desktop.ojuny.dux.barPresets = lib.recursiveUpdate inputs.ojuny-desktop.barPresets.presets {
+          default.leftWidgets.dankCalendarAgenda = {
+            enabled = config.desktop.ojuny.dux.plugins.dankCalendarAgenda.enable;
+            _order = 35;
+          };
+          taskbar.rightWidgets.worldClock = {
+            enabled = config.desktop.ojuny.dux.plugins.worldClock.enable;
+            _order = 35;
+          };
+          status.rightWidgets.worldClock = {
+            enabled = config.desktop.ojuny.dux.plugins.worldClock.enable;
+            _order = 35;
+          };
+        };
+
         # @option widget = "bar"; label = "Custom bar"; visibleWhen.path = "ojuny.dux.barPreset"; visibleWhen.equals = "custom";
         ojuny.dux.customBar = {
 
@@ -1836,6 +1865,11 @@
             layout = {
               enabled = true;
               _order = 30;
+            };
+
+            dankCalendarAgenda = {
+              enabled = config.desktop.ojuny.dux.plugins.dankCalendarAgenda.enable;
+              _order = 35;
             };
 
             scratchpadHelper = {

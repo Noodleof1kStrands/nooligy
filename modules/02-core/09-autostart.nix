@@ -20,6 +20,7 @@
       # @option widget = "list"; label = "Run once at login"; group = "Session commands"; description = "Started when the session opens.";
       desktop.ojuny.mango.execOnce = [
         "dms run"
+        "dcal run -d --hidden"
         "wl-clip-persist --clipboard both"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"

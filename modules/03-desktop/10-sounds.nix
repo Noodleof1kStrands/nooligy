@@ -32,9 +32,6 @@
     # @option widget = "switch"; label = "Mute during media playback"; group = "Sounds"; groupOrder = 10; order = 70; visibleWhen.path = "desktop.ojuny.dux.settings.soundsEnabled"; visibleWhen.equals = true; applyCommand = "dms ipc call settings set muteSoundsWhenMediaPlaying %%val%%";
     desktop.ojuny.dux.settings.muteSoundsWhenMediaPlaying = true;
 
-    # @option widget = "switch"; label = "Mono audio"; group = "Advanced audio"; groupOrder = 20; order = 10; advanced = true; description = "Mix all stereo content into a single channel.";
-    desktop.ojuny.dux.settings.audioMono = false;
-
     # @option widget = "switch"; label = "Show virtual devices"; group = "Advanced audio"; groupOrder = 20; order = 20; advanced = true; applyCommand = "dms ipc call settings set audioShowStreamDevices %%val%%";
     desktop.ojuny.dux.settings.audioShowStreamDevices = false;
 

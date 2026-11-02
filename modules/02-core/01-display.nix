@@ -35,6 +35,15 @@
           };
         };
       };
+
+      iccProfile = config.ojuny.accessibility.iccProfile;
+
+      withIcc =
+        rule:
+        rule
+        // lib.optionalAttrs (iccProfile != null) {
+          icc = toString iccProfile;
+        };
     in
     {
 
@@ -60,7 +69,7 @@
 
         # Monitors
         # @option widget = "monitors"; label = "Monitors"; group = "Monitors"; groupOrder = 10; description = "Drag monitors to set their position; sizes and names stay editable in the rule.";
-        desktop.ojuny.mango.rules.monitor_rule = [
+        desktop.ojuny.mango.rules.monitor_rule = map withIcc [
           {
             name = "eDP-1";
             width = 1920;
