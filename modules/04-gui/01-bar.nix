@@ -1649,9 +1649,6 @@
           # @option widget = "dropdown"; label = "Widget style"; group = "Appearance"; groupOrder = 35; choices = [ "pills" "segments" "flat" ]; description = "How widgets are drawn inside the bar.";
           widgetStyle = "pills";
 
-          # @option widget = "switch"; label = "Dot"; group = "Island"; groupOrder = 40; description = "Draw the bar as a small draggable dot instead of a strip.";
-          dot = false;
-
           # @option widget = "spin"; label = "Island along offset"; group = "Island"; groupOrder = 40; min = -600; max = 600; unit = "px"; description = "Shift the island along the screen edge.";
           islandAlongOffset = 0;
 

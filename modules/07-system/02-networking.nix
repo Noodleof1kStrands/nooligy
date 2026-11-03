@@ -25,11 +25,7 @@
           lib.findFirst (user: user.isNormalUser or false) null (lib.attrValues config.users.users);
       primaryUserName = primaryUser.name or "user";
       primaryHome = primaryUser.home or "/home/${primaryUserName}";
-      watchDir =
-        if cfg.directory != "" then
-          cfg.directory
-        else
-          "${primaryHome}/.config/ojuny/wireguard";
+      watchDir = if cfg.directory != "" then cfg.directory else "${primaryHome}/.config/ojuny/wireguard";
       importScript = pkgs.writeShellApplication {
         name = "ojuny-wireguard-import";
         runtimeInputs = with pkgs; [
@@ -43,6 +39,8 @@
       importSettings = pkgs.writeText "ojuny-wireguard-settings" "${toString cfg.autoconnect}:${cfg.autoconnectProfile}";
     in
     {
+
+      options.ojuny.network.deploy-rs.enable = lib.mkEnableOption "deploy-rs and remote deployment";
 
       options.ojuny.networking.hosts = lib.mkOption {
         type = lib.types.listOf (
@@ -86,6 +84,22 @@
 
       config = {
 
+        environment.systemPackages = lib.mkIf config.ojuny.network.deploy-rs.enable [
+          inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
+          inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
+          inputs.nixos-anywhere.packages.${pkgs.stdenv.hostPlatform.system}.default
+          pkgs.git
+          pkgs.openssh
+        ];
+
+        services.openssh = lib.mkIf config.ojuny.network.deploy-rs.enable {
+          enable = true;
+          settings = {
+            PermitRootLogin = "prohibit-password";
+            PasswordAuthentication = false;
+          };
+        };
+
         # @option widget = "switch"; label = "NetworkManager"; group = "Network";
         networking.networkmanager.enable = true;
 
@@ -110,7 +124,10 @@
           after = [ "NetworkManager.service" ];
           wants = [ "NetworkManager.service" ];
           wantedBy = [ "multi-user.target" ];
-          restartTriggers = [ importSettings importScript ];
+          restartTriggers = [
+            importSettings
+            importScript
+          ];
           serviceConfig.Type = "oneshot";
           script = "${importScript}/bin/ojuny-wireguard-import ${lib.escapeShellArg watchDir} ${
             if cfg.autoconnect then "1" else "0"
@@ -146,7 +163,7 @@
         networking.firewall.logRefusedConnections = true;
 
         # @option widget = "list"; label = "Open TCP ports"; group = "Firewall"; visibleWhen.path = "networking.firewall.enable"; visibleWhen.equals = true;
-        networking.firewall.allowedTCPPorts = [ ];
+        networking.firewall.allowedTCPPorts = lib.mkIf config.ojuny.network.deploy-rs.enable [ 22 ];
 
         # @option widget = "list"; label = "Open UDP ports"; group = "Firewall"; visibleWhen.path = "networking.firewall.enable"; visibleWhen.equals = true;
         networking.firewall.allowedUDPPorts = [ ];

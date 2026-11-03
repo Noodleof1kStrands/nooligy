@@ -88,10 +88,30 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixos-anywhere = {
+      url = "github:numtide/nixos-anywhere";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
-    inputs:
+    inputs@{ self, ... }:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         (inputs.import-tree ./modules)
@@ -156,6 +176,71 @@
             program = "${regenerate-hardware}/bin/regenerate-hardware";
           };
 
+          apps.remote-setup = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "remote-setup";
+                runtimeInputs = [
+                  pkgs.coreutils
+                  pkgs.git
+                  pkgs.openssh
+                  pkgs.nix
+                  inputs.deploy-rs.packages.${system}.default
+                ];
+                text = ''
+                  export OJUNY_TEMPLATE_SOURCE="${inputs.self}"
+                  export OJUNY_DEPLOY_RS="${inputs.deploy-rs.packages.${system}.default}/bin/deploy"
+                  ${builtins.readFile ./scripts/remote-setup.sh}
+                '';
+              }
+            }/bin/remote-setup";
+          };
+
+          apps.prepare-remote-repository = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "prepare-remote-repository";
+                runtimeInputs = [
+                  pkgs.coreutils
+                  pkgs.git
+                  pkgs.gnused
+                  pkgs.mkpasswd
+                  pkgs.nix
+                ];
+                text = ''
+                  export OJUNY_TEMPLATE_SOURCE="${inputs.self}"
+                  ${builtins.readFile ./scripts/prepare-remote-repository.sh}
+                '';
+              }
+            }/bin/prepare-remote-repository";
+          };
+
+          apps.remote-install = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "remote-install";
+                runtimeInputs = [
+                  pkgs.coreutils
+                  pkgs.git
+                  pkgs.gnused
+                  pkgs.nix
+                  pkgs.openssh
+                  inputs.disko.packages.${system}.disko
+                  inputs.nixos-anywhere.packages.${system}.default
+                ];
+                text = ''
+                  export OJUNY_TEMPLATE_SOURCE="${inputs.self}"
+                  export OJUNY_DISKO="${inputs.disko.packages.${system}.disko}/bin/disko"
+                  export OJUNY_NIXOS_ANYWHERE="${inputs.nixos-anywhere.packages.${system}.default}/bin/nixos-anywhere"
+                  ${builtins.readFile ./scripts/remote-install.sh}
+                '';
+              }
+            }/bin/remote-install";
+          };
+
           apps.setup = {
             type = "app";
             program = "${
@@ -206,17 +291,28 @@
             let
               source = pkgs.lib.cleanSource ./.;
             in
-            pkgs.runCommand "check-hardware-profile" {
-              nativeBuildInputs = [ pkgs.python3 ];
-            } ''
-              python3 ${./tests/check-hardware-profile.py} --root ${source}
-              touch $out
-            '';
+            pkgs.runCommand "check-hardware-profile"
+              {
+                nativeBuildInputs = [ pkgs.python3 ];
+              }
+              ''
+                python3 ${./tests/check-hardware-profile.py} --root ${source}
+                touch $out
+              '';
         };
 
       flake = {
         nixosModules.default = inputs.ojuny-desktop.nixosModules.default;
         homeManagerModules.default = inputs.ojuny-desktop.homeManagerModules.default;
+
+        deploy.nodes = builtins.mapAttrs (name: configuration: {
+          hostname = name;
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos configuration;
+          };
+        }) self.nixosConfigurations;
       };
       # nixosConfigurations.<host> is registered by scripts/setup.sh, which also
       # writes modules/07-system/01-configuration.nix.
