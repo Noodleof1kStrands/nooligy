@@ -8,26 +8,26 @@ per `02-settings-menu.md`.
 
 | dendrite source | ojuny target |
 |-----------------|--------------|
-| `features/common.nix` | `04-system/01-configuration.nix` + `04-system/06-nixsettings.nix` |
-| `features/audio.nix` | `04-system/audio.nix` (proposed) |
-| `features/bluetooth.nix` | `04-system/04-bluetooth.nix` |
-| `features/amd.nix`, `intel.nix`, `nvidia.nix` | `04-system/05-graphics.nix` |
+| `features/common.nix` | `07-system/01-configuration.nix` + `02-core/11-nixsettings.nix` |
+| `features/audio.nix` | `02-core/12-audio.nix` |
+| `features/bluetooth.nix` | `07-system/03-bluetooth.nix` |
+| `features/amd.nix`, `intel.nix`, `nvidia.nix` | `07-system/04-graphics.nix` |
 | `features/flatpak.nix` | `patches/patch-flatpak.nix` |
-| `features/ydotool.nix` | `04-system/security.nix` (proposed) |
-| `features/mimetypes.nix` | `03-applications/02-browser.nix` + `03-applications/01-applist.nix` (default apps, file manager via dux-files) |
-| `networking/default.nix` | `04-system/03-networking.nix` |
-| `networking/ssh.nix` | `04-system/ssh.nix` (proposed) |
-| `terminal/zsh.nix`, `aliases.nix` | `01-users/03-shell.nix` (proposed, D11) |
-| `terminal/ghostty.nix` | `03-applications/08-terminal.nix` (proposed, D11) |
-| `terminal/font.nix` | `02-desktop/04-style.nix` (fonts, D11) |
-| `styles/stylix.nix` + one palette | `02-desktop/04-style.nix` |
-| `styles/colors.nix` helper | `02-desktop/04-style.nix` (or lib) |
-| `utils/nix.nix`, `troubleshooting.nix` | `04-system/06-nixsettings.nix` |
-| `services/simple-nix-update-gui.nix` | `04-system/07-updates.nix` |
-| nix-settings-gui | `04-system/07-updates.nix` (T2) |
-| nix-shell-gui | `04-system/06-nixsettings.nix` (T2) |
-| nix-regedit | `04-system/06-nixsettings.nix` (T2) |
-| `utils/homemanager.nix` | `01-users/commonsettings.nix` |
+| `features/ydotool.nix` | `07-system/08-accessibility.nix` |
+| `features/mimetypes.nix` | `02-core/06-browser.nix` + `05-applications/01-applist.nix` (default apps, file manager via dux-files) |
+| `networking/default.nix` | `07-system/02-networking.nix` |
+| `networking/ssh.nix` | `07-system/02-networking.nix` |
+| `terminal/zsh.nix`, `aliases.nix` | `02-core/08-terminal.nix` (D11) |
+| `terminal/ghostty.nix` | `02-core/08-terminal.nix` (D11) |
+| `terminal/font.nix` | `02-core/05-typography.nix` (fonts, D11) |
+| `styles/stylix.nix` + one palette | `02-core/05-theme.nix` |
+| `styles/colors.nix` helper | `02-core/00-colors.nix` |
+| `utils/nix.nix`, `troubleshooting.nix` | `02-core/11-nixsettings.nix` |
+| `services/simple-nix-update-gui.nix` | `02-core/10-updates.nix` |
+| nix-settings-gui | `02-core/10-updates.nix` (T2) |
+| nix-shell-gui | `02-core/11-nixsettings.nix` (T2) |
+| nix-regedit | `02-core/11-nixsettings.nix` (T2) |
+| `utils/homemanager.nix` | `01-users/02-commonsettings.nix` |
 | `productivity/firefox.nix`, `zen.nix` | `03-applications/02-browser.nix` |
 | `productivity/office.nix` | `03-applications/05-office.nix` |
 | `productivity/webapps.nix` | `03-applications/webapps.nix` (proposed) |
@@ -53,7 +53,7 @@ per `02-settings-menu.md`.
 | `secrets/*` (sops, age key, store) | Personal key path and user vaults. sops and age are out of core scope but available through `patch-secrets`; GUI vaults use `patch-password-manager`. |
 | `services/hydra.nix`, `nix-serve.nix`, `glusterfs.nix` | Home-lab CI/cache/storage. |
 | `services/portfolio.nix` | Personal portfolio service. |
-| `services/simple-nix-update-gui.nix` (as-is) | Pointed at private repos; replaced by the generic `07-updates.nix` page. |
+| `services/simple-nix-update-gui.nix` (as-is) | Pointed at private repos; replaced by the generic `02-core/10-updates.nix` page. |
 | `deploy/*`, `hosts/deploy.nix` | Server build/deploy workflow (deploy-rs targets). |
 | `hosts/<server>` and all `hosts/*/hardware.nix`, `networking.nix`, `configuration.nix` | Machine-specific hardware/network and personal machines. |
 | `users/den`, `noodle`, `joni`, `olaf`, `reena` module splits | Personal users and their package lists. |
@@ -86,6 +86,6 @@ per `02-settings-menu.md`.
 - D1a mangoWM + Dux Shell only; every alternate desktop is dropped.
 - D12 Steam built in; Prism Launcher through `patch-prismlauncher`; other gaming apps dropped.
 - D17 fastfetch kept, default `fastfetch-den`.
-- D11 fonts in style, shell in `01-users/03-shell.nix`, ghostty in
-  `03-applications/08-terminal.nix`.
-- T1/T2 the four SDG-Den nix tools are in scope and wired as recorded in 02.
+- D11 fonts in `02-core/05-typography.nix`, shell and ghostty in
+  `02-core/08-terminal.nix`.
+- T1/T2 the four ojuny-project nix tools are in scope and wired as recorded in 02.

@@ -29,8 +29,8 @@ each page contains and is the spec the repo is built from.
 
 - A file with no `@menu` header is ignored by the scanner. Use this for
   under-the-hood settings that should not be user-edited.
-- `02-desktop/01-mango.nix` is the under-the-hood mango file.
-- `04-system/02-hardware.nix` is generated and has no menu.
+- `03-desktop/00-mango.nix` is the under-the-hood mango file.
+- `07-system/00-hardware.nix` is generated and has no menu.
 - Values that must never be changed (for example `system.stateVersion`) live
   in a menu file but carry no `@option` comment, so they are never shown.
 
@@ -52,7 +52,7 @@ category; the `@menu` `category` string is authoritative.
 | `05-Applications` | applist, screenshot, multimedia, office, vesktop, steam, kdeconnect |
 | `06-Utility` | dux-tools, webapps, plugins |
 | `07-System` | configuration, networking, bluetooth, graphics, plymouth |
-| `Patches` | pre-included: patch-development, patch-docker, patch-flatpak, patch-nixshell, patch-remote-desktop, patch-virtualization; installed patches add more |
+| `Patches` | pre-included: patch-development, patch-docker, patch-flatpak, patch-impermanence, patch-nixshell, patch-remote-desktop, patch-virtualization; installed patches add more |
 
 Pages marked "(proposed)" below are additions to the scaffold and are the
 current working set for review.
@@ -178,7 +178,7 @@ current working set for review.
 - `00-host.nix` `[no menu]`. The host configuration: system and module list.
 - `00-imports.nix` `[no menu]`. The import list that decides which pages a
   host loads.
-- `00-ssh-test.nix` `[no menu]`. Temporary SSH test module.
+- `_00-ssh-test.nix` `[no menu]`. Temporary SSH test module.
 - `01-configuration.nix` `[menu]`. Hostname, time zone, locale, console
   keymap and the patches switch. `system.stateVersion` present but never
   exposed (D15).
@@ -196,11 +196,13 @@ current working set for review.
 
 - `00-patches.nix` `[no menu]`. Imports every `patch-*` module under
   `modules/patches/` while `ojuny.patches` is enabled.
-- The template pre-includes six patches: `patch-development`, `patch-docker`,
-  `patch-flatpak`, `patch-nixshell`, `patch-remote-desktop` and
-  `patch-virtualization`. They are deliberate copies of the `ojuny-patches`
-  registry modules and must be kept in sync with the registry; do not edit a
-  pre-included copy only in the template.
+- The template pre-includes seven patches: `patch-development`, `patch-docker`,
+  `patch-flatpak`, `patch-impermanence`, `patch-nixshell`,
+  `patch-remote-desktop` and `patch-virtualization`. Six have counterparts in
+  the `ojuny-patches` registry and must be kept in sync with it;
+  `patch-impermanence.nix` has no registry counterpart, so the pre-included
+  set does not mirror the registry. Do not edit a pre-included copy only in the
+  template.
 - Additional patches are installed with `ojuny-patches install <id>`, which
   places `<id>.nix` in `modules/patches/`; `00-patches.nix` imports it as a
   local module. The settings menu then shows one page per installed patch.
@@ -215,7 +217,7 @@ current working set for review.
 
 [Dux Shell settings coverage](dux-settings-coverage.md) is the row ledger for the migration. The machine-readable copy is [dux-settings-coverage.csv](dux-settings-coverage.csv).
 
-At migration time 496 of 1418 rows are covered under `desktop.ojuny.dux`. Each row is in one of four states: covered, stylix-owned through an exposed stylix option, deferred with a phase in the coverage document, or unexposed with a stated reason. A row marked uncovered in the ledger is not claimed as covered here.
+At migration time 1099 of 1418 rows are covered under `desktop.ojuny.dux` (counted from the `status` column of `dux-settings-coverage.csv` on 2026-11-03). Each row is in one of four states: covered, stylix-owned through an exposed stylix option, deferred with a phase in the coverage document, or unexposed with a stated reason. A row marked uncovered in the ledger is not claimed as covered here.
 
 ## 5. Resolved decisions
 
@@ -230,9 +232,9 @@ At migration time 496 of 1418 rows are covered under `desktop.ojuny.dux`. Each r
 - D7a one file declares the nixos and/or home-manager module it needs.
 - D8 commonsettings and applist as defined.
 - D9a dedicated login page.
-- D10 all update tooling in `07-updates.nix`.
-- D11a shell in `01-users/03-shell.nix`, ghostty in `03-applications/08-terminal.nix`,
-  fonts in `02-desktop/04-style.nix`.
+- D10 all update tooling in `02-core/10-updates.nix`.
+- D11a shell and ghostty in `02-core/08-terminal.nix`, fonts in
+  `02-core/05-typography.nix`.
 - D12 Steam built in; Prism Launcher through `patch-prismlauncher`.
 - D13 system-specific settings in the system directory; per-user settings in
   that user's `user.nix`; all system files templated except generated
@@ -245,11 +247,11 @@ At migration time 496 of 1418 rows are covered under `desktop.ojuny.dux`. Each r
   enables the features permanently.
 - T1 the template includes nix-settings-gui, nix-regedit, nix-shell-gui, and
   simple-nix-update-gui; dendrite-menu is dropped.
-- T2 nix-shell-gui and nix-regedit in `06-nixsettings.nix`; nix-settings-gui
-  and simple-nix-update-gui in `07-updates.nix`.
-- Lockscreen merged into `12-power.nix`.
-- Fold confirmations: wallpaper into `04-style.nix`, workspaces into
-  `02-mangosettings.nix`, OSD into `09-notifications.nix`.
+- T2 nix-shell-gui and nix-regedit in `02-core/11-nixsettings.nix`;
+  nix-settings-gui and simple-nix-update-gui in `02-core/10-updates.nix`.
+- Lockscreen and power in `07-system/06-lock.nix` and `07-system/05-power.nix`.
+- Fold confirmations: wallpaper into `02-core/05-theme.nix`, workspaces into
+  `03-desktop/06-mangoworkspaces.nix`, OSD into `03-desktop/09-osd.nix`.
 
 ## 6. Remaining open
 

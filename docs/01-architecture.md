@@ -68,7 +68,7 @@ Both modules live in one file so the page stays self-contained.
   identifier stays `dms` (the `dms` binary, `~/.config/dms`,
   `~/.local/state/dms`, `dms ipc call ...`, `dms.service`), and the option
   namespace is `desktop.ojuny.dux.*`, with a one-release alias for
-  `desktop.ojuny.dux.*`. The CLI surface is `ojuny dux ...`; `ojuny dms` is a
+  `desktop.ojuny.dms.*`. The CLI surface is `ojuny dux ...`; `ojuny dms` is a
   deprecated alias.
 - Template-local options (for values used across pages, e.g. the user name,
   hostname, enabled-app toggles) are declared under a top-level `ojuny.*`
@@ -108,33 +108,11 @@ Rules:
 - `@menu order` is the page's position within its category (for example `40`),
   independent of the file number.
 
-The numbering currently applied (see `02-settings-menu.md` for meanings):
-
-```
-01-users/         01-user.nix  02-commonsettings.nix
-02-core/          00-colors.nix  01-display.nix  02-input.nix  03-binds.nix
-                  04-gestures.nix  05-theme.nix  05-typography.nix
-                  05-compositor.nix  05-shell.nix  06-browser.nix  07-git.nix
-                  08-terminal.nix  09-autostart.nix  10-updates.nix
-                  11-nixsettings.nix  12-audio.nix
-03-desktop/       00-mango.nix  01-login.nix  02-mangosettings.nix
-                  03-mangomaster.nix  04-mangodwindle.nix  05-scroller.nix
-                  06-mangoworkspaces.nix  07-notifications.nix
-                  08-clipboard.nix  09-osd.nix  10-sounds.nix
-                  11-screensaver.nix  13-monocle-deck.nix
-04-gui/           01-bar.nix  02-dock.nix  03-launcher.nix  04-dashboard.nix
-                  05-controlcenter.nix  06-menu.nix
-05-applications/  01-applist.nix  02-multimedia.nix  03-office.nix
-                  04-vesktop.nix  05-steam.nix  06-kdeconnect.nix
-                  07-screenshot.nix
-06-utility/       00-dux-tools.nix  01-webapps.nix  02-plugins.nix
-07-system/        00-hardware.nix  00-hardware-quirks.nix (generated)
-                  00-host.nix  00-imports.nix  00-ssh-test.nix
-                  01-configuration.nix  02-networking.nix  03-bluetooth.nix
-                  04-graphics.nix  05-power.nix  06-lock.nix  07-plymouth.nix
-                  09-facter.nix  10-hardware-profile.nix
-patches/          00-patches.nix  (pre-included and installed patch-<id>.nix modules)
-```
+The numbering currently applied is generated from the directory itself rather
+than maintained here. [`module-tree.md`](module-tree.md) lists every file under
+`modules/`, grouped by top-level directory and sorted; `scripts/gen-module-tree.sh`
+regenerates it and CI fails when the checked-in file differs. See
+`02-settings-menu.md` for what the categories and page files mean.
 
 Files marked `[no menu]` in 02 carry no `@menu` header and are skipped by the
 scanner: `03-desktop/00-mango.nix`, generated `07-system/00-hardware.nix` and
@@ -196,7 +174,7 @@ generated or templated, not hand-written:
   `hardware.nix`.
 - T1 the template includes nix-settings-gui, nix-regedit, nix-shell-gui, and
   simple-nix-update-gui; dendrite-menu is dropped.
-- T2 nix-shell-gui and nix-regedit in `06-nixsettings.nix`; nix-settings-gui
-  and simple-nix-update-gui in `07-updates.nix`.
+- T2 nix-shell-gui and nix-regedit in `02-core/11-nixsettings.nix`;
+  nix-settings-gui and simple-nix-update-gui in `02-core/10-updates.nix`.
 
 Open: none.

@@ -61,14 +61,15 @@ the flake.
 
 - `git` must be available on `PATH`; the script clones your fork with it.
 - `nix-command` and `flakes` must be enabled before running the installer,
-  for example `nix run github:SDG-Den/ojuny-template#setup`. On a fresh install
+  for example `nix run github:ojuny-project/ojuny-template#setup`. On a fresh install
   they are off and every flake command fails with `experimental Nix feature
   'nix-command' is disabled`; enable them in `nix.conf`
   (`experimental-features = nix-command flakes`).
-- The script itself does not call `nix`; the rebuild it offers runs
-  `nixos-rebuild`, which enables the flake features internally and does not
-  accept `--extra-experimental-features`. The flag is only needed for the
-  `nix run` that starts the installer.
+- The script calls `nix build` to pre-build the compiled targets one at a time
+  before the rebuild it offers; that rebuild runs `nixos-rebuild`, which
+  enables the flake features internally and does not accept
+  `--extra-experimental-features`. The flag is needed for the `nix build`
+  calls and the `nix run` that starts the installer.
 - `nixos-generate-config` (from the NixOS install) is assumed present when the
   script runs on NixOS. When running on a non-NixOS Nix install, the script
   must fall back to reading an existing `hardware-configuration.nix` or ask the

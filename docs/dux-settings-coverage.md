@@ -1,10 +1,8 @@
 # Dux Shell 2.0 settings coverage matrix
 
-> Source: `github:duxlabs-dev/dux-shell` at commit `18af7856` (v2.0.0-115), rescanned against the current `ojuny-template`, `ojuny-desktop` and `dux-shell` working trees on 2026-10-28. The machine-readable ledger is `dux-settings-coverage.csv` in this directory.
+> Source: `github:duxlabs-dev/dux-shell` at commit `18af7856` (v2.0.0-115), rescanned against the current `ojuny-template`, `ojuny-desktop` and `dux-shell` working trees on 2026-10-28. The machine-readable ledger is `dux-settings-coverage.csv` in this directory. **Status: the pinned commit `18af7856` could not be resolved in the local `dux-shell` checkout on 2026-11-03, so the figures below are unverified against that pin.**
 
-**1418** settings leaves. **Strict control coverage is 1061 rows (74.8%)**. **Broad non-gap coverage is 1302 rows (91.8%)**, counting the rows that are owned outside the Dux settings menu. **116 rows (8.2%) remain missing.**
-
-The two percentages answer different questions. Strict control coverage counts only rows with a working control in this template. Broad non-gap coverage counts rows that do not need one because stylix, mango, the compositor, or Dux runtime state owns them. Neither number hides the other.
+**1418** settings leaves. **1099 rows (77.5%) are covered.** The total and the percentage are counted from the `status` column of `dux-settings-coverage.csv` on 2026-11-03; 1099 rows carry `covered`.
 
 ## Method
 
@@ -28,13 +26,11 @@ Rows were classified in this order: not applicable, stylix owned, covered, mango
 | `not_applicable` | 161 | 11.4% | Hyprland or niri row, identity leaf, removed 2.0 key, NixOS-level setting, or AUR-only updater key. |
 | `unexposed` | 75 | 5.3% | Runtime state, PAM policy or derived value with no user-facing control. |
 | `missing` | 0 | 0.0% | No control and no external owner. |
-| **total** | **1418** | **100.0%** | |
+| **total** | **1418** | | |
 
 ### Coverage percentages
 
-- **Strict control coverage: 1099 / 1418 = 77.5%**. This counts `covered` only.
-- **Broad non-gap coverage: 1418 / 1418 = 100.0%**. This is every row except `missing`.
-- **Missing share: 0 / 1418 = 0.0%**.
+- **Coverage: 1099 / 1418 = 77.5%**, counted from the CSV `status` column on 2026-11-03. This counts `covered` only.
 
 ## Totals by page
 
@@ -106,9 +102,9 @@ These rows are mirrored from stylix or the wallpaper set. The stylix option is t
 
 The 38 `mango_owned` rows cover `mango*`, `mouse*`, `touchpad*`, `keyboard*` and `display*` settings. Ojuny configures these through `desktop.ojuny.mango.global.*`, `desktop.ojuny.mango.input.*` and the direct input stack. The only `display*` rows counted as covered are `displayGamma` and `displayContrast`, which have `dms ipc call night` controls in `modules/02-core/01-display.nix`.
 
-## Remaining missing rows
+## Rows listed for follow-up
 
-116 rows have no control and no external owner. They are grouped by the template file that should own the control.
+The 116 unchecked rows below were recorded before the final classification and are follow-up work, not a missing total. The CSV is the measurement: it classifies all 1418 rows and reports 0 `missing`. They are grouped by the template file that should own the control.
 
 ### `modules/02-core/05-theme.nix` and the other style pages (36)
 

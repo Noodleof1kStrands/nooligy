@@ -10,10 +10,9 @@ Top of the spec set. Read this first, then:
 
 ## 1. What ojuny is
 
-ojuny is a NixOS-based "distro" / set of dotfiles, built as a response to
-omarchy. omarchy is an opinionated set of dotfiles on Arch with Hyprland and a
-custom quickshell, coded almost entirely by AI. ojuny provides the same
-experience but built on Nix, using non-vibecoded tooling.
+ojuny is a NixOS-based desktop distribution built as a set of dotfiles and
+modules. It aims for an opinionated, ready-to-use desktop, assembled from
+upstream projects and Nix instead of a hand-maintained Arch setup.
 
 ojuny has a layered shape:
 
@@ -80,7 +79,7 @@ Binding for the rest of the spec.
   Hardware report page)
 - `base16-schemes` (theme presets)
 
-The four `nix-*` tools are github:SDG-Den flakes and are already wired into
+The four `nix-*` tools are github:ojuny-project flakes and are already wired into
 dendrite, so the template reuses them.
 
 Hardware profiles are split two ways. Automatic selection reads

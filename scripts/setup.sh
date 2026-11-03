@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="https://github.com/SDG-Den/ojuny-template"
+REPO_URL="https://github.com/ojuny-project/ojuny-template"
 default_clone_dir="${OJUNY_CLONE_DIR:-$HOME/repos/nix-flake}"
 branch="${OJUNY_BRANCH:-}"
 

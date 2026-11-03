@@ -41,22 +41,22 @@
     };
 
     nix-settings-gui = {
-      url = "github:SDG-Den/nix-settings-gui";
+      url = "github:ojuny-project/nix-settings-gui";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-regedit = {
-      url = "github:SDG-Den/nix-regedit";
+      url = "github:ojuny-project/nix-regedit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-shell-gui = {
-      url = "github:SDG-Den/nix-shell-gui";
+      url = "github:ojuny-project/nix-shell-gui";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     simple-nix-update-gui = {
-      url = "github:SDG-Den/simple-nix-update-gui";
+      url = "github:ojuny-project/simple-nix-update-gui";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -80,11 +80,11 @@
     };
 
     nix-cache-discovery = {
-      url = "github:SDG-Den/nix-cache-discovery";
+      url = "github:ojuny-project/nix-cache-discovery";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-cleaner = {
-      url = "github:SDG-Den/nix-cleaner";
+      url = "github:ojuny-project/nix-cleaner";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
