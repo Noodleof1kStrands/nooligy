@@ -25,41 +25,6 @@
         "penumbra-light-contrast-plus-plus"
       ];
 
-      bindModule = lib.types.submodule {
-        options = {
-          modifier = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [ "SUPER" ];
-          };
-          keys = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [ ];
-          };
-          dispatcher = lib.mkOption {
-            type = lib.types.str;
-            default = "spawn";
-          };
-          args = lib.mkOption {
-            type = lib.types.either (lib.types.listOf lib.types.str) lib.types.str;
-            default = [ ];
-          };
-          description = lib.mkOption {
-            type = lib.types.str;
-            default = "";
-          };
-          group = lib.mkOption {
-            type = lib.types.str;
-            default = "Other";
-          };
-          subcat = lib.mkOption {
-            type = lib.types.str;
-            default = "";
-          };
-        };
-      };
-
-      bindGroup = lib.types.attrsOf (lib.types.attrsOf bindModule);
-
       screenReaderToggle = pkgs.writeShellScript "ojuny-screen-reader-toggle" ''
         export PATH=${lib.makeBinPath [ pkgs.procps ]}:$PATH
 
@@ -103,10 +68,10 @@
                   "SUPER"
                   "ALT"
                 ];
-                keys = [ "k" ];
+                keys = [ "o" ];
                 dispatcher = "spawn";
                 args = "dms ipc call virtualKeyboard toggle";
-                description = "Toggle the on-screen keyboard";
+                description = "Toggle the on-screen keyboard (Super+Alt+O)";
                 group = "Accessibility";
                 subcat = "Keyboard";
               };
@@ -279,11 +244,6 @@
           default = false;
           description = "Disable Dux shell and Mango window animations.";
         };
-        binds = lib.mkOption {
-          type = bindGroup;
-          default = { };
-          description = "Accessibility keybinds, merged into common binds. This is not a keymode.";
-        };
       };
 
       config = {
@@ -309,17 +269,14 @@
         # @option widget = "switch"; label = "Reduce motion"; group = "Motion"; groupOrder = 30; order = 10; applyCommand = "dms ipc call settings set reduceMotion %%val%%"; description = "Disable Dux shell motion and force Mango window animations off. Window animations apply on rebuild.";
         ojuny.accessibility.reduceMotion = false;
 
-        # @option widget = "keybinds"; label = "Accessibility binds"; group = "Keybinds"; groupOrder = 40; order = 10; description = "Accessibility actions are stored in common binds and are always active. The screen reader bind appears when Orca is enabled; the on-screen keyboard bind appears when the plugin is enabled. The mouse mode toggle is always here.";
-        ojuny.accessibility.binds.common = accessibilityBinds.common;
+        # @option widget = "keybinds"; label = "Common binds"; group = "Keybinds"; groupOrder = 40; order = 10; description = "All common binds. Accessibility entries use the Accessibility group and are always active. The screen reader bind appears when Orca is enabled; the on-screen keyboard bind appears when the plugin is enabled; the mouse mode toggle is always here.";
+        desktop.ojuny.mango.binds.common = accessibilityBinds.common;
 
         # @option widget = "keybinds"; label = "Mouse mode binds"; group = "Mouse mode"; groupOrder = 45; order = 10; description = "Pointer controls for the mouse keymode. Enter with SUPER+ALT+M; the mode is active only while set. Movement is 15 px per press; edit the commands to change speed. Escape or the toggle exits.";
-        ojuny.accessibility.binds.mouse = accessibilityBinds.mouse;
+        desktop.ojuny.mango.binds.mouse = accessibilityBinds.mouse;
 
         environment.sessionVariables.QT_ACCESSIBILITY =
           lib.mkIf config.services.orca.enable "1";
-
-        desktop.ojuny.mango.binds.common = config.ojuny.accessibility.binds.common;
-        desktop.ojuny.mango.binds.mouse = config.ojuny.accessibility.binds.mouse;
       };
     };
 

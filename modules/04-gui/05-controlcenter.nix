@@ -18,7 +18,7 @@
         _order = 10;
         col = 0;
         row = 0;
-        w = 4;
+        w = 5;
         h = 1;
         # @option widget = "dropdown"; label = "User shape"; group = "Widgets"; groupOrder = 10; order = 20; choices = [ "circle" "cookie4" "cookie7" "cookie12" "clover4" "clover8" "sunny" "pentagon" "arch" "slanted" "gem" "square" ]; description = "Avatar shape on the user tile.";
         shape = "circle";
@@ -26,7 +26,7 @@
       battery = {
         enabled = true;
         _order = 20;
-        col = 4;
+        col = 5;
         row = 0;
         w = 1;
         h = 1;

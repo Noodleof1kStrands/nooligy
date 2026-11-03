@@ -48,10 +48,16 @@
             description = "Tag id. 0 is the special workspace.";
           };
 
-          name = lib.mkOption {
+          note = lib.mkOption {
             type = lib.types.str;
             default = "";
-            description = "Display name for the table row. Not sent to Mango.";
+            description = "Display note for the table row. Not sent to Mango.";
+          };
+
+          monitor_name = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+            description = "Mango monitor name this layout applies to. Empty applies to all monitors.";
           };
 
           layout = lib.mkOption {
@@ -100,10 +106,16 @@
 
       cfg = config.ojuny.workspaces;
       tagNum = config.desktop.ojuny.mango.global.tag_num or 10;
-      tagRules = map (rule: {
-        id = rule.tag;
-        layout_name = rule.layout;
-      }) cfg.tags;
+      tagRules = map (
+        rule:
+        {
+          id = rule.tag;
+          layout_name = rule.layout;
+        }
+        // lib.optionalAttrs (rule.monitor_name != "") {
+          monitor_name = rule.monitor_name;
+        }
+      ) cfg.tags;
 
       scratchpadRows = lib.mapAttrsToList (name: row: row // { inherit name; }) config.ojuny.scratchpads;
 
@@ -241,27 +253,31 @@
         # @option widget = "switch"; label = "Tag carousel"; group = "Workspaces"; hidden = true; applyCommand = "mmsg dispatch setoption,tag_carousel,$(case %%val%% in true) echo 1;; *) echo 0;; esac)";
         ojuny.mango.flag.tag_carousel = false;
 
-        # Tag rules
-        # @option widget = "table-list"; label = "Tag rules"; group = "Tag rules"; groupOrder = 20; columns = [ "tag" "name" "layout" ]; columnTypes = [ "int" "str" "str" ]; firstValueEditable = true; description = "One row per tag. tag is 0 for the special workspace or a number up to the tag count. name is a display label only. layout is the Mango layout. Rows apply in table order after the default wildcard rule, so a specific tag overrides the wildcard.";
+        # Per-workspace layout
+        # @option widget = "table-list"; label = "Per-workspace layout"; group = "Per-Workspace Layout"; groupOrder = 20; columns = [ "tag" "note" "monitor_name" "layout" ]; columnTypes = [ "int" "str" "str" "str" ]; firstValueEditable = true; description = "One row per workspace. tag is 0 for the special workspace or a number up to the tag count. note is a display label only. monitor_name pins the layout to one output; empty applies to all monitors. layout is the Mango layout. Rows apply in table order after the default wildcard rule, so a specific tag overrides the wildcard.";
         ojuny.workspaces.tags = [
           {
             tag = 0;
-            name = "special";
+            note = "special";
+            monitor_name = "";
             layout = "tile";
           }
           {
             tag = 1;
-            name = "";
+            note = "";
+            monitor_name = "";
             layout = "tile";
           }
           {
             tag = 2;
-            name = "";
+            note = "";
+            monitor_name = "";
             layout = "tile";
           }
           {
             tag = 3;
-            name = "";
+            note = "";
+            monitor_name = "";
             layout = "tile";
           }
         ];

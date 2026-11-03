@@ -336,8 +336,8 @@
           modifier = [ "SUPER" ];
           keys = [ "B" ];
           dispatcher = "spawn";
-          args = "firefox --new-window";
-          description = "Open browser";
+          args = config.ojuny.browser.command;
+          description = "Open default browser";
           group = "Applications";
           subcat = "Launch";
         };
@@ -346,7 +346,7 @@
           keys = [ "E" ];
           dispatcher = "spawn";
           args = config.desktop.ojuny.fileManager.command;
-          description = "Open files";
+          description = "Open default file manager";
           group = "Applications";
           subcat = "Launch";
         };

@@ -25,6 +25,14 @@
         }
         .${config.ojuny.browser.selected};
 
+      browserCommand =
+        {
+          firefox = "firefox --new-window";
+          chrome = "google-chrome-stable --new-window";
+          brave = "brave --new-window";
+        }
+        .${config.ojuny.browser.selected};
+
       enabledSearchEngines = lib.filterAttrs (
         _: engine: engine.enable
       ) config.ojuny.browser.searchEngines;
@@ -100,6 +108,13 @@
         && chromiumPolicy != { };
     in
     {
+
+      options.ojuny.browser.command = lib.mkOption {
+        type = lib.types.str;
+        internal = true;
+        default = browserCommand;
+        description = "Command used by the browser keybind for the selected browser.";
+      };
 
       options.ojuny.browser.selected = lib.mkOption {
         type = lib.types.enum [
