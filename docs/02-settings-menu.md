@@ -180,7 +180,10 @@ current working set for review.
   host loads.
 - `_00-ssh-test.nix` `[no menu]`. Temporary SSH test module.
 - `01-configuration.nix` `[menu]`. Hostname, time zone, locale, console
-  keymap and the patches switch. `system.stateVersion` present but never
+  keymap, the patches switch, and the package source controls. The package
+  source group selects source or release binary for each tool; the manual has
+  its own selector and defaults to source. Options marked advanced are per-tool
+  overrides. `system.stateVersion` present but never
   exposed (D15).
 - `02-networking.nix` `[menu]`. NetworkManager, firewall, hosts, DNS and the
   WireGuard profile drop folder. Drop a `.conf` file into

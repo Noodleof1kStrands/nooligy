@@ -58,6 +58,11 @@ $ sudo nixos-rebuild boot --flake ~/repos/nix-flake#ojuny
 Do not hand-edit the generated hardware module, because `generate-hw`
 overwrites it. `docs/module-tree.md` lists every module file in the tree.
 
+The System page also selects package sources. `Package source` switches every
+release tool between building from the flake and downloading the pinned release
+bundle. Per-tool overrides sit under Advanced. The manual has its own selector
+and defaults to source because it follows the rolling repository.
+
 ## Limits
 
 - One flake describes one host. A second machine needs a second fork or a

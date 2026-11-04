@@ -3,7 +3,7 @@
   displayname = "System";
   icon = "computer-symbolic";
   order = 10;
-  description = "Hostname, locale, time and keyboard";
+  description = "Hostname, locale, time, keyboard and package sources";
   category = "07-System";
 */
 
@@ -29,6 +29,14 @@
           config.ojuny.repoPath
         else
           "${primaryHome}/${config.ojuny.repoPath}";
+      system = pkgs.stdenv.hostPlatform.system;
+      binaryMode =
+        name:
+        if config.ojuny.binaries.${name} == "auto" then
+          config.ojuny.binaries.mode
+        else
+          config.ojuny.binaries.${name};
+      pick = name: source: binary: if binaryMode name == "binary" then binary else source;
     in
     {
       imports = [ self.modules.nixos.patches ];
@@ -61,13 +69,169 @@
         description = "Locale category overrides written to i18n.extraLocaleSettings.";
       };
 
+      options.ojuny.binaries.mode = lib.mkOption {
+        type = lib.types.enum [
+          "source"
+          "binary"
+        ];
+        default = "source";
+        description = "Default package source for release tools. Source builds from the flake; binary downloads the release bundle.";
+      };
+
+      options.ojuny.binaries.cli = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "binary"
+        ];
+        default = "auto";
+        description = "Package source for ojuny-cli and ojuny-patches-cli.";
+      };
+
+      options.ojuny.binaries.cleaner = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "binary"
+        ];
+        default = "auto";
+        description = "Package source for nix-cleaner.";
+      };
+
+      options.ojuny.binaries.cacheDiscovery = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "binary"
+        ];
+        default = "auto";
+        description = "Package source for nix-cache-discovery.";
+      };
+
+      options.ojuny.binaries.regedit = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "binary"
+        ];
+        default = "auto";
+        description = "Package source for nix-regedit.";
+      };
+
+      options.ojuny.binaries.settingsGui = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "binary"
+        ];
+        default = "auto";
+        description = "Package source for nix-settings-gui.";
+      };
+
+      options.ojuny.binaries.shellGui = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "binary"
+        ];
+        default = "auto";
+        description = "Package source for nix-shell-gui.";
+      };
+
+      options.ojuny.binaries.simpleUpdateGui = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "binary"
+        ];
+        default = "auto";
+        description = "Package source for simple-nix-update-gui and its daemon.";
+      };
+
+      options.ojuny.manual.source = lib.mkOption {
+        type = lib.types.enum [
+          "source"
+          "binary"
+        ];
+        default = "source";
+        description = "Package source for the offline manual. Defaults to source because the manual tracks the rolling repository.";
+      };
+
       config = {
 
         # @option widget = "switch"; label = "Enable patches"; group = "Patches"; description = "Automatically import patch- modules placed in the repository.";
         ojuny.patches = true;
 
+        programs.nix-cleaner.package = pick "cleaner"
+          inputs.nix-cleaner.packages.${system}.default
+          inputs.nix-cleaner-binary.packages.${system}.default;
+
+        services.nix-cache-discovery.package = pick "cacheDiscovery"
+          inputs.nix-cache-discovery.packages.${system}.default
+          inputs.nix-cache-discovery-binary.packages.${system}.default;
+
+        services.nix-regedit.package = pick "regedit"
+          inputs.nix-regedit.packages.${system}.default
+          inputs.nix-regedit-binary.packages.${system}.default;
+
+        services.nix-settings-gui.package = pick "settingsGui"
+          inputs.nix-settings-gui.packages.${system}.default
+          inputs.nix-settings-gui-binary.packages.${system}.default;
+
+        services.nix-shell-gui.package = pick "shellGui"
+          inputs.nix-shell-gui.packages.${system}.default
+          inputs.nix-shell-gui-binary.packages.${system}.default;
+
+        services.simple-nix-update-gui.package = pick "simpleUpdateGui"
+          inputs.simple-nix-update-gui.packages.${system}.default
+          inputs.simple-nix-update-gui-binary.packages.${system}.simple-nix-update-gui;
+
+        services.simple-nix-update-gui.daemonPackage = pick "simpleUpdateGui"
+          inputs.simple-nix-update-gui.packages.${system}.daemon
+          inputs.simple-nix-update-gui-binary.packages.${system}.simple-nix-update-gui-daemon;
+
+        environment.systemPackages = [
+          (pick "cli"
+            inputs.ojuny-cli.packages.${system}.ojuny-cli
+            inputs.ojuny-cli-binary.packages.${system}.ojuny-cli)
+          (pick "cli"
+            inputs.ojuny-cli.packages.${system}.ojuny-patches-cli
+            inputs.ojuny-cli-binary.packages.${system}.ojuny-patches)
+          (if config.ojuny.manual.source == "binary" then
+            inputs.ojuny-manual-binary.packages.${system}.ojuny-manual
+          else
+            inputs.ojuny-manual.packages.${system}.default)
+        ];
+
         # @option widget = "text"; label = "Repository path"; group = "Paths"; groupOrder = 50; order = 10; description = "Absolute path, or a path relative to the primary user's home.";
         ojuny.repoPath = "repos/nix-flake";
+
+        # @option widget = "dropdown"; label = "Package source"; group = "Binaries"; groupOrder = 60; order = 10; choices = [ "source" "binary" ]; description = "Build release tools from the flake, or install the pinned release bundles. Source follows the flake lock.";
+        ojuny.binaries.mode = "source";
+
+        # @option widget = "dropdown"; label = "Command line"; group = "Binaries"; groupOrder = 60; order = 20; advanced = true; choices = [ "auto" "source" "binary" ]; description = "Override the package source for ojuny-cli and ojuny-patches-cli.";
+        ojuny.binaries.cli = "auto";
+
+        # @option widget = "dropdown"; label = "Nix cleaner"; group = "Binaries"; groupOrder = 60; order = 30; advanced = true; choices = [ "auto" "source" "binary" ]; description = "Override the package source for nix-cleaner.";
+        ojuny.binaries.cleaner = "auto";
+
+        # @option widget = "dropdown"; label = "Cache discovery"; group = "Binaries"; groupOrder = 60; order = 40; advanced = true; choices = [ "auto" "source" "binary" ]; description = "Override the package source for nix-cache-discovery.";
+        ojuny.binaries.cacheDiscovery = "auto";
+
+        # @option widget = "dropdown"; label = "Registry editor"; group = "Binaries"; groupOrder = 60; order = 50; advanced = true; choices = [ "auto" "source" "binary" ]; description = "Override the package source for nix-regedit.";
+        ojuny.binaries.regedit = "auto";
+
+        # @option widget = "dropdown"; label = "Settings GUI"; group = "Binaries"; groupOrder = 60; order = 60; advanced = true; choices = [ "auto" "source" "binary" ]; description = "Override the package source for nix-settings-gui.";
+        ojuny.binaries.settingsGui = "auto";
+
+        # @option widget = "dropdown"; label = "Shell GUI"; group = "Binaries"; groupOrder = 60; order = 70; advanced = true; choices = [ "auto" "source" "binary" ]; description = "Override the package source for nix-shell-gui.";
+        ojuny.binaries.shellGui = "auto";
+
+        # @option widget = "dropdown"; label = "Update GUI"; group = "Binaries"; groupOrder = 60; order = 80; advanced = true; choices = [ "auto" "source" "binary" ]; description = "Override the package source for simple-nix-update-gui and its daemon.";
+        ojuny.binaries.simpleUpdateGui = "auto";
+
+        # @option widget = "dropdown"; label = "Manual"; group = "Binaries"; groupOrder = 60; order = 90; choices = [ "source" "binary" ]; description = "Source builds the manual from the current repository. Binary installs the pinned offline release. Defaults to source.";
+        ojuny.manual.source = "source";
 
         environment.variables = {
           OJUNY_REPO_PATH = repoPathAbsolute;
