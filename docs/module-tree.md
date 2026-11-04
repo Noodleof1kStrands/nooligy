@@ -85,6 +85,7 @@ differs from the generator output.
 - `modules/07-system/00-host.nix`
 - `modules/07-system/00-imports.nix`
 - `modules/07-system/00-ojuny-cli.nix`
+- `modules/07-system/00-ojuny-manual.nix`
 - `modules/07-system/00-secureboot.nix`
 - `modules/07-system/01-configuration.nix`
 - `modules/07-system/02-networking.nix`

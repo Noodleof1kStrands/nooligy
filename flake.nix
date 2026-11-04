@@ -79,6 +79,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ojuny-manual = {
+      url = "github:ojuny-project/ojuny-manual";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-cache-discovery = {
       url = "github:ojuny-project/nix-cache-discovery";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -164,6 +169,7 @@
             dms-greeter = inputs.dux-greeter.packages.${system}.dms-greeter;
             ojuny-cli = inputs.ojuny-cli.packages.${system}.ojuny-cli;
             ojuny-patches-cli = inputs.ojuny-cli.packages.${system}.ojuny-patches-cli;
+            ojuny-manual = inputs.ojuny-manual.packages.${system}.default;
           };
 
           apps.prepare-repo = {

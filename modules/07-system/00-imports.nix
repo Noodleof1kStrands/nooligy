@@ -19,6 +19,7 @@
       self.modules.nixos.system-nixsettings
       self.modules.nixos.system-updates
       self.modules.nixos.system-ojuny-cli
+      self.modules.nixos.system-ojuny-manual
 
       self.modules.nixos.users-commonsettings
       self.modules.nixos.users
