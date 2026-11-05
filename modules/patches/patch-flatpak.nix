@@ -18,7 +18,7 @@
       options.ojuny.patch.flatpak.enable = lib.mkEnableOption "the Flatpak patch";
 
       # @option widget = "switch"; label = "Flatpak patch"; group = "Patches"; description = "Enable Flatpak and the Bazaar application store.";
-      config.ojuny.patch.flatpak.enable = false;
+      config.ojuny.patch.flatpak.enable = true;
 
       imports = [ self.modules.nixos.flatpak-backend ];
     };
