@@ -82,7 +82,7 @@
         stylix.opacity.popups = 1.0;
 
         # @option widget = "wallpaper"; wallpaperDir = "./wallpapers"; presetSource = "ojuny-desktop"; label = "Wallpaper"; group = "Wallpaper"; nullable = true; groupOrder = 15; order = 10; applyCommand = "case %%val%% in */*) dms ipc call wallpaper set %%val%% ;; esac";
-        ojuny.style.wallpaperPreset = "retro";
+        ojuny.style.wallpaperPreset = "floyd";
 
         # @option widget = "switch"; label = "Include bundled wallpapers in cycling"; group = "Wallpaper"; groupOrder = 15; order = 20;
         ojuny.style.wallpaperCycleIncludeBuiltins = lib.mkDefault true;
