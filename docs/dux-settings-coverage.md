@@ -1,4 +1,4 @@
-# Dux Shell 2.0 settings coverage matrix
+# Dux Modular Shell 2.0 settings coverage matrix
 
 > Source: `github:duxlabs-dev/dux-shell` at commit `18af7856` (v2.0.0-115), rescanned against the current `ojuny-template`, `ojuny-desktop` and `dux-shell` working trees on 2026-10-28. The machine-readable ledger is `dux-settings-coverage.csv` in this directory. **Status: the pinned commit `18af7856` could not be resolved in the local `dux-shell` checkout on 2026-11-03, so the figures below are unverified against that pin.**
 

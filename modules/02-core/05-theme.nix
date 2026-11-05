@@ -78,7 +78,7 @@
             else config.ojuny.style.palette
           }.yaml";
 
-        # @option widget = "slider"; label = "Popup opacity"; group = "Theme"; groupOrder = 10; order = 50; min = 0.0; max = 1.0; step = 0.05; description = "Opacity of Dux Shell popups and overlays."; applyCommand = "dms ipc call settings set popupTransparency %%val%%";
+        # @option widget = "slider"; label = "Popup opacity"; group = "Theme"; groupOrder = 10; order = 50; min = 0.0; max = 1.0; step = 0.05; description = "Opacity of Dux Modular Shell popups and overlays."; applyCommand = "dms ipc call settings set popupTransparency %%val%%";
         stylix.opacity.popups = 1.0;
 
         # @option widget = "wallpaper"; wallpaperDir = "./wallpapers"; presetSource = "ojuny-desktop"; label = "Wallpaper"; group = "Wallpaper"; nullable = true; groupOrder = 15; order = 10; applyCommand = "case %%val%% in */*) dms ipc call wallpaper set %%val%% ;; esac";

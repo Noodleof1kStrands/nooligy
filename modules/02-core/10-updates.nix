@@ -50,9 +50,9 @@
         (lib.mkDefault config.ojuny.repoPath)
       ];
 
-      /* Dux updater policy. updaterAllowAUR is deliberately unexposed: Dux marks it hidden and this system is NixOS, which has no AUR backend. */
+      /* DMS updater policy. updaterAllowAUR is deliberately unexposed: DMS marks it hidden and this system is NixOS, which has no AUR backend. */
 
-      /* @option widget = "switch"; label = "Check on start"; group = "Updater"; groupOrder = 30; order = 10; advanced = true; description = "Run an update check when the shell starts. The Dux updater is off in the shipped configuration; enabling this or any other key here is your own choice. Ojuny never updates automatically."; applyCommand = "dms ipc call settings set updaterCheckOnStart %%val%%"; */
+      /* @option widget = "switch"; label = "Check on start"; group = "Updater"; groupOrder = 30; order = 10; advanced = true; description = "Run an update check when the shell starts. The DMS updater is off in the shipped configuration; enabling this or any other key here is your own choice. Ojuny never updates automatically."; applyCommand = "dms ipc call settings set updaterCheckOnStart %%val%%"; */
       desktop.ojuny.dux.settings.updaterCheckOnStart = false;
 
       /* @option widget = "dropdown"; label = "Check interval"; group = "Updater"; groupOrder = 30; order = 20; advanced = true; choices = [ "900" "1800" "3600" "14400" "86400" "0" ]; description = "Seconds between checks. 900 = 15 min, 1800 = 30 min, 3600 = 1 h, 14400 = 4 h, 86400 = 1 day, 0 = never."; applyCommand = "dms ipc call settings set updaterIntervalSeconds %%val%%"; */

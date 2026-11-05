@@ -14,7 +14,7 @@
     config = {
       # A plain assignment replaces the option's default, so the upstream
       # startup commands are listed here to keep them (and to make them
-      # editable). "dms run" resolves to the configured Dux Shell
+      # editable). "dms run" resolves to the configured Dux Modular Shell
       # because the session wrapper puts it on PATH.
 
       # @option widget = "list"; label = "Run once at login"; group = "Session commands"; description = "Started when the session opens.";

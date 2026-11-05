@@ -3,7 +3,7 @@
   displayname = "Input";
   icon = "input-keyboard-symbolic";
   order = 20;
-  description = "Keyboard, mouse, trackpad and touch. Switch layouts by setting Layout to a comma-separated list such as us,de and pressing SUPER+ALT+K; an XKB grp: option in Options is an alternative, not an addition. Dux writes ~/.config/mango/dms/input.conf, but Ojuny launches mango -c ojuny.toml, so the Dux keyboard page is inert unless dms/input.conf is added to desktop.ojuny.mango.source.";
+  description = "Keyboard, mouse, trackpad and touch. Switch layouts by setting Layout to a comma-separated list such as us,de and pressing SUPER+ALT+K; an XKB grp: option in Options is an alternative, not an addition. DMS writes ~/.config/mango/dms/input.conf, but Ojuny launches mango -c ojuny.toml, so the DMS keyboard page is inert unless dms/input.conf is added to desktop.ojuny.mango.source.";
   category = "02-Core";
 */
 

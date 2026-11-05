@@ -36,7 +36,7 @@
       options.ojuny.dux.dot = lib.mkOption {
         type = lib.types.toml;
         default = { };
-        description = "Standalone dot bar config. Dux Shell finds it through the dot flag and it never changes the selected bar.";
+        description = "Standalone dot bar config. Dux Modular Shell finds it through the dot flag and it never changes the selected bar.";
       };
 
       options.ojuny.dux.floatingIsland = lib.mkOption {

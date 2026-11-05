@@ -1,4 +1,4 @@
-"""Minimal JS object-literal parser for Dux settings spec files."""
+"""Minimal JS object-literal parser for DMS settings spec files."""
 import re
 
 

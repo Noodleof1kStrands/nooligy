@@ -40,7 +40,7 @@ per `02-settings-menu.md`.
 | `development/vms.nix` | `patches/patch-virtualization.nix` |
 | `development/distrobox.nix` | `03-applications/virtualization.nix` (proposed) |
 | `desktops/mango/*` (core, binds, layouts, decoration) | `02-desktop/*` |
-| `desktops/mango/dankshell.nix` + Dux Shell defaults | `02-desktop/*` (via `desktop.ojuny.dux.*`) |
+| `desktops/mango/dankshell.nix` + Dux Modular Shell defaults | `02-desktop/*` (via `desktop.ojuny.dux.*`) |
 | `desktops/mango/dgreet.nix` | `02-desktop/login.nix` (proposed) |
 | `hosts/x1carbon/hardware.nix` (shape) | generated `07-system/00-hardware.nix` |
 | `users/*/{userdetails,homeconfig,termpackages}` (shape) | generated `01-users/01-user.nix` |
@@ -75,7 +75,7 @@ per `02-settings-menu.md`.
   widget supports multiple accounts and their home-manager entries.
 - dendrite's concern grouping (`features/`, `styles/`, `terminal/`, `utils/`)
   dissolves and is regrouped by settings page.
-- The mango + Dux Shell config is not ported directly; it comes from
+- The mango + Dux Modular Shell config is not ported directly; it comes from
   ojuny-desktop via `desktop.ojuny.dux.*`. The Desktop pages only expose those
   options. Bar preset definitions also live in ojuny-desktop; the template
   keeps only the preset dropdown, the custom bar editor, and the
@@ -83,7 +83,7 @@ per `02-settings-menu.md`.
 
 ## 4. Resolved decisions
 
-- D1a mangoWM + Dux Shell only; every alternate desktop is dropped.
+- D1a mangoWM + Dux Modular Shell only; every alternate desktop is dropped.
 - D12 Steam built in; Prism Launcher through `patch-prismlauncher`; other gaming apps dropped.
 - D17 fastfetch kept, default `fastfetch-den`.
 - D11 fonts in `02-core/05-typography.nix`, shell and ghostty in

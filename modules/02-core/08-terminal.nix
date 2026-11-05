@@ -484,7 +484,7 @@
                 type = "custom";
                 key = "├󱂬 Desktop Shell";
                 keyColor = colors.classes.hex;
-                format = "Dux Shell";
+                format = "Dux Modular Shell";
               }
               {
                 type = "lm";

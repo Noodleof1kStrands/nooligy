@@ -84,7 +84,7 @@ current working set for review.
 - `05-compositor.nix` `[menu]` "Compositor looks". Gaps, borders, corner
   radius, mango blur, shadows, decoration, animations and app theming.
 - `05-shell.nix` `[menu]` "Shell looks". Interface shape and density, surface
-  blur, floating windows, motion, surfaces and color modes for Dux Shell.
+  blur, floating windows, motion, surfaces and color modes for Dux Modular Shell.
 - `06-browser.nix` `[menu]`. Web browser, default browser and MIME
   associations; file manager and remote scheme defaults live on the
   Applications page and point at dux-files.
@@ -101,7 +101,7 @@ current working set for review.
 
 ### 03-desktop
 
-- `00-mango.nix` `[no menu]`. Under-the-hood mangoWM + Dux Shell session
+- `00-mango.nix` `[no menu]`. Under-the-hood mangoWM + Dux Modular Shell session
   switch (D5).
 - `01-login.nix` `[menu]`. Greeter and display manager (D9).
 - `02-mangosettings.nix` `[menu]`. Layouts, focus, tiling and workspaces.
@@ -169,7 +169,7 @@ current working set for review.
   its initial view, so the page has no view control. Dux Calendar has no
   dashboard view yet, so a dashboard tab remains open work.
 - `01-webapps.nix` `[menu]`. Chromium based web applications.
-- `02-plugins.nix` `[menu]`. Dux Shell plugins that ship with this desktop.
+- `02-plugins.nix` `[menu]`. Dux Modular Shell plugins that ship with this desktop.
 
 ### 07-system
 
@@ -218,13 +218,13 @@ current working set for review.
 
 ## Coverage ledger
 
-[Dux Shell settings coverage](dux-settings-coverage.md) is the row ledger for the migration. The machine-readable copy is [dux-settings-coverage.csv](dux-settings-coverage.csv).
+[Dux Modular Shell settings coverage](dux-settings-coverage.md) is the row ledger for the migration. The machine-readable copy is [dux-settings-coverage.csv](dux-settings-coverage.csv).
 
 At migration time 1099 of 1418 rows are covered under `desktop.ojuny.dux` (counted from the `status` column of `dux-settings-coverage.csv` on 2026-11-03). Each row is in one of four states: covered, stylix-owned through an exposed stylix option, deferred with a phase in the coverage document, or unexposed with a stated reason. A row marked uncovered in the ledger is not claimed as covered here.
 
 ## 5. Resolved decisions
 
-- D1a mangoWM + Dux Shell only.
+- D1a mangoWM + Dux Modular Shell only.
 - D2a manual install, generated `hardware.nix` only.
 - D3a template options under top-level `ojuny.*`.
 - D4 page set as listed above (proposed pages under review).

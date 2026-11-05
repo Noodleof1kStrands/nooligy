@@ -98,5 +98,5 @@ the diff, and regenerate `docs/module-tree.md` when module files change.
 ## License
 
 GNU General Public License version 3. See `LICENSE`. The flake builds on
-ojuny-desktop, MangoWM, Dux Shell, nixpkgs, home-manager and the other inputs
+ojuny-desktop, MangoWM, Dux Modular Shell, nixpkgs, home-manager and the other inputs
 pinned in `flake.nix`.

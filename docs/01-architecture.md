@@ -63,8 +63,8 @@ Both modules live in one file so the page stays self-contained.
 ## 3. Shared settings and namespaces
 
 - `desktop.ojuny.*` comes from ojuny-desktop and is consumed by the Desktop
-  pages (mango, Dux Shell) without local renaming. The naming is deliberately
-  split three ways: the product is Dux Shell, every upstream runtime
+  pages (mango, Dux Modular Shell) without local renaming. The naming is deliberately
+  split three ways: the product is Dux Modular Shell, every upstream runtime
   identifier stays `dms` (the `dms` binary, `~/.config/dms`,
   `~/.local/state/dms`, `dms ipc call ...`, `dms.service`), and the option
   namespace is `desktop.ojuny.dux.*`, with a one-release alias for
@@ -147,7 +147,7 @@ generated or templated, not hand-written:
 
 ## 7. Relation to other repos
 
-- **ojuny-desktop** is an input; it supplies mangoWM, Dux Shell, and the
+- **ojuny-desktop** is an input; it supplies mangoWM, Dux Modular Shell, and the
   `desktop.ojuny.dux.*` options plus the wrapped session package.
 - **nix-settings-gui** is an input; enabling it installs the GUI
   (`services.nix-settings-gui.enable`) and it renders one menu per page file.

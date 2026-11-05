@@ -242,13 +242,13 @@
         reduceMotion = lib.mkOption {
           type = lib.types.bool;
           default = false;
-          description = "Disable Dux shell and Mango window animations.";
+          description = "Disable DMS and Mango window animations.";
         };
       };
 
       config = {
 
-        # @option widget = "switch"; label = "Screen reader (Orca)"; group = "Vision"; groupOrder = 10; order = 10; description = "Install Orca, Speech Dispatcher and AT-SPI, and enable Qt and Dux accessibility. Save and rebuild; Orca starts with the session.";
+        # @option widget = "switch"; label = "Screen reader (Orca)"; group = "Vision"; groupOrder = 10; order = 10; description = "Install Orca, Speech Dispatcher and AT-SPI, and enable Qt and DMS accessibility. Save and rebuild; Orca starts with the session.";
         services.orca.enable = false;
 
         # @option widget = "switch"; label = "Braille (BRLTTY)"; group = "Vision"; groupOrder = 10; order = 20; description = "Enable the BRLTTY daemon. Requires a refreshable braille display.";
@@ -266,7 +266,7 @@
         # @option widget = "switch"; label = "Mono audio"; group = "Hearing"; groupOrder = 20; order = 10; description = "Mix all stereo content into a single channel.";
         desktop.ojuny.dux.settings.audioMono = false;
 
-        # @option widget = "switch"; label = "Reduce motion"; group = "Motion"; groupOrder = 30; order = 10; applyCommand = "dms ipc call settings set reduceMotion %%val%%"; description = "Disable Dux shell motion and force Mango window animations off. Window animations apply on rebuild.";
+        # @option widget = "switch"; label = "Reduce motion"; group = "Motion"; groupOrder = 30; order = 10; applyCommand = "dms ipc call settings set reduceMotion %%val%%"; description = "Disable DMS motion and force Mango window animations off. Window animations apply on rebuild.";
         ojuny.accessibility.reduceMotion = false;
 
         # @option widget = "keybinds"; label = "Common binds"; group = "Keybinds"; groupOrder = 40; order = 10; description = "All common binds. Accessibility entries use the Accessibility group and are always active. The screen reader bind appears when Orca is enabled; the on-screen keyboard bind appears when the plugin is enabled; the mouse mode toggle is always here.";

@@ -3,7 +3,7 @@
   displayname = "Shell looks";
   icon = "preferences-desktop-theme-symbolic";
   order = 53;
-  description = "Shape, surfaces, motion and color modes for Dux Shell";
+  description = "Shape, surfaces, motion and color modes for Dux Modular Shell";
   category = "02-Core";
 */
 

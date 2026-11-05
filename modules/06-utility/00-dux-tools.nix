@@ -407,7 +407,7 @@
         # @option widget = "dropdown"; label = "Close behavior"; group = "Calendar"; groupOrder = 30; order = 140; choices = [ "minimize" "quit" ];
         ojuny.tools.calendar.closeBehavior = "minimize";
 
-        # @option widget = "switch"; label = "dgop HTTP API"; group = "System resources"; groupOrder = 40; order = 10; description = "Dux Shell uses the embedded dgop library. Enable this only for clients that call the HTTP API.";
+        # @option widget = "switch"; label = "dgop HTTP API"; group = "System resources"; groupOrder = 40; order = 10; description = "Dux Modular Shell uses the embedded dgop library. Enable this only for clients that call the HTTP API.";
         ojuny.tools.gop.enable = false;
 
         # @option widget = "spin"; label = "API port"; group = "System resources"; groupOrder = 40; order = 20; min = 1024; max = 65535; visibleWhen.path = "ojuny.tools.gop.enable"; visibleWhen.equals = true;
