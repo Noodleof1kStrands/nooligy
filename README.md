@@ -59,9 +59,11 @@ Do not hand-edit the generated hardware module, because `generate-hw`
 overwrites it. `docs/module-tree.md` lists every module file in the tree.
 
 The System page also selects package sources. `Package source` switches every
-release tool between building from the flake and downloading the pinned release
-bundle. Per-tool overrides sit under Advanced. The manual has its own selector
-and defaults to source because it follows the rolling repository.
+release tool between building from the flake, downloading the newest release
+recorded in the repository's `binary-url.json`, and downloading a named release
+from that file. Per-tool overrides and release tags sit under Advanced. The
+manual has its own selector and defaults to source because it follows the
+rolling repository.
 
 ## Limits
 

@@ -84,46 +84,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ojuny-cli-binary = {
-      url = "tarball+https://github.com/ojuny-project/ojuny-cli/releases/download/v0.1.0-hotfix-1/ojuny-cli-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ojuny-manual-binary = {
-      url = "tarball+https://github.com/ojuny-project/ojuny-manual/releases/download/v0.1.0-hotfix-1/ojuny-manual-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-cleaner-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-cleaner/releases/download/v0.1.0-hotfix-1/nix-cleaner-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-cache-discovery-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-cache-discovery/releases/download/v0.1.0-hotfix-1/nix-cache-discovery-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-regedit-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-regedit/releases/download/v0.1.0-hotfix-4/nix-regedit-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-settings-gui-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-settings-gui/releases/download/v0.1.0-hotfix-1/nix-settings-gui-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-shell-gui-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-shell-gui/releases/download/v0.1.0-hotfix-1/nix-shell-gui-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    simple-nix-update-gui-binary = {
-      url = "tarball+https://github.com/ojuny-project/simple-nix-update-gui/releases/download/v0.1.0-hotfix-1/simple-nix-update-gui-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-cache-discovery = {
       url = "github:ojuny-project/nix-cache-discovery";
       inputs.nixpkgs.follows = "nixpkgs";
