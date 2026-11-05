@@ -24,87 +24,74 @@
       };
       emojiLauncher = {
         enable = true;
-        settings = {
-          trigger = ":e";
-          pasteOnSelect = true;
-          useDMS = true;
-        };
+        settings.trigger = ":e";
+        settings.pasteOnSelect = true;
+        settings.useDMS = true;
       };
       dankKDEConnect = {
         enable = true;
-        settings = {
-          scanSubdirectories = true;
-        };
+        settings.scanSubdirectories = true;
       };
       worldClock = {
         enable = true;
-        settings = {
-          timezones = [
-            {
-              timezone = config.time.timeZone;
-              label = "";
-              showOnBar = true;
-            }
-          ];
-          showAll = true;
-          cycleInterval = 15;
-          use24h = true;
-          iconOnly = false;
-        };
+        settings.timezones = [
+          {
+            timezone = config.time.timeZone;
+            label = "";
+            showOnBar = true;
+          }
+        ];
+        settings.showAll = true;
+        settings.cycleInterval = 15;
+        settings.use24h = true;
+        settings.iconOnly = false;
       };
       nixMonitor = {
         enable = true;
-        settings = {
-          showGenerations = true;
-          showStoreSize = true;
-          updateInterval = 3600;
-          updateCheckInterval = 3600;
-          gcThresholdGB = 100;
-        };
-        # Both commands stay blocking argv arrays so nix-monitor's console and
-        # Cancel keep working. The plugin only reads these two keys, so the
-        # button labels stay "GC" and "Rebuild" whatever the command opens.
-        config = {
-          gcCommand = [ "sh" "-c" "exec nix-cleaner" ];
-          rebuildCommand = [ "sh" "-c" "exec nix-settings-gui" ];
-        };
+        settings.showGenerations = true;
+        settings.showStoreSize = true;
+        settings.updateInterval = 3600;
+        settings.updateCheckInterval = 3600;
+        settings.gcThresholdGB = 100;
+        config.gcCommand = [
+          "sh"
+          "-c"
+          "exec nix-cleaner"
+        ];
+        config.rebuildCommand = [
+          "sh"
+          "-c"
+          "exec nix-settings-gui"
+        ];
       };
       localServices = {
         enable = true;
-        settings = {
-          ignoredPorts = "";
-          exactWatches = "";
-          labels = "{}";
-        };
+        settings.ignoredPorts = "";
+        settings.exactWatches = "";
+        settings.labels = "{}";
       };
       scratchpadHelper = {
         enable = true;
-        settings = {
-          hideBarWhenEmpty = true;
-          namedManagerEnabled = false;
-        };
+        settings.hideBarWhenEmpty = true;
+        settings.namedManagerEnabled = false;
       };
       developerUtilities = {
         enable = true;
       };
       screenCaptureToolbar = {
         enable = true;
-        settings = {
-          enableAudioRecorder = true;
-          multiMonitorScreenshot = true;
-          showNotify = false;
-          showRecPill = false;
-          toolbarOpacity = 1.0;
-          pillOpacity = 1.0;
-        };
+        settings.enableAudioRecorder = true;
+        settings.multiMonitorScreenshot = true;
+        settings.showNotify = false;
+        settings.showRecPill = false;
+        settings.toolbarOpacity = 1.00;
+        settings.pillOpacity = 1.00;
       };
       commandRunner = {
         enable = true;
-        settings = {
-          terminal = "ghostty";
-          trigger = ">";
-          execFlag = "-e";
-        };
+        settings.terminal = "ghostty";
+        settings.trigger = ">";
+        settings.execFlag = "-e";
       };
       webSearch = {
         enable = true;
@@ -114,6 +101,7 @@
       };
       dankCalendarAgenda = {
         enable = true;
+        settings.barContentWidth = 120;
       };
     };
 

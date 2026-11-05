@@ -53,7 +53,7 @@
         xdg.mime.enable = true;
 
         # @option widget = "dropdown"; label = "File manager"; group = "Default applications"; choices = [ "dux-files" "nautilus" "custom" ]; description = "File manager used for directories and remote schemes."; applyCommand = "case %%val%% in dux-files) xdg-mime default dev.duxlabs.files.desktop inode/directory;; esac";
-        desktop.ojuny.fileManager.package = "dux-files";
+        desktop.ojuny.fileManager.package = "custom";
 
         # @option widget = "table-attrset"; label = "Other MIME defaults"; group = "Default applications"; columns = [ "desktop" ]; columnTypes = [ "str" ]; keyEditable = true; description = "Desktop entries for archives and text types. The file manager and remote schemes are owned by the file manager option above. Browser, office, image and Discord defaults live on their own pages.";
         ojuny.apps.mimeDefaults = { };
