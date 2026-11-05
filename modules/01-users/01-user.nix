@@ -1,10 +1,9 @@
-/*
-  @menu
-  displayname = "Users";
-  icon = "avatar-default-symbolic";
-  order = 10;
-  description = "User Accounts";
-  category = "01-Users";
+/* @menu
+   displayname = "Users";
+   icon = "avatar-default-symbolic";
+   order = 10;
+   description = "User Accounts";
+   category = "01-Users";
 */
 
 { self, inputs, ... }: {
@@ -14,37 +13,24 @@
     imports = [ inputs.home-manager.nixosModules.home-manager ];
 
     config = {
-      # The editor default is global and set by the shared Home Manager module.
-      # To override it for one account, put
-      #   home.sessionVariables.EDITOR = "<editor>";
-      # in that account's "Extra home-manager options" field. It overrides the
-      # shared default for that account only and survives a rebuild.
-      # @option widget = "users"; label = "Accounts"; homeManager = true; description = "Accounts and their home-manager settings. The editor default is global. To override EDITOR for one account, put home.sessionVariables.EDITOR = \"<editor>\"; in that account's Extra home-manager options field.";
+      /* @option widget = "users"; label = "Accounts"; homeManager = true; */
       users.users = {
-        user = {
+        noodle = {
           isNormalUser = true;
           uid = 1000;
-          description = "Primary account";
-          extraGroups = [
-            "networkmanager"
-            "wheel"
-            "video"
-            "input"
-          ];
-          hashedPassword = "$y$j9T$E8EmnxzkCLsphRMZbqKW/1$estItGAST4R1l5OTZaSUJLWUYvlAEGVLRTGar5d0osC";
+          description = "Riley";
+          extraGroups = [ "networkmanager" "wheel" "video" "input" ];
+          hashedPassword = "$y$j9T$uMPyv7ywlGKFI6iyndQ2b0$HdGzXskpY5fx3VnB2uIIxIrTX0t9hW4Ta5I4Randzy7";
           openssh.authorizedKeys.keys = [ ];
           shell = pkgs.zsh;
         };
       };
 
       home-manager.users = {
-        user = {
+        noodle = {
           home.stateVersion = "25.05";
         };
       };
-
-      # scripts/setup.sh fills in the home wiring for this account, e.g.
-      # home-manager.users.user.imports = [ ... ];
     };
 
   };
