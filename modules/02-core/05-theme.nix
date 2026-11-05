@@ -68,21 +68,21 @@
         stylix.polarity = "dark";
 
         # @option widget = "theme"; label = "Color palette"; group = "Theme"; description = "A base16 scheme."; groupOrder = 10; order = 40;
-        ojuny.style.palette = "everforest-dark-hard";
+        ojuny.style.palette = "aztec";
 
         # Derived from the palette name; no @option so a GUI edit cannot lose the store path.
-        stylix.base16Scheme =
-          "${pkgs.base16-schemes}/share/themes/${
-            if config.ojuny.accessibility.highContrast
-            then config.ojuny.accessibility.highContrastPalette
-            else config.ojuny.style.palette
-          }.yaml";
+        stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/${
+          if config.ojuny.accessibility.highContrast then
+            config.ojuny.accessibility.highContrastPalette
+          else
+            config.ojuny.style.palette
+        }.yaml";
 
         # @option widget = "slider"; label = "Popup opacity"; group = "Theme"; groupOrder = 10; order = 50; min = 0.0; max = 1.0; step = 0.05; description = "Opacity of Dux Modular Shell popups and overlays."; applyCommand = "dms ipc call settings set popupTransparency %%val%%";
         stylix.opacity.popups = 1.0;
 
         # @option widget = "wallpaper"; wallpaperDir = "./wallpapers"; presetSource = "ojuny-desktop"; label = "Wallpaper"; group = "Wallpaper"; nullable = true; groupOrder = 15; order = 10; applyCommand = "case %%val%% in */*) dms ipc call wallpaper set %%val%% ;; esac";
-        ojuny.style.wallpaperPreset = lib.mkDefault null;
+        ojuny.style.wallpaperPreset = "retro";
 
         # @option widget = "switch"; label = "Include bundled wallpapers in cycling"; group = "Wallpaper"; groupOrder = 15; order = 20;
         ojuny.style.wallpaperCycleIncludeBuiltins = lib.mkDefault true;

@@ -29,7 +29,7 @@
 
       config = {
         # @option widget = "switch"; label = "LibreOffice"; group = "Office suite"; groupOrder = 10; order = 1;
-        ojuny.apps.office.enable = false;
+        ojuny.apps.office.enable = true;
 
         # Craft apps (ArtCraft suite). The core enable is derived from the app
         # switches below, so it never appears as a control of its own.
@@ -143,8 +143,7 @@
         xdg.mime.defaultApplications."application/vnd.openxmlformats-officedocument.presentationml.presentation" =
           "libreoffice-impress.desktop";
 
-        xdg.mime.defaultApplications."application/vnd.ms-powerpoint" =
-          "libreoffice-impress.desktop";
+        xdg.mime.defaultApplications."application/vnd.ms-powerpoint" = "libreoffice-impress.desktop";
 
         # @option widget = "dropdown"; label = "Drawings"; group = "Default applications"; groupOrder = 15; choices = [ "libreoffice-writer.desktop" "libreoffice-calc.desktop" "libreoffice-impress.desktop" "libreoffice-draw.desktop" ]; visibleWhen.path = "ojuny.apps.office.enable"; visibleWhen.equals = true; applyCommand = "xdg-mime default %%val%% application/vnd.oasis.opendocument.graphics";
         xdg.mime.defaultApplications."application/vnd.oasis.opendocument.graphics" =
@@ -167,10 +166,13 @@
     {
       environment.systemPackages =
         lib.optionals config.ojuny.apps.office.enable [ pkgs.libreoffice-fresh ]
-        ++ lib.optionals config.ojuny.apps.office.enable (with pkgs.hunspellDicts; [
-          en_US
-          de_DE
-        ]);
+        ++ lib.optionals config.ojuny.apps.office.enable (
+          with pkgs.hunspellDicts;
+          [
+            en_US
+            de_DE
+          ]
+        );
     };
 
   flake.modules.nixos.applications-obsidian =
@@ -193,16 +195,14 @@
 
       config = {
         # @option widget = "switch"; label = "Obsidian"; group = "Obsidian"; groupOrder = 10; order = 10; description = "Install Obsidian. Off by default because it is proprietary.";
-        ojuny.apps.obsidian.enable = false;
+        ojuny.apps.obsidian.enable = true;
 
         # @option widget = "list"; label = "Vault names"; group = "Obsidian"; groupOrder = 10; order = 20; visibleWhen.path = "ojuny.apps.obsidian.enable"; visibleWhen.equals = true; description = "Exact vault names to theme. A vault created after the last rebuild is not themed until its name is added.";
         ojuny.apps.obsidian.vaults = [ ];
 
-        environment.systemPackages =
-          lib.optionals config.ojuny.apps.obsidian.enable [ pkgs.obsidian ];
+        environment.systemPackages = lib.optionals config.ojuny.apps.obsidian.enable [ pkgs.obsidian ];
 
-        desktop.ojuny.defaultApps =
-          lib.optionals config.ojuny.apps.obsidian.enable [ pkgs.obsidian ];
+        desktop.ojuny.defaultApps = lib.optionals config.ojuny.apps.obsidian.enable [ pkgs.obsidian ];
       };
     };
 
@@ -226,9 +226,7 @@
       config = {
         programs.obsidian.enable = osConfig.ojuny.apps.obsidian.enable or false;
 
-
-        stylix.targets.obsidian.vaultNames =
-          osConfig.ojuny.apps.obsidian.vaults or [ ];
+        stylix.targets.obsidian.vaultNames = osConfig.ojuny.apps.obsidian.vaults or [ ];
       };
     };
 

@@ -75,17 +75,21 @@
         ojuny.steam.protonGE = true;
 
         # @option widget = "switch"; label = "Steam Input on Wayland"; group = "Steam"; description = "Load the extest library into Steam so Steam Input works on Wayland by translating X11 input events to uinput events. Leave off unless Steam Input misbehaves on Wayland; it is unnecessary on X11."; visibleWhen.path = "programs.steam.enable"; visibleWhen.equals = true;
-        ojuny.steam.extest = false;
+        ojuny.steam.extest = true;
 
         programs.steam.extest.enable = config.ojuny.steam.extest;
 
         # Derived, no @option: feeds Steam's compatibility tool list.
-        programs.steam.extraCompatPackages = lib.optionals config.ojuny.steam.protonGE [ pkgs.proton-ge-bin ];
+        programs.steam.extraCompatPackages = lib.optionals config.ojuny.steam.protonGE [
+          pkgs.proton-ge-bin
+        ];
 
         # @option widget = "switch"; label = "Gamescope session"; group = "Steam"; description = "Add a sessions entry that boots straight into Steam Big Picture through gamescope."; visibleWhen.path = "programs.steam.enable"; visibleWhen.equals = true;
-        ojuny.steam.gamescopeSession = false;
+        ojuny.steam.gamescopeSession = true;
 
-        programs.gamescope.enable = lib.mkIf (config.ojuny.steam.compat || config.ojuny.steam.gamescopeSession) true;
+        programs.gamescope.enable = lib.mkIf (
+          config.ojuny.steam.compat || config.ojuny.steam.gamescopeSession
+        ) true;
 
         services.displayManager.sessionPackages = lib.optionals config.ojuny.steam.gamescopeSession [
           gamescopeSessionFile

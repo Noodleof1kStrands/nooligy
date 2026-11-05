@@ -77,11 +77,11 @@
           # @option widget = "dropdown"; label = "Image viewer"; group = "Viewers"; groupOrder = 10; order = 20; choices = [ "none" "imv" "qimgv" "gwenview" ]; description = "Image viewer for common image formats.";
           imageViewer = "imv";
           # @option widget = "switch"; label = "OBS Studio"; group = "Tools"; groupOrder = 20; order = 10;
-          obs = false;
+          obs = true;
           # @option widget = "switch"; label = "Audacity"; group = "Tools"; groupOrder = 20; order = 20;
           audacity = false;
           # @option widget = "switch"; label = "GIMP"; group = "Tools"; groupOrder = 20; order = 30;
-          gimp = false;
+          gimp = true;
           # @option widget = "switch"; label = "Krita"; group = "Creative"; groupOrder = 30; order = 10; description = "Digital painting, themed through the Stylix Qt and KDE targets.";
           krita = false;
           # @option widget = "switch"; label = "Kdenlive"; group = "Creative"; groupOrder = 30; order = 20; description = "Video editor, themed through the Stylix Qt and KDE targets.";

@@ -31,10 +31,10 @@
     ];
 
     # @option widget = "switch"; label = "LAN cache"; group = "LAN cache"; groupOrder = 35; order = 10; description = "Share built store paths with other devices on the LAN and use their caches.";
-    services.nix-cache-discovery.enable = false;
+    services.nix-cache-discovery.enable = true;
 
     # @option widget = "switch"; label = "Use only the LAN cache"; group = "LAN cache"; groupOrder = 35; order = 20; description = "Make the LAN cache the only substituter. It fetches missing paths from upstream caches for you, so the substituter list below is hidden and unused.";
-    services.nix-cache-discovery.exclusive = false;
+    services.nix-cache-discovery.exclusive = true;
 
     # @option widget = "switch"; label = "Detect LAN automatically"; group = "LAN cache"; groupOrder = 35; order = 25; visibleWhen.path = "services.nix-cache-discovery.enable"; visibleWhen.equals = true; description = "Use the subnet this device is connected to. Fixed ranges below are ignored while enabled.";
     services.nix-cache-discovery.discovery.auto = true;

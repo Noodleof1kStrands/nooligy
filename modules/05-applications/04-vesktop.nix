@@ -22,7 +22,7 @@
 
       config = {
         # @option widget = "switch"; label = "Vesktop (Discord)"; group = "Vesktop"; groupOrder = 10; order = 1;
-        ojuny.apps.vesktop.enable = false;
+        ojuny.apps.vesktop.enable = true;
 
         environment.systemPackages = lib.mkIf config.ojuny.apps.vesktop.enable [ pkgs.vesktop ];
 
