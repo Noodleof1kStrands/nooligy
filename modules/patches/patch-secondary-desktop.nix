@@ -8,9 +8,16 @@
   systems = [ "all" ];
 */
 
-{ self, ... }:
+{ self, inputs, ... }:
 
 {
+  flake.modules.homeManager.patch-secondary-desktop = { 
+	imports = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+	programs.plasma.enable = true;
+	stylix.targets.kde.enable = true;
+	stylix.targets.qt.platform = "qtct";
+	stylix.targets.qt.enable = false;
+  };
   flake.modules.nixos.patch-secondary-desktop =
     {
       config,
@@ -109,7 +116,7 @@
         services.desktopManager.plasma6.enable = lib.mkIf cfg.plasma true;
         services.desktopManager.gnome.enable = lib.mkIf cfg.gnome true;
         services.desktopManager.cosmic.enable = lib.mkIf cfg.cosmic true;
-
+		qt.platformTheme = lib.mkIf cfg.plasma (lib.mkForce "kde");
         services.xserver.desktopManager.xfce.enable = lib.mkIf cfg.xfce true;
         services.xserver.desktopManager.cinnamon.enable = lib.mkIf cfg.cinnamon true;
         services.xserver.enable = lib.mkIf (cfg.xfce || cfg.cinnamon) true;
