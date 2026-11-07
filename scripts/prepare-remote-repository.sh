@@ -8,7 +8,7 @@ username="user"
 fullname="Primary account"
 disk=""
 firmware="efi"
-state_version="25.05"
+state_version="26.11"
 password=""
 hashed_password=""
 ssh_keys=()
@@ -30,7 +30,7 @@ Options:
   --full-name NAME     Account description
   --disk DEVICE        Target disk, preferably /dev/disk/by-id/...
   --firmware efi|bios  Target firmware (default: efi)
-  --state-version VER  NixOS state version (default: 25.05)
+  --state-version VER  NixOS state version (default: 26.11)
   --password PASS      Account password (prompted when omitted)
   --hashed-password H  Pre-hashed account password
   --ssh-key KEY        SSH public key, repeatable

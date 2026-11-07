@@ -76,7 +76,9 @@ current working set for review.
 - `01-display.nix` `[menu]`. Monitors, tearing and HDR.
 - `02-input.nix` `[menu]`. Keyboard, mouse, trackpad, touch and Fcitx5 input
   methods.
-- `03-binds.nix` `[menu]`. Key, mouse, axis and gesture bindings.
+- `03-binds.nix` `[menu]`. Key, mouse, axis and gesture bindings, plus the
+  Window snap group that tunes the Super+H `ojuny-snap` bind. The snap
+  behavior itself is documented in ojuny-desktop.
 - `04-gestures.nix` `[menu]`. Touchpad swipe gestures and swipe tuning.
 - `05-theme.nix` `[menu]`. Palette, polarity, popup opacity and wallpaper.
 - `05-typography.nix` `[menu]`. Fonts, shell text rendering, icon themes and
@@ -89,7 +91,8 @@ current working set for review.
   associations; file manager and remote scheme defaults live on the
   Applications page and point at dux-files.
 - `07-git.nix` `[menu]`. Git and version control defaults.
-- `08-terminal.nix` `[menu]`. Terminal emulator, zsh, aliases and btop.
+- `08-terminal.nix` `[menu]`. Terminal emulator, zsh, aliases, command line
+  tools and the btop, lazygit and yazi TUIs.
 - `09-autostart.nix` `[menu]`. Commands run at login and on reload.
 - `10-updates.nix` `[menu]`. Update tooling, the repo-sync checker and a disabled updater.
 - `11-nixsettings.nix` `[menu]`. Nix tooling, `nix-shell-gui`, `nix-regedit`
@@ -156,7 +159,8 @@ current working set for review.
 - `03-office.nix` `[menu]`. Office suite, document tools, ArtCraft apps and
   Obsidian notes.
 - `04-vesktop.nix` `[menu]`. Discord client.
-- `05-steam.nix` `[menu]`. Steam and gaming (D12).
+- `05-steam.nix` `[menu]`. Steam, Proton GE, DW-Proton with DXVK-Sarek,
+  Xbox controller support and gaming (D12).
 - `06-kdeconnect.nix` `[menu]`. Phone notifications, file transfer and
   remote input.
 
@@ -181,9 +185,10 @@ current working set for review.
 - `_00-ssh-test.nix` `[no menu]`. Temporary SSH test module.
 - `01-configuration.nix` `[menu]`. Hostname, time zone, locale, console
   keymap, the patches switch, and the package source controls. The package
-  source group selects source or release binary for each tool; the manual has
-  its own selector and defaults to source. Options marked advanced are per-tool
-  overrides. `system.stateVersion` present but never
+  source group selects source, the newest release, or a named release from each
+  repository's `binary-url.json`; the manual has its own selector and defaults
+  to source. Options marked advanced are per-tool overrides and release tags.
+  `system.stateVersion` present but never
   exposed (D15).
 - `02-networking.nix` `[menu]`. NetworkManager, firewall, hosts, DNS and the
   WireGuard profile drop folder. Drop a `.conf` file into
@@ -192,7 +197,18 @@ current working set for review.
   "Connect VPN at boot" enables autoconnect for one named profile and disables
   it for every other VPN connection, so only one tunnel starts at boot.
 - `03-bluetooth.nix` `[menu]`. Bluetooth pairing and services.
-- `04-graphics.nix` `[menu]`. Graphics drivers, hybrid PRIME and hardware acceleration.
+- `04-graphics.nix` `[menu]`. Graphics drivers, NVIDIA branches, hybrid
+  PRIME and Mesa offload, compute accelerators and hardware acceleration.
+  The GPU vendor target `auto` reads the facter report; the other targets are
+  manual overrides. When a nixos-hardware profile owns the GPU settings, the
+  profile page marks them managed and the manual driver, PRIME and bus ID
+  controls do not take effect. The supported combinations are listed in
+  `hardware-matrix.md`.
+- `09-facter.nix` `[menu]`. Hardware profile selection, the detected model,
+  profile and coverage state, and the effective GPU layout and its source.
+  `auto` uses `regenerate-hardware`; a concrete profile is a manual override.
+  Applying a change rewrites `00-hardware-quirks.nix` with
+  `nix run .#regenerate-hardware -- --profile-only`.
 - `07-plymouth.nix` `[menu]`. Stylix-coloured Plymouth boot splash with the Ojuny logo.
 
 ### patches

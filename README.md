@@ -59,9 +59,11 @@ Do not hand-edit the generated hardware module, because `generate-hw`
 overwrites it. `docs/module-tree.md` lists every module file in the tree.
 
 The System page also selects package sources. `Package source` switches every
-release tool between building from the flake and downloading the pinned release
-bundle. Per-tool overrides sit under Advanced. The manual has its own selector
-and defaults to source because it follows the rolling repository.
+release tool between building from the flake, downloading the newest release
+recorded in the repository's `binary-url.json`, and downloading a named release
+from that file. Per-tool overrides and release tags sit under Advanced. The
+manual has its own selector and defaults to source because it follows the
+rolling repository.
 
 ## Limits
 
@@ -87,6 +89,9 @@ and defaults to source because it follows the rolling repository.
 - `docs/04-scope.md`: what is ported from dendrite and what is dropped.
 - `docs/05-settings-gui-limitations.md`: what the scanner can and cannot read.
 - `docs/06-secure-boot.md`: how to enroll keys on supported UEFI hardware.
+- `docs/07-lifecycle.md`: machine handover, factory reset, full reset and
+  NixOS generation rollback.
+- `docs/08-install-time.md`: install-time benchmark protocol and results.
 
 ## Contributing
 

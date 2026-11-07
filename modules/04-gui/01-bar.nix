@@ -1444,7 +1444,7 @@
             _order = 35;
           };
           taskbar.rightWidgets.worldClock = {
-            enabled = config.desktop.ojuny.dux.plugins.worldClock.enable;
+            enabled = false;
             _order = 35;
           };
           status.rightWidgets.worldClock = {

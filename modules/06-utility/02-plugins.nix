@@ -101,7 +101,11 @@
       };
       dankCalendarAgenda = {
         enable = true;
-        settings.barContentWidth = 120;
+        settings = {
+          dynamicWidth = true;
+          pillDisplayMode = "countdownOnly";
+          barContentWidth = 120;
+        };
       };
     };
 

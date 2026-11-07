@@ -153,7 +153,7 @@
         desktop.ojuny.mango.global.jump_labels = "HJKLASDFGQWERTYUIOPZXCVBNM";
 
         # Rules (structured tables, edited in Nix)
-        # @option widget = "raw"; label = "Window rules"; group = "Rules"; rows = 8; readonly = true; advanced = true; description = "mango window_rule tables.";
+        # @option widget = "raw"; label = "Window rules"; group = "Rules"; rows = 8; advanced = true; description = "mango window_rule tables.";
         desktop.ojuny.mango.rules.window_rule = [
           {
             app_id = "foot";
@@ -175,7 +175,7 @@
           }
         ];
 
-        # @option widget = "raw"; label = "Layer rules"; group = "Rules"; rows = 4; readonly = true; advanced = true; description = "mango layer_rule tables.";
+        # @option widget = "raw"; label = "Layer rules"; group = "Rules"; rows = 4; advanced = true; description = "mango layer_rule tables.";
         desktop.ojuny.mango.rules.layer_rule = [ ];
 
         # System

@@ -15,38 +15,62 @@ HARDWARE_PROFILES = [
     ("apple", ".*macbookair8,.*", "apple-macbook-air-4", "untested"),
     ("apple", ".*macbookair9,.*", "apple-macbook-air-5", "untested"),
     ("apple", ".*macmini.*", "apple-macmini-4-1", "untested"),
+    ("asus", ".*g533q.*", "asus-rog-strix-g533q", "untested"),
+    ("asus", ".*g533zw.*", "asus-rog-strix-g533zw", "untested"),
+    ("asus", ".*ga401iv.*", "asus-zephyrus-ga401iv", "untested"),
+    ("asus", ".*ga401.*", "asus-zephyrus-ga401", "untested"),
+    ("asus", ".*ga402x.*", "asus-zephyrus-ga402x-amdgpu", "untested"),
+    ("asus", ".*ga402.*", "asus-zephyrus-ga402", "untested"),
+    ("asus", ".*hn7306eac.*", "asus-proart-px13-hn7306eac", "untested"),
+    ("asus", ".*px13.*", "asus-proart-px13", "untested"),
     ("asus", ".*g513.*", "asus-rog-strix-g513im", "untested"),
-    ("asus", ".*g533.*", "asus-rog-strix-g533zw", "untested"),
     ("asus", ".*g713.*", "asus-rog-strix-g713ie", "untested"),
     ("asus", ".*g733.*", "asus-rog-strix-g733qs", "untested"),
-    ("asus", ".*ga401.*", "asus-zephyrus-ga401iv", "untested"),
-    ("asus", ".*ga402.*", "asus-zephyrus-ga402", "untested"),
     ("asus", ".*ga503.*", "asus-zephyrus-ga503", "untested"),
     ("asus", ".*gu603.*", "asus-zephyrus-gu603h", "untested"),
     ("asus", ".*ux371.*", "asus-zenbook-ux371", "untested"),
     ("asus", ".*ux535.*", "asus-zenbook-ux535", "untested"),
-    ("asus", ".*px13.*", "asus-proart-px13", "untested"),
     ("asus", ".*fx506.*", "asus-fx506hm", "untested"),
     ("asus", ".*fa506.*", "asus-fa506nc", "untested"),
     ("asus", ".*fa507.*", "asus-fa507nv", "untested"),
-    ("asus", ".*x570.*", "asus-rog-strix-x570e", "untested"),
+    ("asus", ".*rog strix x570.*", "asus-rog-strix-x570e", "untested"),
+    ("asus", ".*rog ally rc71l.*", "asus-ally-rc71l", "untested"),
+    ("asus", ".*gv302x.*", "asus-flow-gv302x-amdgpu", "untested"),
+    ("asus", ".*gz301vu.*", "asus-flow-gz301vu", "untested"),
+    ("asus", ".*gl552vw.*", "asus-rog-gl552vw", "untested"),
+    ("asus", ".*ga502.*", "asus-zephyrus-ga502", "untested"),
+    ("asus", ".*gu605cw.*", "asus-zephyrus-gu605cw", "untested"),
+    ("asus", ".*gu605my.*", "asus-zephyrus-gu605my", "untested"),
+    ("asus", ".*pro ws x570.*", "asus-pro-ws-x570-ace", "untested"),
+    ("asus", ".*b9406.*", "ojuny-asus-expertbook-b9406", "untested"),
+    ("asus", ".*ux5406aa.*", "ojuny-asus-zenbook-ux5406aa", "untested"),
+    ("asus", ".*gz302.*", "ojuny-asus-rog-z13-gz302", "untested"),
     ("chuwi", ".*minibook x.*", "chuwi-minibook-x", "untested"),
     ("dell", ".*xps 13 9370.*", "dell-xps-13-9370", "untested"),
     ("dell", ".*xps 13 9380.*", "dell-xps-13-9380", "untested"),
     ("dell", ".*xps 13 9300.*", "dell-xps-13-9300", "untested"),
     ("dell", ".*xps 13 9310.*", "dell-xps-13-9310", "untested"),
     ("dell", ".*xps 13 9315.*", "dell-xps-13-9315", "untested"),
-    ("dell", ".*xps 13 9343.*", "dell-xps-13-9343", "unsupported"),
+    ("dell", ".*xps 13 9343.*", "dell-xps-13-9343", "untested"),
     ("dell", ".*xps 15 9500.*", "dell-xps-15-9500", "untested"),
     ("dell", ".*xps 15 9510.*", "dell-xps-15-9510", "untested"),
     ("dell", ".*xps 15 9520.*", "dell-xps-15-9520", "untested"),
     ("dell", ".*xps 15 9530.*", "dell-xps-15-9530", "untested"),
-    ("dell", ".*xps 15 9550.*", "dell-xps-15-9550", "unsupported"),
+    ("dell", ".*xps 15 9550.*", "dell-xps-15-9550", "untested"),
     ("dell", ".*latitude 7420.*", "dell-latitude-7420", "untested"),
     ("dell", ".*latitude 7430.*", "dell-latitude-7430", "untested"),
     ("dell", ".*latitude 7490.*", "dell-latitude-7490", "untested"),
     ("dell", ".*precision 5560.*", "dell-precision-5560", "untested"),
     ("dell", ".*precision 5570.*", "dell-precision-5570", "untested"),
+    ("dell", ".*xps 13 7390.*", "dell-xps-13-7390", "untested"),
+    ("dell", ".*xps 13 9333.*", "dell-xps-13-9333", "untested"),
+    ("dell", ".*xps 13 9350.*", "dell-xps-13-9350", "untested"),
+    ("dell", ".*xps 13 9360.*", "dell-xps-13-9360", "untested"),
+    ("dell", ".*xps 15 7590.*", "dell-xps-15-7590", "untested"),
+    ("dell", ".*xps 15 9560.*", "dell-xps-15-9560-nvidia", "untested"),
+    ("dell", ".*xps 15 9570.*", "dell-xps-15-9570-nvidia", "untested"),
+    ("dell", ".*xps 17 9700.*", "dell-xps-17-9700-intel", "untested"),
+    ("dell", ".*xps 17 9710.*", "dell-xps-17-9710-intel", "untested"),
     ("framework", ".*laptop 13.*7040.*", "framework-13-7040-amd", "untested"),
     ("framework", ".*laptop 13.*12th.*", "framework-12th-gen-intel", "untested"),
     ("framework", ".*laptop 13.*11th.*", "framework-11th-gen-intel", "untested"),
@@ -55,7 +79,9 @@ HARDWARE_PROFILES = [
     ("framework", ".*laptop 13.*ai 300.*", "framework-amd-ai-300-series", "untested"),
     ("framework", ".*laptop 16.*7040.*", "framework-16-7040-amd", "untested"),
     ("framework", ".*laptop 16.*ai 300.*", "framework-16-amd-ai-300-series", "untested"),
-    ("framework", ".*", "framework", "untested"),
+    ("framework", ".*laptop 12.*13th.*", "framework-12-13th-gen-intel", "untested"),
+    ("framework", ".*laptop 13.*core ultra.*3.*", "framework-intel-core-ultra-series3", "untested"),
+    ("framework", ".*framework desktop.*", "framework-desktop-amd-ai-max-300-series", "untested"),
     ("gigabyte", ".*b550.*", "gigabyte-b550", "untested"),
     ("gigabyte", ".*b650.*", "gigabyte-b650", "untested"),
     ("google", ".*pixelbook.*", "google-pixelbook", "untested"),
@@ -90,10 +116,11 @@ HARDWARE_PROFILES = [
     ("lenovo", ".*thinkpad t14.*gen 1.*", "lenovo-thinkpad-t14-intel-gen1", "untested"),
     ("lenovo", ".*thinkpad t14s.*", "lenovo-thinkpad-t14s", "untested"),
     ("lenovo", ".*thinkpad x13.*", "lenovo-thinkpad-x13-intel", "untested"),
-    ("lenovo", ".*yoga 7 14arh7.*", "lenovo-yoga-7-14ARH7", "untested"),
+    ("lenovo", ".*yoga 7 14arh7.*", "lenovo-yoga-7-14ARH7-amdgpu", "untested"),
     ("lenovo", ".*yoga 6 13alc6.*", "lenovo-yoga-6-13ALC6", "untested"),
     ("lenovo", ".*ideapad 15ach6.*", "lenovo-ideapad-15ach6", "untested"),
     ("lenovo", ".*legion 5.*", "lenovo-legion-15ach6h", "untested"),
+    ("lenovo", ".*yoga pro 7 14iah10.*", "ojuny-lenovo-yoga-pro-7-14iah10", "untested"),
     ("microsoft", ".*surface go.*", "microsoft-surface-go", "untested"),
     ("microsoft", ".*surface pro 3.*", "microsoft-surface-pro-3", "untested"),
     ("microsoft", ".*surface pro 9.*", "microsoft-surface-pro-9", "untested"),
@@ -129,6 +156,51 @@ HARDWARE_PROFILES = [
     ("xiaomi", ".*redmibook 15.*", "xiaomi-redmibook-15-pro-2021", "untested"),
     ("xiaomi", ".*redmibook 16.*", "xiaomi-redmibook-16-pro-2024", "untested"),
 ]
+
+GPU_PROFILES = {
+    "asus-ally-rc71l": {"owns": True, "variants": [{"layout": "amd"}]},
+    "asus-flow-gv302x-amdgpu": {"owns": True, "variants": [{"layout": "amd"}, {"layout": "hybrid-amd-nvidia", "profile": "asus-flow-gv302x-nvidia"}]},
+    "asus-flow-gz301vu": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}]},
+    "asus-proart-px13": {"owns": True, "variants": [{"layout": "amd"}]},
+    "asus-proart-px13-hn7306eac": {"owns": True, "variants": [{"layout": "amd"}]},
+    "asus-rog-gl552vw": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}]},
+    "asus-rog-strix-g513im": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-rog-strix-g533q": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-rog-strix-g533zw": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}]},
+    "asus-rog-strix-g713ie": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-rog-strix-g733qs": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-zephyrus-ga401": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-zephyrus-ga401iv": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-zephyrus-ga402": {"owns": True, "variants": [{"layout": "amd"}]},
+    "asus-zephyrus-ga402x-amdgpu": {"owns": True, "variants": [{"layout": "amd"}, {"layout": "hybrid-amd-nvidia", "profile": "asus-zephyrus-ga402x-nvidia"}]},
+    "asus-zephyrus-ga502": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-zephyrus-ga503": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "asus-zephyrus-gu603h": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}]},
+    "asus-zephyrus-gu605cw": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}]},
+    "asus-zephyrus-gu605my": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}]},
+    "dell-xps-15-7590": {"owns": True, "variants": [{"layout": "intel"}, {"layout": "hybrid-intel-nvidia", "profile": "dell-xps-15-7590-nvidia"}]},
+    "dell-xps-15-9500": {"owns": True, "variants": [{"layout": "intel"}, {"layout": "hybrid-intel-nvidia", "profile": "dell-xps-15-9500-nvidia"}]},
+    "dell-xps-15-9510": {"owns": True, "variants": [{"layout": "intel"}, {"layout": "hybrid-intel-nvidia", "profile": "dell-xps-15-9510-nvidia"}]},
+    "dell-xps-15-9520": {"owns": True, "variants": [{"layout": "intel"}, {"layout": "hybrid-intel-nvidia", "profile": "dell-xps-15-9520-nvidia"}]},
+    "dell-xps-15-9530": {"owns": True, "variants": [{"layout": "intel"}, {"layout": "hybrid-intel-nvidia", "profile": "dell-xps-15-9530-nvidia"}]},
+    "dell-xps-15-9550": {"owns": True, "variants": [{"layout": "intel"}, {"layout": "hybrid-intel-nvidia", "profile": "dell-xps-15-9550-nvidia"}]},
+    "dell-xps-15-9560-nvidia": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}, {"layout": "intel", "profile": "dell-xps-15-9560-intel"}]},
+    "dell-xps-15-9570-nvidia": {"owns": True, "variants": [{"layout": "hybrid-intel-nvidia"}, {"layout": "intel", "profile": "dell-xps-15-9570-intel"}]},
+    "dell-xps-17-9700-intel": {"owns": True, "variants": [{"layout": "intel"}, {"layout": "hybrid-intel-nvidia", "profile": "dell-xps-17-9700-nvidia"}]},
+    "dell-xps-17-9710-intel": {"owns": True, "variants": [{"layout": "intel"}]},
+    "framework-13-7040-amd": {"owns": True, "variants": [{"layout": "amd"}]},
+    "framework-16-7040-amd": {"owns": True, "variants": [{"layout": "amd"}]},
+    "framework-16-amd-ai-300-series": {"owns": True, "variants": [{"layout": "amd"}, {"layout": "hybrid-amd-nvidia", "profile": "framework-16-amd-ai-300-series-nvidia"}]},
+    "framework-desktop-amd-ai-max-300-series": {"owns": True, "variants": [{"layout": "amd"}]},
+    "framework-amd-ai-300-series": {"owns": True, "variants": [{"layout": "amd"}]},
+    "hp-elitebook-845g7": {"owns": True, "variants": [{"layout": "amd"}]},
+    "hp-elitebook-845g8": {"owns": True, "variants": [{"layout": "amd"}]},
+    "hp-elitebook-845g9": {"owns": True, "variants": [{"layout": "amd"}]},
+    "lenovo-ideapad-15ach6": {"owns": True, "variants": [{"layout": "amd"}]},
+    "lenovo-legion-15ach6h": {"owns": True, "variants": [{"layout": "hybrid-amd-nvidia"}]},
+    "lenovo-yoga-6-13ALC6": {"owns": True, "variants": [{"layout": "amd"}]},
+    "lenovo-yoga-7-14ARH7-amdgpu": {"owns": True, "variants": [{"layout": "amd"}, {"layout": "hybrid-amd-nvidia", "profile": "lenovo-yoga-7-14ARH7-nvidia"}]},
+}
 
 VENDOR_ALIASES = [
     ("apple", ".*apple.*"),
@@ -287,11 +359,15 @@ def hardware_module(hardware, firmware, device, extra_lines):
 
 def profile_module(profile):
     if profile:
+        if profile.startswith("ojuny-"):
+            target = "self.modules.nixos.{}".format(profile)
+        else:
+            target = "inputs.nixos-hardware.nixosModules.{}".format(profile)
         imports = (
             "    imports = [\n"
-            "      inputs.nixos-hardware.nixosModules.{}\n"
+            "      {}\n"
             "    ];\n"
-        ).format(profile)
+        ).format(target)
     else:
         imports = "    imports = [ ];\n"
 
@@ -336,43 +412,186 @@ def detect_vendor(manufacturer):
     return "unknown"
 
 
+def to_bus_id(sysfs):
+    if not sysfs:
+        return None
+    try:
+        _domain, bus, devfn = sysfs.split(":")
+        device, function = devfn.split(".")
+        return "PCI:%d:%d:%d" % (int(bus, 16), int(device, 16), int(function, 16))
+    except ValueError:
+        return None
+
+
+def card_vendor(card):
+    vendor = card.get("vendor") or {}
+    return str(vendor.get("name", "")).lower(), str(vendor.get("hex", "")).lower()
+
+
+def is_intel(card):
+    name, hex_id = card_vendor(card)
+    return "intel" in name or hex_id == "8086"
+
+
+def is_amd(card):
+    name, hex_id = card_vendor(card)
+    return hex_id in ("1002", "1022") or "advanced micro devices" in name or "ati " in name or name == "ati"
+
+
+def is_nvidia(card):
+    name, hex_id = card_vendor(card)
+    return "nvidia" in name or hex_id == "10de"
+
+
+def detect_gpu(report):
+    hardware = report.get("hardware", {})
+    present = "graphics_card" in hardware
+    cards = hardware.get("graphics_card") or []
+    intel = [card for card in cards if is_intel(card)]
+    amd = [card for card in cards if is_amd(card)]
+    nvidia = [card for card in cards if is_nvidia(card)]
+    has_intel = bool(intel)
+    has_amd = bool(amd)
+    has_nvidia = bool(nvidia)
+
+    if not has_intel and not has_amd and not has_nvidia:
+        layout = "unknown"
+    elif has_intel and has_nvidia and not has_amd:
+        layout = "hybrid-intel-nvidia"
+    elif has_amd and has_nvidia and not has_intel:
+        layout = "hybrid-amd-nvidia"
+    elif has_intel and has_amd and not has_nvidia:
+        layout = "hybrid-intel-amd"
+    elif has_intel and not has_amd and not has_nvidia:
+        layout = "intel"
+    elif has_amd and not has_intel and not has_nvidia:
+        layout = "amd"
+    elif has_nvidia and not has_intel and not has_amd:
+        layout = "nvidia"
+    else:
+        layout = "unknown"
+
+    def bus_or_default(items, default):
+        for card in items:
+            bus = to_bus_id(card.get("sysfs_bus_id"))
+            if bus:
+                return bus
+        return default
+
+    discrete = "PCI:5:0:0"
+    if len(amd) > 1:
+        discrete = to_bus_id(amd[1].get("sysfs_bus_id")) or discrete
+    elif len(intel) > 1:
+        discrete = to_bus_id(intel[1].get("sysfs_bus_id")) or discrete
+    elif len(nvidia) > 1:
+        discrete = to_bus_id(nvidia[1].get("sysfs_bus_id")) or discrete
+
+    return {
+        "layout": layout,
+        "source": "facter" if present else "unknown",
+        "busIds": {
+            "intel": bus_or_default(intel, "PCI:0:2:0"),
+            "amd": bus_or_default(amd, "PCI:5:0:0"),
+            "nvidia": bus_or_default(nvidia, "PCI:1:0:0"),
+            "discrete": discrete,
+        },
+    }
+
+
+def resolve_gpu_profile(base_profile, gpu):
+    meta = GPU_PROFILES.get(base_profile)
+    if not meta:
+        return {
+            "profile": base_profile,
+            "managed": False,
+            "layout": gpu["layout"],
+            "busIds": gpu["busIds"],
+            "source": gpu["source"],
+        }
+
+    variants = meta["variants"]
+    chosen = None
+    for variant in variants:
+        if variant["layout"] == gpu["layout"]:
+            chosen = variant
+            break
+    if chosen is None and variants:
+        chosen = variants[0]
+
+    return {
+        "profile": chosen.get("profile", base_profile) if chosen else base_profile,
+        "managed": bool(meta.get("owns", False)),
+        "layout": chosen["layout"] if chosen else gpu["layout"],
+        "busIds": gpu["busIds"],
+        "source": gpu["source"],
+    }
+
+
 def detect_profile(report):
     system = report.get("smbios", {}).get("system", {})
     manufacturer = system.get("manufacturer", "")
     product = system.get("product", "")
+    version = system.get("version", "")
     vendor = detect_vendor(manufacturer)
     model = " ".join(part for part in (manufacturer, product) if part) or "unknown"
-    lowered = product.lower()
+    lowered_product = product.lower()
+    lowered_version = version.lower()
 
     match = None
     if vendor != "unknown":
         for row in HARDWARE_PROFILES:
-            if row[0] == vendor and re.fullmatch(row[1], lowered):
+            if row[0] != vendor:
+                continue
+            if re.fullmatch(row[1], lowered_product) or re.fullmatch(row[1], lowered_version):
                 match = row
                 break
 
     if match is None:
-        return {
+        base = {
             "vendor": vendor,
             "model": model,
+            "baseProfile": "unmatched",
             "profile": "unmatched",
             "state": "unmatched",
         }
+    else:
+        base = {
+            "vendor": vendor,
+            "model": model,
+            "baseProfile": match[2],
+            "profile": match[2],
+            "state": match[3],
+        }
 
-    return {
-        "vendor": vendor,
-        "model": model,
-        "profile": match[2],
-        "state": match[3],
+    gpu = detect_gpu(report)
+    resolved = resolve_gpu_profile(base["baseProfile"], gpu)
+    base["profile"] = resolved["profile"]
+    base["gpu"] = {
+        "layout": resolved["layout"],
+        "managed": resolved["managed"],
+        "busIds": resolved["busIds"],
+        "source": resolved["source"],
     }
+    return base
 
 
 def known_profiles():
-    return {row[2] for row in HARDWARE_PROFILES}
+    profiles = {row[2] for row in HARDWARE_PROFILES}
+    for meta in GPU_PROFILES.values():
+        for variant in meta["variants"]:
+            if variant.get("profile"):
+                profiles.add(variant["profile"])
+    return profiles
 
 
 def supported_profiles():
-    return sorted({row[2] for row in HARDWARE_PROFILES if row[3] != "unsupported"})
+    profiles = {row[2] for row in HARDWARE_PROFILES if row[3] != "unsupported"}
+    for name in list(profiles):
+        for meta in GPU_PROFILES.values():
+            for variant in meta["variants"]:
+                if variant.get("profile"):
+                    profiles.add(variant["profile"])
+    return sorted(profiles)
 
 
 def selected_profile(report, explicit=None):

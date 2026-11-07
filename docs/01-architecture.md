@@ -158,8 +158,12 @@ generated or templated, not hand-written:
   (`services.simple-nix-update-gui.*`), placed in `02-core/10-updates.nix`
   together with nix-settings-gui.
 - **nixos-hardware** is an input. `07-system/10-hardware-profile.nix` maps the
-  facter report to one profile, and generated `07-system/00-hardware-quirks.nix`
-  imports it. The profile dropdown lives on `07-system/09-facter.nix`.
+  facter report to one profile, including a GPU variant when `gpuProfiles`
+  declares one, and generated `07-system/00-hardware-quirks.nix` imports it.
+  The profile dropdown and the GPU ownership flags live on
+  `07-system/09-facter.nix`. `07-system/04-graphics.nix` resolves the `auto`
+  target from those flags and stops emitting the GPU definitions the profile
+  owns.
 
 ## 8. Resolved decisions
 

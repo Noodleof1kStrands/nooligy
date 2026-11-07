@@ -84,46 +84,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ojuny-cli-binary = {
-      url = "tarball+https://github.com/ojuny-project/ojuny-cli/releases/download/v0.1.0-hotfix-1/ojuny-cli-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ojuny-manual-binary = {
-      url = "tarball+https://github.com/ojuny-project/ojuny-manual/releases/download/v0.1.0-hotfix-1/ojuny-manual-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-cleaner-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-cleaner/releases/download/v0.1.0-hotfix-1/nix-cleaner-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-cache-discovery-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-cache-discovery/releases/download/v0.1.0-hotfix-1/nix-cache-discovery-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-regedit-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-regedit/releases/download/v0.1.0-hotfix-4/nix-regedit-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-settings-gui-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-settings-gui/releases/download/v0.1.0-hotfix-1/nix-settings-gui-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-shell-gui-binary = {
-      url = "tarball+https://github.com/ojuny-project/nix-shell-gui/releases/download/v0.1.0-hotfix-1/nix-shell-gui-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    simple-nix-update-gui-binary = {
-      url = "tarball+https://github.com/ojuny-project/simple-nix-update-gui/releases/download/v0.1.0-hotfix-1/simple-nix-update-gui-flake.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-cache-discovery = {
       url = "github:ojuny-project/nix-cache-discovery";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -201,6 +161,15 @@
             text = ''
               exec python3 ${./scripts/regenerate-hardware.py} "$@"
             '';
+          };
+
+          generateUser = pkgs.writeShellApplication {
+            name = "generate-user";
+            runtimeInputs = [
+              pkgs.mkpasswd
+              pkgs.coreutils
+            ];
+            text = builtins.readFile ./scripts/generate-user.sh;
           };
         in
         {
@@ -304,12 +273,14 @@
                 name = "setup";
                 runtimeInputs = [
                   pkgs.nixos-install-tools
+                  pkgs.nixos-option
                   pkgs.nixos-rebuild
                   pkgs.mkpasswd
                   pkgs.nix
                   pkgs.git
                   pkgs.coreutils
                   pkgs.gnused
+                  pkgs.gnugrep
                   (pkgs.writeShellApplication {
                     name = "generate-hw";
                     runtimeInputs = [
@@ -322,14 +293,7 @@
                     ];
                     text = builtins.readFile ./scripts/generate-hw.sh;
                   })
-                  (pkgs.writeShellApplication {
-                    name = "generate-user";
-                    runtimeInputs = [
-                      pkgs.mkpasswd
-                      pkgs.coreutils
-                    ];
-                    text = builtins.readFile ./scripts/generate-user.sh;
-                  })
+                  generateUser
                   (pkgs.writeShellApplication {
                     name = "create-new-system";
                     runtimeInputs = [
@@ -343,6 +307,43 @@
               }
             }/bin/setup";
           };
+
+          apps.handover = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "handover";
+                runtimeInputs = [
+                  pkgs.nixos-rebuild
+                  pkgs.git
+                  pkgs.coreutils
+                  pkgs.gnused
+                  pkgs.gnugrep
+                  generateUser
+                ];
+                text = builtins.readFile ./scripts/handover.sh;
+              }
+            }/bin/handover";
+          };
+
+          apps.factory-reset = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "factory-reset";
+                runtimeInputs = [
+                  pkgs.nixos-rebuild
+                  pkgs.git
+                  pkgs.rsync
+                  pkgs.coreutils
+                  pkgs.gnused
+                  pkgs.gnugrep
+                ];
+                text = builtins.readFile ./scripts/factory-reset.sh;
+              }
+            }/bin/factory-reset";
+          };
+
           checks.hardware-profile =
             let
               source = pkgs.lib.cleanSource ./.;
@@ -353,6 +354,18 @@
               }
               ''
                 python3 ${./tests/check-hardware-profile.py} --root ${source}
+                touch $out
+              '';
+          checks.bind-args =
+            let
+              source = pkgs.lib.cleanSource ./.;
+            in
+            pkgs.runCommand "check-bind-args"
+              {
+                nativeBuildInputs = [ pkgs.python3 ];
+              }
+              ''
+                python3 ${./tests/check-bind-args.py} --root ${source}
                 touch $out
               '';
         };
