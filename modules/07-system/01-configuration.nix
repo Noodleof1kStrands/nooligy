@@ -268,7 +268,11 @@
         system.nixos.distroId = "ojuny";
 
         # DO NOT CHANGE, this value is for the *initial* state and should not be changed.
-        system.stateVersion = "25.05";
+        system.stateVersion = "25.11";
+
+        # Point at the source that built this system. The marker does not store
+        # the state versions; setup evaluates the source to read them.
+        environment.etc."ojuny/flake-source".source = self.outPath;
 
       };
 
