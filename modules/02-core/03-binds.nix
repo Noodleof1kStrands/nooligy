@@ -10,7 +10,12 @@
 { self, inputs, ... }: {
 
   flake.modules.nixos.desktop-binds =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       ojunySrc = inputs.ojuny-desktop.outPath;
       pasteScript = builtins.path {
@@ -1086,9 +1091,9 @@
       # @option widget = "spin"; label = "Right inset"; group = "Window snap"; groupOrder = 20; order = 30; min = 0; max = 200; unit = "px"; description = "Gap between the right screen edge and a snapped window.";
       desktop.ojuny.mango.snap.rightInset = 3;
       # @option widget = "spin"; label = "Top inset"; group = "Window snap"; groupOrder = 20; order = 40; min = 0; max = 200; unit = "px"; description = "Gap between the top screen edge and a snapped window, usually the bar height.";
-      desktop.ojuny.mango.snap.topInset = 45;
+      desktop.ojuny.mango.snap.topInset = 3;
       # @option widget = "spin"; label = "Bottom inset"; group = "Window snap"; groupOrder = 20; order = 50; min = 0; max = 200; unit = "px"; description = "Gap between the bottom screen edge and a snapped window.";
-      desktop.ojuny.mango.snap.bottomInset = 5;
+      desktop.ojuny.mango.snap.bottomInset = 60;
 
     };
 

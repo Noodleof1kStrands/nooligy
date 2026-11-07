@@ -11,12 +11,12 @@
 { self, inputs, ... }:
 
 {
-  flake.modules.homeManager.patch-secondary-desktop = { 
-	imports = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
-	programs.plasma.enable = true;
-	stylix.targets.kde.enable = true;
-	stylix.targets.qt.platform = "qtct";
-	stylix.targets.qt.enable = false;
+  flake.modules.homeManager.patch-secondary-desktop = {
+    imports = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+    programs.plasma.enable = true;
+    stylix.targets.kde.enable = true;
+    stylix.targets.qt.platform = "qtct";
+    stylix.targets.qt.enable = false;
   };
   flake.modules.nixos.patch-secondary-desktop =
     {
@@ -34,7 +34,7 @@
         ojuny.patch.secondary-desktop.enable = true;
 
         # @option widget = "switch"; label = "KDE Plasma 6"; group = "Desktops"; visibleWhen.path = "ojuny.patch.secondary-desktop.enable"; visibleWhen.equals = true; description = "Add KDE Plasma 6 as a login session. Configure it from Plasma's own settings.";
-        ojuny.patch.secondary-desktop.plasma = true;
+        ojuny.patch.secondary-desktop.plasma = false;
 
         # @option widget = "switch"; label = "GNOME"; group = "Desktops"; visibleWhen.path = "ojuny.patch.secondary-desktop.enable"; visibleWhen.equals = true; description = "Add GNOME as a login session. Configure it from GNOME's own settings.";
         ojuny.patch.secondary-desktop.gnome = false;
@@ -116,7 +116,7 @@
         services.desktopManager.plasma6.enable = lib.mkIf cfg.plasma true;
         services.desktopManager.gnome.enable = lib.mkIf cfg.gnome true;
         services.desktopManager.cosmic.enable = lib.mkIf cfg.cosmic true;
-		qt.platformTheme = lib.mkIf cfg.plasma (lib.mkForce "kde");
+        qt.platformTheme = lib.mkIf cfg.plasma (lib.mkForce "kde");
         services.xserver.desktopManager.xfce.enable = lib.mkIf cfg.xfce true;
         services.xserver.desktopManager.cinnamon.enable = lib.mkIf cfg.cinnamon true;
         services.xserver.enable = lib.mkIf (cfg.xfce || cfg.cinnamon) true;
