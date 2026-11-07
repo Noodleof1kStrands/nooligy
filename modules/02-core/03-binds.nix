@@ -1081,13 +1081,15 @@
 
       # @option widget = "spin"; label = "Snap zone width"; group = "Window snap"; groupOrder = 20; order = 10; min = 20; max = 500; step = 10; unit = "px"; description = "Width of each edge and corner zone used by the Super+H float and snap bind.";
       desktop.ojuny.mango.snap.range = 150;
-      # @option widget = "spin"; label = "Left inset"; group = "Window snap"; groupOrder = 20; order = 20; min = 0; max = 200; unit = "px"; description = "Gap between the left screen edge and a snapped window.";
+      # @option widget = "spin"; label = "Inner gap"; group = "Window snap"; groupOrder = 20; order = 20; min = 0; max = 100; unit = "px"; description = "Gap between adjacent snapped windows. All four quadrants use the same value.";
+      desktop.ojuny.mango.snap.gap = 4;
+      # @option widget = "spin"; label = "Left inset"; group = "Window snap"; groupOrder = 20; order = 30; min = 0; max = 200; unit = "px"; description = "Outer gap between the left screen edge and a snapped window.";
       desktop.ojuny.mango.snap.leftInset = 3;
-      # @option widget = "spin"; label = "Right inset"; group = "Window snap"; groupOrder = 20; order = 30; min = 0; max = 200; unit = "px"; description = "Gap between the right screen edge and a snapped window.";
+      # @option widget = "spin"; label = "Right inset"; group = "Window snap"; groupOrder = 20; order = 40; min = 0; max = 200; unit = "px"; description = "Outer gap between the right screen edge and a snapped window.";
       desktop.ojuny.mango.snap.rightInset = 3;
-      # @option widget = "spin"; label = "Top inset"; group = "Window snap"; groupOrder = 20; order = 40; min = 0; max = 200; unit = "px"; description = "Gap between the top screen edge and a snapped window, usually the bar height.";
+      # @option widget = "spin"; label = "Top inset"; group = "Window snap"; groupOrder = 20; order = 50; min = 0; max = 200; unit = "px"; description = "Outer gap between the top screen edge and a snapped window, usually the bar height.";
       desktop.ojuny.mango.snap.topInset = 45;
-      # @option widget = "spin"; label = "Bottom inset"; group = "Window snap"; groupOrder = 20; order = 50; min = 0; max = 200; unit = "px"; description = "Gap between the bottom screen edge and a snapped window.";
+      # @option widget = "spin"; label = "Bottom inset"; group = "Window snap"; groupOrder = 20; order = 60; min = 0; max = 200; unit = "px"; description = "Outer gap between the bottom screen edge and a snapped window.";
       desktop.ojuny.mango.snap.bottomInset = 5;
 
     };

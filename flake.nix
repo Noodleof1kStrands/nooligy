@@ -191,6 +191,19 @@
             program = "${regenerate-hardware}/bin/regenerate-hardware";
           };
 
+          apps.ci = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "ci";
+                runtimeInputs = [ pkgs.nix ];
+                text = ''
+                  exec nix flake check "$@"
+                '';
+              }
+            }/bin/ci";
+          };
+
           apps.remote-setup = {
             type = "app";
             program = "${
@@ -358,9 +371,26 @@
                 python3 ${./tests/check-bind-args.py} --root ${source}
                 touch $out
               '';
+
+          checks.module-tree-current =
+            let
+              source = pkgs.lib.cleanSource ./.;
+            in
+            pkgs.runCommand "check-module-tree" {
+              nativeBuildInputs = [ pkgs.diffutils ];
+            } ''
+              cp -r ${source} work
+              chmod -R u+w work
+              cd work
+              sh scripts/gen-module-tree.sh
+              diff -u ${source}/docs/module-tree.md docs/module-tree.md
+              touch $out
+            '';
         };
 
       flake = {
+        hydraJobs = self.checks;
+
         nixosModules.default = inputs.ojuny-desktop.nixosModules.default;
         homeManagerModules.default = inputs.ojuny-desktop.homeManagerModules.default;
 
