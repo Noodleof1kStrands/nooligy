@@ -1434,7 +1434,7 @@
       config = {
 
         # @option widget = "dropdown"; label = "Preset"; order = 1; choices = [ "default" "taskbar" "status" "sidebar-left" "sidebar-right" "caelestia" "goth" "simple-island" "simple-bar" "custom" "none" ]; description = "Active bar preset. Apply with Save and Rebuild.";
-        ojuny.dux.barPreset = "default";
+        ojuny.dux.barPreset = "taskbar";
 
         desktop.ojuny.dux.barPreset = config.ojuny.dux.barPreset;
 
