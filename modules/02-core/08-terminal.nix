@@ -83,6 +83,11 @@
           eza
           fzf
           bat
+          ripgrep
+          fd
+          tldr
+          yt-dlp
+          try
           fastfetch
         ];
 
@@ -141,7 +146,6 @@
 
         programs.zsh.interactiveShellInit = ''
           eval "$(zoxide init --cmd cd zsh)"
-          source <(fzf --zsh)
           if [ "$TERM_PROGRAM" != "vscode" ]; then
             if which fastfetch 2>&1 > /dev/null; then fastfetch; else nix-shell -p fastfetch --run "fastfetch"; fi
           fi
@@ -278,8 +282,75 @@
       ...
     }:
     {
-      # @option widget = "switch"; label = "enable btop"; group = "btop"; groupOrder = 55;
+      # @option widget = "switch"; label = "enable btop"; group = "TUIs"; groupOrder = 56; order = 10;
       programs.btop.enable = true;
+
+      # @option widget = "spin"; label = "Update interval"; group = "TUIs"; groupOrder = 56; order = 20; min = 500; max = 10000; step = 100; unit = "ms"; visibleWhen.path = "programs.btop.enable"; visibleWhen.equals = true;
+      programs.btop.settings.update_ms = 1500;
+
+      # @option widget = "switch"; label = "Show GPU"; group = "TUIs"; groupOrder = 56; order = 30; visibleWhen.path = "programs.btop.enable"; visibleWhen.equals = true;
+      programs.btop.settings.show_gpu = true;
+
+      stylix.targets.btop.enable = true;
+    };
+
+  flake.modules.homeManager.applications-terminal-tuis =
+    {
+      config,
+      lib,
+      osConfig ? { },
+      ...
+    }:
+    {
+      config = lib.mkIf (osConfig.ojuny.apps.terminal.enable or false) {
+        programs.bat.enable = true;
+        programs.fzf.enable = true;
+
+        # @option widget = "switch"; label = "lazygit"; group = "TUIs"; groupOrder = 56; order = 40;
+        programs.lazygit.enable = true;
+
+        # @option widget = "switch"; label = "Nerd Font icons"; group = "TUIs"; groupOrder = 56; order = 50; visibleWhen.path = "programs.lazygit.enable"; visibleWhen.equals = true;
+        programs.lazygit.settings.gui.nerdFonts = true;
+
+        # @option widget = "switch"; label = "Show file tree"; group = "TUIs"; groupOrder = 56; order = 60; visibleWhen.path = "programs.lazygit.enable"; visibleWhen.equals = true;
+        programs.lazygit.settings.gui.showFileTree = true;
+
+        # @option widget = "switch"; label = "Auto fetch"; group = "TUIs"; groupOrder = 56; order = 70; visibleWhen.path = "programs.lazygit.enable"; visibleWhen.equals = true;
+        programs.lazygit.settings.git.autoFetch = true;
+
+        # @option widget = "switch"; label = "yazi"; group = "TUIs"; groupOrder = 56; order = 80;
+        programs.yazi.enable = true;
+
+        # @option widget = "switch"; label = "Show hidden files"; group = "TUIs"; groupOrder = 56; order = 90; visibleWhen.path = "programs.yazi.enable"; visibleWhen.equals = true;
+        programs.yazi.settings.mgr.show_hidden = false;
+
+        # @option widget = "switch"; label = "Show symlinks"; group = "TUIs"; groupOrder = 56; order = 100; visibleWhen.path = "programs.yazi.enable"; visibleWhen.equals = true;
+        programs.yazi.settings.mgr.show_symlink = false;
+
+        # @option widget = "spin"; label = "Preview width"; group = "TUIs"; groupOrder = 56; order = 110; min = 10; max = 100; unit = "%"; visibleWhen.path = "programs.yazi.enable"; visibleWhen.equals = true;
+        programs.yazi.settings.preview.max_width = 70;
+
+        # @option widget = "spin"; label = "Preview height"; group = "TUIs"; groupOrder = 56; order = 120; min = 10; max = 100; unit = "%"; visibleWhen.path = "programs.yazi.enable"; visibleWhen.equals = true;
+        programs.yazi.settings.preview.max_height = 70;
+
+        # @option widget = "switch"; label = "zsh integration"; group = "TUIs"; groupOrder = 56; order = 130;
+        programs.fzf.enableZshIntegration = true;
+
+        # @option widget = "list"; label = "fzf default options"; group = "TUIs"; groupOrder = 56; order = 140; itemLabel = "Option"; addLabel = "Add option";
+        programs.fzf.defaultOptions = [
+          "--height=40%"
+          "--layout=reverse"
+          "--border"
+        ];
+
+        # @option widget = "spin"; label = "fzf history size"; group = "TUIs"; groupOrder = 56; order = 150; min = 100; max = 100000; step = 100;
+        programs.fzf.historySize = 10000;
+
+        stylix.targets.bat.enable = true;
+        stylix.targets.fzf.enable = true;
+        stylix.targets.lazygit.enable = true;
+        stylix.targets.yazi.enable = true;
+      };
     };
 
   # Ghostty is installed and configured through home-manager, gated by the

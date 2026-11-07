@@ -202,7 +202,7 @@ def main():
     parser.add_argument("--timezone", default=None)
     parser.add_argument("--locale", default=None)
     parser.add_argument("--keymap", default=None)
-    parser.add_argument("--state-version", required=True)
+    parser.add_argument("--state-version", default="26.11")
     parser.add_argument("--clone-relative", default="repos/nix-flake")
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()

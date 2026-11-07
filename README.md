@@ -89,6 +89,9 @@ rolling repository.
 - `docs/04-scope.md`: what is ported from dendrite and what is dropped.
 - `docs/05-settings-gui-limitations.md`: what the scanner can and cannot read.
 - `docs/06-secure-boot.md`: how to enroll keys on supported UEFI hardware.
+- `docs/07-lifecycle.md`: machine handover, factory reset, full reset and
+  NixOS generation rollback.
+- `docs/08-install-time.md`: install-time benchmark protocol and results.
 
 ## Contributing
 

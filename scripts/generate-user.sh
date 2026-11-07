@@ -3,17 +3,22 @@ set -euo pipefail
 
 REPO_ROOT="${OJUNY_ROOT:-$PWD}"
 OUT="$REPO_ROOT/modules/01-users/01-user.nix"
-STATE_VERSION="25.05"
+STATE_VERSION="26.11"
 
 force=0
-for arg in "$@"; do
-  case "$arg" in
+while [ "$#" -gt 0 ]; do
+  case "$1" in
   --force) force=1 ;;
+  --state-version)
+    STATE_VERSION="${2:?--state-version needs a value}"
+    shift
+    ;;
   *)
-    echo "generate-user: unknown argument: $arg" >&2
+    echo "generate-user: unknown argument: $1" >&2
     exit 2
     ;;
   esac
+  shift
 done
 
 if [ -e "$OUT" ] && [ "$force" -ne 1 ]; then
@@ -62,7 +67,13 @@ else
   keys_block="$(printf '[\n%s    ]' "$key_list")"
 fi
 
-mv "$REPO_ROOT/modules/07-system/_00-ssh-test.nix" "$REPO_ROOT/modules/07-system/00-ssh-test.nix"
+ssh_test_import=""
+if [ "$username" = "den" ]; then
+  ssh_test_import=" self.modules.nixos.system-ssh-test"
+  if [ -e "$REPO_ROOT/modules/07-system/_00-ssh-test.nix" ]; then
+    mv "$REPO_ROOT/modules/07-system/_00-ssh-test.nix" "$REPO_ROOT/modules/07-system/00-ssh-test.nix"
+  fi
+fi
 
 {
   cat <<EOF
@@ -78,7 +89,7 @@ mv "$REPO_ROOT/modules/07-system/_00-ssh-test.nix" "$REPO_ROOT/modules/07-system
 
   flake.modules.nixos.users = { pkgs, ... }: {
 
-    imports = [ inputs.home-manager.nixosModules.home-manager self.modules.nixos.system-ssh-test ];
+    imports = [ inputs.home-manager.nixosModules.home-manager$ssh_test_import ];
 
     config = {
       /* @option widget = "users"; label = "Accounts"; homeManager = true; */

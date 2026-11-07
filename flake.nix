@@ -152,6 +152,15 @@
               exec python3 ${./scripts/regenerate-hardware.py} "$@"
             '';
           };
+
+          generateUser = pkgs.writeShellApplication {
+            name = "generate-user";
+            runtimeInputs = [
+              pkgs.mkpasswd
+              pkgs.coreutils
+            ];
+            text = builtins.readFile ./scripts/generate-user.sh;
+          };
         in
         {
           packages = {
@@ -254,12 +263,14 @@
                 name = "setup";
                 runtimeInputs = [
                   pkgs.nixos-install-tools
+                  pkgs.nixos-option
                   pkgs.nixos-rebuild
                   pkgs.mkpasswd
                   pkgs.nix
                   pkgs.git
                   pkgs.coreutils
                   pkgs.gnused
+                  pkgs.gnugrep
                   (pkgs.writeShellApplication {
                     name = "generate-hw";
                     runtimeInputs = [
@@ -272,14 +283,7 @@
                     ];
                     text = builtins.readFile ./scripts/generate-hw.sh;
                   })
-                  (pkgs.writeShellApplication {
-                    name = "generate-user";
-                    runtimeInputs = [
-                      pkgs.mkpasswd
-                      pkgs.coreutils
-                    ];
-                    text = builtins.readFile ./scripts/generate-user.sh;
-                  })
+                  generateUser
                   (pkgs.writeShellApplication {
                     name = "create-new-system";
                     runtimeInputs = [
@@ -293,6 +297,43 @@
               }
             }/bin/setup";
           };
+
+          apps.handover = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "handover";
+                runtimeInputs = [
+                  pkgs.nixos-rebuild
+                  pkgs.git
+                  pkgs.coreutils
+                  pkgs.gnused
+                  pkgs.gnugrep
+                  generateUser
+                ];
+                text = builtins.readFile ./scripts/handover.sh;
+              }
+            }/bin/handover";
+          };
+
+          apps.factory-reset = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "factory-reset";
+                runtimeInputs = [
+                  pkgs.nixos-rebuild
+                  pkgs.git
+                  pkgs.rsync
+                  pkgs.coreutils
+                  pkgs.gnused
+                  pkgs.gnugrep
+                ];
+                text = builtins.readFile ./scripts/factory-reset.sh;
+              }
+            }/bin/factory-reset";
+          };
+
           checks.hardware-profile =
             let
               source = pkgs.lib.cleanSource ./.;
@@ -303,6 +344,18 @@
               }
               ''
                 python3 ${./tests/check-hardware-profile.py} --root ${source}
+                touch $out
+              '';
+          checks.bind-args =
+            let
+              source = pkgs.lib.cleanSource ./.;
+            in
+            pkgs.runCommand "check-bind-args"
+              {
+                nativeBuildInputs = [ pkgs.python3 ];
+              }
+              ''
+                python3 ${./tests/check-bind-args.py} --root ${source}
                 touch $out
               '';
         };

@@ -368,7 +368,7 @@
         services.automatic-timezoned.enable = config.ojuny.time.auto;
         services.geoclue2.enable = config.ojuny.time.auto;
 
-        # @option widget = "dropdown"; label = "Default locale"; group = "Time and locale"; choices = [ "en_US.UTF-8" "en_GB.UTF-8" "de_DE.UTF-8" "nl_NL.UTF-8" "fr_FR.UTF-8" "es_ES.UTF-8" ]; applyCommand = "localectl set-locale LANG=%%val%%";
+        # @option widget = "dropdown"; label = "Default locale"; group = "Time and locale"; choices = [ "en_US.UTF-8" "en_GB.UTF-8" "en_AU.UTF-8" "en_CA.UTF-8" "de_DE.UTF-8" "nl_NL.UTF-8" "fr_FR.UTF-8" "es_ES.UTF-8" "pt_BR.UTF-8" "pt_PT.UTF-8" "it_IT.UTF-8" "pl_PL.UTF-8" "ru_RU.UTF-8" "uk_UA.UTF-8" "tr_TR.UTF-8" "ar_SA.UTF-8" "he_IL.UTF-8" "hi_IN.UTF-8" "ja_JP.UTF-8" "ko_KR.UTF-8" "zh_CN.UTF-8" "zh_TW.UTF-8" "sv_SE.UTF-8" "da_DK.UTF-8" "fi_FI.UTF-8" "nb_NO.UTF-8" ]; applyCommand = "localectl set-locale LANG=%%val%%"; description = "System language and formatting locale. Dux Shell follows it by default; its own Locale settings can override it at runtime.";
         i18n.defaultLocale = "en_US.UTF-8";
 
         # @option widget = "table-attrset"; label = "Extra locale settings"; group = "Time and locale"; advanced = true; columns = [ "locale" ]; columnTypes = [ "str" ]; keyEditable = true; description = "Per-category locale overrides, for example LC_TIME = nl_NL.UTF-8.";
@@ -386,7 +386,11 @@
         system.nixos.distroId = "ojuny";
 
         # DO NOT CHANGE, this value is for the *initial* state and should not be changed.
-        system.stateVersion = "25.05";
+        system.stateVersion = "26.11";
+
+        # Point at the source that built this system. The marker does not store
+        # the state versions; setup evaluates the source to read them.
+        environment.etc."ojuny/flake-source".source = self.outPath;
 
       };
 

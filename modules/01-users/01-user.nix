@@ -39,7 +39,7 @@
 
       home-manager.users = {
         user = {
-          home.stateVersion = "25.05";
+          home.stateVersion = "26.11";
         };
       };
 

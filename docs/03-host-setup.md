@@ -33,6 +33,8 @@ the flake.
    - optional SSH authorized keys (paste, repeatable)
    - `home.stateVersion` only; `system.stateVersion` is written once and never
      exposed or prompted (D15a)
+   - the temporary `system-ssh-test` module is imported only when the
+     username is `den`
 3. Host wiring - the single host imports the pages it uses plus the generated
    files, and `flake.nix` registers `nixosConfigurations.<hostname>`. All
    system-specific settings live in the system directory; making a second
@@ -95,8 +97,8 @@ the flake.
   The generated `07-system/00-hardware.nix` has no `@menu` header and never
   appears (D5, D6a).
 - `07-system/09-facter.nix` is the Hardware profile page. It has the profile
-  dropdown and the facter wiring; the detected model, profile and state are not
-  rendered as controls because the GUI is a source editor. The generated
+  dropdown, read-only detected model, profile and state controls, and the
+  effective GPU layout and source. The generated
   `07-system/00-hardware-quirks.nix` has no `@menu` header and never appears.
 - The script never edits files that the GUI owns (the hand-written page files);
   it only creates the generated file and fills the templates.
@@ -105,13 +107,20 @@ the flake.
 
 `generate-hw` writes `modules/07-system/facter.json` with `nixos-facter`.
 `regenerate-hardware` maps `smbios.system.manufacturer` and
-`smbios.system.product` to one profile from
+`smbios.system.product` or `smbios.system.version` to one profile from
 `modules/07-system/10-hardware-profile.nix` and writes
 `modules/07-system/00-hardware-quirks.nix` with:
 
 ```nix
 imports = [ inputs.nixos-hardware.nixosModules.<slug> ];
 ```
+
+A profile that starts with `ojuny-` imports `self.modules.nixos.<slug>`
+instead, for models with no nixos-hardware profile. When the facter report
+lists a GPU variant that nixos-hardware splits out, the generator imports the
+variant slug. `GPU_PROFILES` in `10-hardware-profile.nix` records the layouts
+and variants; `hardware.graphics_card` is optional, so a missing key leaves the
+layout `unknown` and the Graphics page falls back to its manual controls.
 
 Both scripts also write one `boot.initrd.luks.devices."<mapper>".device` line
 per open LUKS device, using the encrypted parent partition's UUID rather than
@@ -120,8 +129,9 @@ can unlock it without the boot delay or missing-device failure. Lines that the
 `nixos-generate-config` output already contains are not duplicated.
 
 The Hardware report page (`09-facter.nix`) shows the detected model, profile
-and state, and a profile dropdown. `auto` uses the mapping. A non-`auto` value
-is honoured even when detection fails. Apply a dropdown change without a root
+and state, the effective GPU layout and its source, and a profile dropdown.
+`auto` uses the mapping. A non-`auto` value is honoured even when detection
+fails. Apply a dropdown change without a root
 `nixos-generate-config` run:
 
 ```sh
