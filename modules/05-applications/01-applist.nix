@@ -16,6 +16,56 @@
       pkgs,
       ...
     }:
+    let
+      calendarMimeTypes = [
+        "text/calendar"
+        "text/x-vcalendar"
+        "application/ics"
+        "x-scheme-handler/webcal"
+        "x-scheme-handler/webcals"
+      ];
+
+      diskImageMimeTypes = [
+        "application/x-cd-image"
+        "application/x-iso9660-image"
+        "application/x-raw-disk-image"
+        "application/x-raw-disk-image-xz-compressed"
+        "application/vnd.efi.iso"
+        "application/x-apple-diskimage"
+      ];
+
+      mountImage = pkgs.writeShellApplication {
+        name = "ojuny-mount-image";
+        runtimeInputs = with pkgs; [
+          coreutils
+          gnused
+          libnotify
+          udisks2
+          util-linux
+          xdg-utils
+        ];
+        text = builtins.readFile ../../scripts/ojuny-mount-image.sh;
+      };
+
+      mountImageDesktop = pkgs.makeDesktopItem {
+        name = "ojuny-mount-image";
+        desktopName = "Mount Disk Image";
+        comment = "Mount a disk image and open it";
+        exec = "ojuny-mount-image %f";
+        icon = "drive-harddisk";
+        categories = [ "Utility" ];
+        mimeTypes = diskImageMimeTypes;
+        noDisplay = true;
+      };
+
+      calendarDefaults = lib.genAttrs calendarMimeTypes (
+        _: lib.mkDefault "dev.duxlabs.calendar.desktop"
+      );
+
+      diskImageDefaults = lib.genAttrs diskImageMimeTypes (
+        _: lib.mkDefault "ojuny-mount-image.desktop"
+      );
+    in
     {
       options.ojuny.apps.mimeDefaults = lib.mkOption {
         type = lib.types.attrsOf (
@@ -47,8 +97,13 @@
           libnotify
           wtype
           ydotool
+          gnome-disk-utility
+        ] ++ [
+          mountImage
+          mountImageDesktop
         ];
         services.upower.enable = true;
+        services.udisks2.enable = true;
 
         xdg.mime.enable = true;
 
@@ -59,9 +114,11 @@
         ojuny.apps.mimeDefaults = { };
 
         # Derived from the table above; no @option.
-        xdg.mime.defaultApplications = lib.mapAttrs (
-          _: entry: entry.desktop
-        ) config.ojuny.apps.mimeDefaults;
+        xdg.mime.defaultApplications = lib.mkMerge [
+          (lib.mapAttrs (_: entry: entry.desktop) config.ojuny.apps.mimeDefaults)
+          calendarDefaults
+          diskImageDefaults
+        ];
       };
 
       # Larger optional applications are installed from their own pages: the

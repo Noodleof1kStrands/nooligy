@@ -73,6 +73,10 @@ rolling repository.
   `hardware.nix` describes an existing layout.
 - Secure Boot is an optional post-install step for UEFI with systemd-boot. It
   is not enabled by the installer and is not a security guarantee.
+- Raven is an optional, experimental Windows runtime on the App format
+  compatibility page. It is off by default, handles `.exe`, `.msi` and `.bat`
+  files, and is not guaranteed to run a given program. `.bat` support is
+  best-effort and interactive scripts need a terminal.
 - The settings scanner does not reorder keys inside a list, so a setting that
   needs a fixed order must declare it in the module.
 - Seven patches are pre-included in `modules/patches`: development, docker,

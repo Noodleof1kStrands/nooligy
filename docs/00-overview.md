@@ -72,6 +72,8 @@ Binding for the rest of the spec.
 - `nix-settings-gui` (the settings menu)
 - `nix-regedit` (registry-editor style GUI for flakes)
 - `nix-shell-gui` (temporary `nix run`/`nix shell` app store)
+- `raven` (optional experimental Windows runtime; `ojuny-project/raven` on the
+  `nix-flake` branch until the packaging is upstreamed)
 - `simple-nix-update-gui` (update GUI, state daemon, tray)
 - `stylix`
 - `nixos-hardware` (x86_64 laptop and desktop profiles; one profile per
@@ -80,7 +82,9 @@ Binding for the rest of the spec.
 - `base16-schemes` (theme presets)
 
 The four `nix-*` tools are github:ojuny-project flakes and are already wired into
-dendrite, so the template reuses them.
+dendrite, so the template reuses them. Raven is separate: it is installed only
+when the App format compatibility page enables it, and its input moves upstream
+after testing.
 
 Hardware profiles are split two ways. Automatic selection reads
 `modules/07-system/facter.json`, matches the SMBIOS vendor and product against

@@ -25,6 +25,11 @@
       inputs.stylix.follows = "stylix";
     };
 
+    raven = {
+      url = "github:ojuny-project/raven?ref=nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     dux-greeter = {
       url = "github:duxlabs-dev/dux-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -176,6 +181,7 @@
             mango = inputs.ojuny-desktop.inputs.mangowm.packages.${system}.mango;
             dux = inputs.ojuny-desktop.inputs.dux-shell.packages.${system}.default;
             dms-greeter = inputs.dux-greeter.packages.${system}.dms-greeter;
+            raven = inputs.raven.packages.${system}.raven;
             ojuny-cli = inputs.ojuny-cli.packages.${system}.ojuny-cli;
             ojuny-patches-cli = inputs.ojuny-cli.packages.${system}.ojuny-patches-cli;
             ojuny-manual = inputs.ojuny-manual.packages.${system}.default;

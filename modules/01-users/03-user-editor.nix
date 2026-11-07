@@ -58,19 +58,93 @@ let
 in
 {
 
-  flake.modules.homeManager.users-user-editor = { config, ... }: {
-    programs.micro.enable = true;
-    programs.micro.settings.colorscheme = "ojuny";
+  flake.modules.homeManager.users-user-editor = { config, pkgs, ... }:
+    let
+      textMimeTypes = [
+        "text/plain"
+        "text/markdown"
+        "text/x-markdown"
+        "text/x-log"
+        "application/x-zerosize"
+        "application/json"
+        "application/yaml"
+        "application/x-yaml"
+        "application/toml"
+        "application/x-toml"
+        "text/xml"
+        "application/xml"
+        "text/css"
+        "text/x-shellscript"
+        "application/x-shellscript"
+        "text/x-sh"
+        "text/x-zsh"
+        "text/x-python"
+        "text/x-csrc"
+        "text/x-chdr"
+        "text/x-c++src"
+        "text/x-c++hdr"
+        "text/x-java"
+        "text/x-perl"
+        "text/x-pascal"
+        "text/x-diff"
+        "text/x-sql"
+        "text/x-php"
+        "application/x-php"
+        "application/x-httpd-php"
+        "text/x-rst"
+        "text/x-tex"
+        "text/x-lua"
+        "text/x-ruby"
+        "text/x-nix"
+        "text/javascript"
+        "application/javascript"
+        "application/x-javascript"
+      ];
+    in
+    {
+      xdg.enable = true;
+      xdg.mimeApps.enable = true;
+      xdg.mimeApps.defaultApplications = lib.genAttrs textMimeTypes (
+        _: "ojuny-editor.desktop"
+      );
 
-    # Stylix's micro target hard-codes the "simple" colorscheme; disable it so
-    # the generated scheme is the only definition.
-    stylix.targets.micro.enable = lib.mkForce false;
+      home.packages = [
+        (pkgs.writeShellScriptBin "ojuny-editor" ''
+          exec "''${EDITOR:-micro}" "$@"
+        '')
+      ];
 
-    xdg.configFile."micro/colorschemes/ojuny.micro".text =
-      microColorscheme config.lib.stylix.colors.withHashtag;
+      xdg.desktopEntries.ojuny-editor = {
+        name = "Text Editor";
+        genericName = "Text Editor";
+        comment = "Edit text files in the terminal";
+        exec = "ojuny-editor %f";
+        icon = "accessories-text-editor";
+        terminal = true;
+        categories = [ "Utility" "TextEditor" ];
+        mimeType = textMimeTypes;
+      };
 
-    home.sessionVariables.EDITOR = lib.mkDefault "micro";
-  };
+      xdg.configFile."xdg-terminals.list".text = "ghostty.desktop\n";
+
+      programs.micro.enable = true;
+      programs.micro.settings.colorscheme = "ojuny";
+
+      # Stylix's micro target hard-codes the "simple" colorscheme; disable it so
+      # the generated scheme is the only definition.
+      stylix.targets.micro.enable = lib.mkForce false;
+
+      xdg.configFile."micro/colorschemes/ojuny.micro".text =
+        microColorscheme config.lib.stylix.colors.withHashtag;
+
+      home.sessionVariables.EDITOR = lib.mkDefault "micro";
+      home.sessionVariables.TERMINAL = "ghostty";
+
+      systemd.user.sessionVariables = {
+        EDITOR = config.home.sessionVariables.EDITOR;
+        TERMINAL = "ghostty";
+      };
+    };
 
   flake.modules.nixos.users-user-editor = { config, ... }:
     let

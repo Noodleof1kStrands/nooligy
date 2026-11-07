@@ -13,6 +13,9 @@
     { config, ... }:
     {
       config = {
+        desktop.ojuny.dux.session.terminalOverride = "ghostty";
+        environment.variables.TERMINAL = "ghostty";
+
         # Shape and surface
         # @option widget = "dropdown"; label = "Interface style"; group = "Shape and surface"; groupOrder = 65; order = 10; choices = [ "expressive" "classic" ]; description = "Controls whether controls use expressive shape morphing or one fixed corner radius."; applyCommand = "dms ipc call settings set interfaceStyle %%val%%";
         desktop.ojuny.dux.settings.interfaceStyle = "expressive";

@@ -72,6 +72,7 @@ differs from the generator output.
 - `modules/05-applications/05-steam.nix`
 - `modules/05-applications/06-kdeconnect.nix`
 - `modules/05-applications/07-screenshot.nix`
+- `modules/05-applications/08-appimage.nix`
 
 ## `06-utility`
 
@@ -100,6 +101,10 @@ differs from the generator output.
 - `modules/07-system/plymouth/ojuny-logo.png`
 - `modules/07-system/plymouth/ojuny.plymouth`
 - `modules/07-system/plymouth/ojuny.script.in`
+- `modules/07-system/quirks/asus-expertbook-b9406.nix`
+- `modules/07-system/quirks/asus-rog-z13-gz302.nix`
+- `modules/07-system/quirks/asus-zenbook-ux5406aa.nix`
+- `modules/07-system/quirks/lenovo-yoga-pro-7-14iah10.nix`
 - `modules/07-system/wireguard-import.sh`
 
 ## `patches`

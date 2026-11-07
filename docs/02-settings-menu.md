@@ -49,7 +49,7 @@ category; the `@menu` `category` string is authoritative.
 | `02-Core` | display, input, binds, gestures, theme, typography, compositor, shell, browser, git, terminal, autostart, updates, nixsettings, audio |
 | `03-Desktop` | login, mangosettings, mangomaster, mangodwindle, scroller, mangoworkspaces, notifications, screensaver, clipboard, monocle-deck |
 | `04-GUI` | bar, dock, launcher, dashboard, controlcenter, menu |
-| `05-Applications` | applist, screenshot, multimedia, office, vesktop, steam, kdeconnect |
+| `05-Applications` | applist, screenshot, multimedia, office, vesktop, steam, kdeconnect, app format compatibility |
 | `06-Utility` | dux-tools, webapps, plugins |
 | `07-System` | configuration, networking, bluetooth, graphics, plymouth |
 | `Patches` | pre-included: patch-development, patch-docker, patch-flatpak, patch-impermanence, patch-nixshell, patch-remote-desktop, patch-virtualization; installed patches add more |
@@ -163,6 +163,18 @@ current working set for review.
   Xbox controller support and gaming (D12).
 - `06-kdeconnect.nix` `[menu]`. Phone notifications, file transfer and
   remote input.
+- `08-appimage.nix` `[menu]`. App format compatibility. The AppImage half is
+  the AppImage runtime and double-click handler: it enables `programs.appimage`,
+  registers the binfmt handlers, installs a hidden `ojuny-appimage.desktop`
+  handler, and sets it as the default for `application/vnd.appimage` and
+  `application/x-iso9660-appimage`. The "AppImage environment includes" list
+  adds packages only to the AppImage runtime, not to the system environment.
+  The runtime also carries the system and Stylix fonts, icons, cursor and GTK
+  theme. The same page has an optional Raven switch, off by default. It installs
+  the experimental Raven runtime and associates `.exe`, `.msi` and `.bat` files
+  with it. Raven is not guaranteed to run a given program; `.bat` support is
+  best-effort and interactive scripts need a terminal. It does not affect Steam
+  or Proton, and it uses Raven's default prefix unless `RAVEN_PREFIX` is set.
 
 ### 06-utility
 

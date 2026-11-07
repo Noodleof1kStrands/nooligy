@@ -958,11 +958,11 @@
         "tinted-theming": "tinted-theming"
       },
       "locked": {
-        "lastModified": 1794058901,
-        "narHash": "sha256-9+RCduohWsWej3f25c8uyKH26r5sZu38xsH6c5mleRQ=",
+        "lastModified": 1794065609,
+        "narHash": "sha256-tJ/55g+hEsnesn/ro3OPFpncd4mC/1zAYf0eZDjSOpE=",
         "owner": "ojuny-project",
         "repo": "nix-settings-gui",
-        "rev": "df8630a17d874bc7d10139c95e04f165e46eb000",
+        "rev": "5b5f447a99bc42c878c1f18eddffcd8ccc68ace5",
         "type": "github"
       },
       "original": {
@@ -1284,6 +1284,27 @@
         "type": "github"
       }
     },
+    "raven": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794064626,
+        "narHash": "sha256-ilYIYJFnviX8N3QYWMAholPcefyvbJ1JrEVD49M+j6A=",
+        "owner": "ojuny-project",
+        "repo": "raven",
+        "rev": "d4755883e65caf25ed5ee09adc493b9e7e83935a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ojuny-project",
+        "ref": "nix-flake",
+        "repo": "raven",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "chromium-webapps": "chromium-webapps",
@@ -1308,6 +1329,7 @@
         "ojuny-cli": "ojuny-cli",
         "ojuny-desktop": "ojuny-desktop",
         "ojuny-manual": "ojuny-manual",
+        "raven": "raven",
         "simple-nix-update-gui": "simple-nix-update-gui",
         "stylix": "stylix"
       }

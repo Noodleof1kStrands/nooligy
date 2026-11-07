@@ -55,6 +55,8 @@
       self.modules.nixos.desktop-launcher
 
       self.modules.nixos.applications-applist
+      self.modules.nixos.applications-appimage
+      self.modules.nixos.applications-appimage-raven
       self.modules.nixos.desktop-dux-tools
       self.modules.nixos.applications-screenshot
       self.modules.nixos.applications-browser
@@ -78,6 +80,7 @@
       self.modules.homeManager.stylix-colors
       self.modules.homeManager.users-user-editor
       self.modules.homeManager.applications-browser
+      self.modules.homeManager.applications-multimedia-player
       self.modules.homeManager.applications-obsidian
       self.modules.homeManager.applications-vesktop
       self.modules.homeManager.applications-terminal-ghostty
