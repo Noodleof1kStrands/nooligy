@@ -18,6 +18,7 @@
       self.modules.nixos.system-accessibility
       self.modules.nixos.system-nixsettings
       self.modules.nixos.system-updates
+      self.modules.nixos.system-first-boot
 
       self.modules.nixos.users-commonsettings
       self.modules.nixos.users
@@ -90,6 +91,7 @@
       self.modules.homeManager.desktop-screensaver
       self.modules.homeManager.applications-webapps
       self.modules.homeManager.dux-tools
+      self.modules.homeManager.first-boot
     ];
 
   };

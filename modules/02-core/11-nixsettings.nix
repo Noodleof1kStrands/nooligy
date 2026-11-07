@@ -18,6 +18,8 @@
       inputs.nix-cleaner.nixosModules.default
     ];
 
+    nixpkgs.overlays = [ inputs.nom-cache-discovery.overlays.default ];
+
     # @option widget = "switch"; label = "Allow unfree packages"; group = "Packages"; groupOrder = 10; order = 100; description = "Needed by Steam, NVIDIA drivers and other proprietary software.";
     nixpkgs.config.allowUnfree = true;
 

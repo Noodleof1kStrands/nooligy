@@ -123,16 +123,16 @@
 
       ravenRun = pkgs.writeShellApplication {
         name = "ojuny-raven";
-        runtimeInputs = [ pkgs.coreutils ];
+        runtimeInputs = [ pkgs.coreutils pkgs.gnused ];
         text = ''
           if [ "$#" -eq 0 ]; then
             echo "usage: ojuny-raven FILE.exe" >&2
             exit 2
           fi
-          file="$(realpath -- "$1")"
+          host_file="$(realpath -- "$1")"
           shift
-          cd -- "$(dirname -- "$file")"
-          exec ${config.programs.raven.package}/bin/raven --run-process --execution=native --timeout-ms=86400000 --desktop=wayland "$file" "$@"
+          win_dir="Z:$(dirname -- "$host_file" | sed 's|/|\\|g')"
+          exec ${config.programs.raven.package}/bin/raven --run-process --execution=native --timeout-ms=86400000 --desktop=wayland --directory="$win_dir" "$host_file" "$@"
         '';
       };
 

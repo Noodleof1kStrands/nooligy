@@ -180,13 +180,13 @@ with no classifiable PCI display controller. When it is absent, `auto`
 falls back to the selected profile's layout and then to `unknown`, which
 resolves to `none`. The concrete targets remain manual overrides.
 
-## Omarchy x86 parity
+## Reference x86 parity
 
-Omarchy applies hardware fixes by DMI predicate rather than by profile.
-The following x86 devices are covered by an Ojuny profile or are recorded
-as blocked.
+The reference Arch installer applies hardware fixes by DMI predicate rather
+than by profile. The following x86 devices are covered by an Ojuny profile or
+are recorded as blocked.
 
-| Omarchy device | Ojuny status |
+| Reference device | Ojuny status |
 |----------------|--------------|
 | ASUS ROG family | Covered by the ROG Strix, Zephyrus, Flow and Ally rows |
 | ASUS ProArt PX13 HN7306EAC | Covered by `asus-proart-px13-hn7306eac` |

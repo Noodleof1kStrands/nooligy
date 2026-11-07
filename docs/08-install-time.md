@@ -1,7 +1,7 @@
 # Install time benchmark
 
-This is the measurement protocol for comparing Ojuny install time with
-Omarchy and with earlier Ojuny ISOs.
+This is the measurement protocol for comparing Ojuny install time with the
+reference Arch install and with earlier Ojuny ISOs.
 
 ## Controlled setup
 
@@ -49,7 +49,7 @@ output, so copy it off the machine after each run.
 
 | Installer | ISO version | ISO SHA-256 | Date | Run 1 | Run 2 | Run 3 | Median |
 |---|---|---|---|---|---|---|---|
-| Omarchy | pending | pending | 2026-11-06 | 2:00 | | | 2:00 |
+| Arch reference | pending | pending | 2026-11-06 | 2:00 | | | 2:00 |
 | Ojuny online | current | pending | 2026-11-06 | 25:00 | | | 25:00 |
 | Ojuny discovery | current | pending | 2026-11-06 | 18:00 | | | 18:00 |
 | Ojuny offline | current | pending | 2026-11-06 | 60:00 | | | 60:00 |
@@ -76,19 +76,19 @@ on the i7-8565U test machine takes three to four hours, mostly ISO assembly.
 The build-all path builds the Rust packages once and reuses them for the ISOs,
 so that cost is carried by the ISO build, not by the user install.
 
-The Omarchy baseline is the actual install only: it starts after the
+The Arch reference baseline is the actual install only: it starts after the
 configurator and ends when the installer reports completion. It excludes the
 post-install reboot and any pre-install configuration.
 
-Omarchy is fast because the current ISO writes a pre-built Arch Linux and
-Omarchy root filesystem image to the target with `zstdcat | dd`, grows it to
-the partition, then installs only the per-machine packages and runs the chroot
+The Arch reference is fast because its current ISO writes a pre-built Arch
+Linux root filesystem image to the target with `zstdcat | dd`, grows it to the
+partition, then installs only the per-machine packages and runs the chroot
 setup. The multi-gigabyte ISO carries that image and the offline package
 mirror. It does not download or pacstrap the whole system during the install.
 
 ## Notes
 
-- Omarchy is the baseline for the same hardware.
+- The Arch reference install is the baseline for the same hardware.
 - Ojuny runs compare ISO versions on the same device.
 - Do not compare runs made on different USB drives, ports or target disks.
 - Record any installer prompt that waits for input and exclude idle time only

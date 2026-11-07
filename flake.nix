@@ -93,6 +93,10 @@
       url = "github:ojuny-project/nix-cache-discovery";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nom-cache-discovery = {
+      url = "github:ojuny-project/nom-cache-discovery";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-cleaner = {
       url = "github:ojuny-project/nix-cleaner";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -392,10 +396,19 @@
               diff -u ${source}/docs/module-tree.md docs/module-tree.md
               touch $out
             '';
+
+          checks.default = pkgs.runCommand "check-default" { } ''
+            echo ${self.checks.${system}.hardware-profile} >/dev/null
+            echo ${self.checks.${system}.bind-args} >/dev/null
+            echo ${self.checks.${system}.module-tree-current} >/dev/null
+            touch $out
+          '';
         };
 
       flake = {
-        hydraJobs = self.checks;
+        hydraJobs = self.checks // {
+          fixture-system-build = self.nixosConfigurations.fixture.config.system.build.toplevel;
+        };
 
         nixosModules.default = inputs.ojuny-desktop.nixosModules.default;
         homeManagerModules.default = inputs.ojuny-desktop.homeManagerModules.default;
@@ -407,7 +420,7 @@
             user = "root";
             path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos configuration;
           };
-        }) self.nixosConfigurations;
+        }) (builtins.removeAttrs self.nixosConfigurations [ "fixture" ]);
       };
       # nixosConfigurations.<host> is registered by scripts/setup.sh, which also
       # writes modules/07-system/01-configuration.nix.
