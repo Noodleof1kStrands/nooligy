@@ -96,6 +96,7 @@ differs from the generator output.
 - `modules/07-system/08-accessibility.nix`
 - `modules/07-system/09-facter.nix`
 - `modules/07-system/10-hardware-profile.nix`
+- `modules/07-system/11-first-boot.nix`
 - `modules/07-system/_00-ssh-test.nix`
 - `modules/07-system/plymouth/_theme.nix`
 - `modules/07-system/plymouth/ojuny-logo.png`
@@ -106,6 +107,10 @@ differs from the generator output.
 - `modules/07-system/quirks/asus-zenbook-ux5406aa.nix`
 - `modules/07-system/quirks/lenovo-yoga-pro-7-14iah10.nix`
 - `modules/07-system/wireguard-import.sh`
+
+## `home-manager`
+
+- `modules/home-manager/10-first-boot.nix`
 
 ## `patches`
 

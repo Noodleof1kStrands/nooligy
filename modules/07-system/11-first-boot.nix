@@ -1,4 +1,4 @@
- { self, ... }:
+{ ... }:
 
 {
   flake.modules.nixos.system-first-boot =
