@@ -295,7 +295,7 @@
         # @option widget = "switch"; label = "32-bit graphics"; group = "Graphics"; groupOrder = 10; order = 30; description = "Install 32-bit graphics libraries for 32-bit games and Wine. A hardware profile that owns the GPU settings supplies its own value.";
         ojuny.gpu32Bit = false;
 
-        hardware.graphics.enable32Bit = lib.mkIf (!managed) config.ojuny.gpu32Bit;
+        hardware.graphics.enable32Bit = lib.mkIf (!managed) (lib.mkDefault config.ojuny.gpu32Bit);
 
         # @option widget = "switch"; label = "Redistributable firmware"; group = "Graphics"; groupOrder = 10; order = 40; description = "Firmware blobs for Wi-Fi, GPUs and other devices.";
         hardware.enableRedistributableFirmware = true;

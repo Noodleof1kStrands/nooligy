@@ -341,10 +341,8 @@
           "--height=40%"
           "--layout=reverse"
           "--border"
+          "--history-size=10000"
         ];
-
-        # @option widget = "spin"; label = "fzf history size"; group = "TUIs"; groupOrder = 56; order = 150; min = 100; max = 100000; step = 100;
-        programs.fzf.historySize = 10000;
 
         stylix.targets.bat.enable = true;
         stylix.targets.fzf.enable = true;
