@@ -14,7 +14,8 @@ own.
 systemd-boot reads boot entries from its own ESP and its XBOOTLDR partition.
 It does not read another ESP. Windows on the same ESP is detected natively. Any
 other operating system on another ESP or another internal disk needs the
-helper.
+helper. In the separate ojuny ESP layout in `10-recovery.md`, Windows is on the
+Windows ESP and the helper is required.
 
 The setting is on the Multiboot page:
 
@@ -86,6 +87,12 @@ can leave Windows unbootable.
 The attended installer can shrink XFS, EXT4, BTRFS, f2fs and vfat partitions
 and install into the freed space. It does not resize NTFS. The whole-disk and
 unattended paths wipe the disk and are not dual-boot paths.
+
+Install Windows first. Windows recreates the ESP when it installs and removes a
+Linux bootloader installed before it. Do not resize the 200 MiB Windows ESP.
+The installer creates a 1 GiB ojuny ESP in the free space and leaves the
+Windows ESP unassigned. systemd-boot, rEFInd, the kernels, the initrds and the
+recovery UKI live on the ojuny ESP.
 
 ## Adding a drive
 

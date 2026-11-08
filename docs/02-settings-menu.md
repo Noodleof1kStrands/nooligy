@@ -231,6 +231,10 @@ current working set for review.
   It adds an "Other systems" systemd-boot entry and scans internal drives at
   boot. The installer enables it when another internal system is found. It is
   documented in `09-multiboot.md`.
+- `13-recovery.nix` `[menu]`. Recovery UKI switch, on by default. It builds a
+  signed UKI and adds an "Ojuny Recovery" firmware entry.
+- `13-recovery-backend.nix` `[no menu]`. Builds and signs the recovery UKI.
+- `13-bootorder.nix` `[no menu]`. Keeps the Ojuny firmware entries first.
 
 ### patches
 

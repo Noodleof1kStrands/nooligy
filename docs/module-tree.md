@@ -99,7 +99,11 @@ differs from the generator output.
 - `modules/07-system/11-first-boot.nix`
 - `modules/07-system/12-multiboot-backend.nix`
 - `modules/07-system/12-multiboot.nix`
+- `modules/07-system/13-bootorder.nix`
+- `modules/07-system/13-recovery-backend.nix`
+- `modules/07-system/13-recovery.nix`
 - `modules/07-system/_00-ssh-test.nix`
+- `modules/07-system/bootorder.sh`
 - `modules/07-system/multiboot-cleanup.sh`
 - `modules/07-system/multiboot.sh`
 - `modules/07-system/plymouth/_theme.nix`
@@ -110,6 +114,8 @@ differs from the generator output.
 - `modules/07-system/quirks/asus-rog-z13-gz302.nix`
 - `modules/07-system/quirks/asus-zenbook-ux5406aa.nix`
 - `modules/07-system/quirks/lenovo-yoga-pro-7-14iah10.nix`
+- `modules/07-system/recovery-cleanup.sh`
+- `modules/07-system/recovery-uki.sh`
 - `modules/07-system/wireguard-import.sh`
 
 ## `home-manager`

@@ -77,6 +77,9 @@ rolling repository.
   systems" entry and scans internal drives at boot. The installer enables it
   when another internal system is found. It is UEFI only, and it never resizes
   Windows NTFS.
+- Recovery is a switch on the Recovery page, on by default. It builds a signed
+  recovery UKI and adds an "Ojuny Recovery" firmware entry that boots the
+  installed system without systemd-boot or rEFInd.
 - Raven is an optional, experimental Windows runtime on the App format
   compatibility page. It is off by default, handles `.exe`, `.msi` and `.bat`
   files, and is not guaranteed to run a given program. `.bat` support is
@@ -104,6 +107,7 @@ rolling repository.
 - `docs/08-install-time.md`: install-time benchmark protocol and results.
 - `docs/09-multiboot.md`: the optional rEFInd helper for other operating
   systems.
+- `docs/10-recovery.md`: the optional recovery UKI and firmware boot order.
 
 ## Contributing
 

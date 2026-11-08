@@ -201,3 +201,7 @@ boot is enabled, adding the helper changes the PCR 4 measurements and the
 pcrlock policy must be re-enrolled. The helper can start Windows because
 Windows Boot Manager is Microsoft signed. Another Linux distribution can only
 start when its boot loader is signed by a key the firmware trusts.
+
+The optional recovery UKI in `docs/10-recovery.md` is also signed with the same
+`sbctl` keys. It is a direct firmware boot path that does not depend on
+systemd-boot or rEFInd.

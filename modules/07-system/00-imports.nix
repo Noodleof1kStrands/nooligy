@@ -11,6 +11,9 @@
       self.modules.nixos.system-secureboot
       self.modules.nixos.system-multiboot
       self.modules.nixos.system-multiboot-backend
+      self.modules.nixos.system-recovery
+      self.modules.nixos.system-recovery-backend
+      self.modules.nixos.system-bootorder
       self.modules.nixos.system-networking
       self.modules.nixos.system-bluetooth
       self.modules.nixos.system-graphics
