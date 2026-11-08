@@ -191,3 +191,13 @@ infrastructure and no key server.
 This flow is optional and unsupported beyond what is written here. It does not
 make Ojuny a security-focused distribution, and it does not guarantee that a
 modified system stays secure.
+
+## 10. Multiboot and the rEFInd helper
+
+The optional multiboot helper in `docs/09-multiboot.md` is chainloaded by
+systemd-boot; it does not replace systemd-boot or Lanzaboote. Under Secure Boot
+the helper must be signed with the same `sbctl` keys. If Lanzaboote measured
+boot is enabled, adding the helper changes the PCR 4 measurements and the
+pcrlock policy must be re-enrolled. The helper can start Windows because
+Windows Boot Manager is Microsoft signed. Another Linux distribution can only
+start when its boot loader is signed by a key the firmware trusts.

@@ -128,6 +128,12 @@ the filesystem UUID inside the mapper. This includes encrypted swap, so stage 1
 can unlock it without the boot delay or missing-device failure. Lines that the
 `nixos-generate-config` output already contains are not duplicated.
 
+`generate-hw` also detects the split boot layout. When `/efi` is mounted and
+`/boot` is an XBOOTLDR partition, it writes
+`boot.loader.efi.efiSysMountPoint = "/efi"` and
+`boot.loader.systemd-boot.xbootldrMountPoint = "/boot"`. When `/boot` is the
+ESP, the defaults stay in place.
+
 The Hardware report page (`09-facter.nix`) shows the detected model, profile
 and state, the effective GPU layout and its source, and a profile dropdown.
 `auto` uses the mapping. A non-`auto` value is honoured even when detection

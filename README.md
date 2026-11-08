@@ -73,10 +73,16 @@ rolling repository.
   `hardware.nix` describes an existing layout.
 - Secure Boot is an optional post-install step for UEFI with systemd-boot. It
   is not enabled by the installer and is not a security guarantee.
+- Multiboot is an optional rEFInd helper, off by default. It adds an "Other
+  systems" entry and scans internal drives at boot. The installer enables it
+  when another internal system is found. It is UEFI only, and it never resizes
+  Windows NTFS.
 - Raven is an optional, experimental Windows runtime on the App format
   compatibility page. It is off by default, handles `.exe`, `.msi` and `.bat`
   files, and is not guaranteed to run a given program. `.bat` support is
-  best-effort and interactive scripts need a terminal.
+  best-effort and interactive scripts need a terminal. Failed launches open a
+  report dialog; survey mode is debug-only and may break the Raven
+  configuration.
 - The settings scanner does not reorder keys inside a list, so a setting that
   needs a fixed order must declare it in the module.
 - Seven patches are pre-included in `modules/patches`: development, docker,
@@ -96,6 +102,8 @@ rolling repository.
 - `docs/07-lifecycle.md`: machine handover, factory reset, full reset and
   NixOS generation rollback.
 - `docs/08-install-time.md`: install-time benchmark protocol and results.
+- `docs/09-multiboot.md`: the optional rEFInd helper for other operating
+  systems.
 
 ## Contributing
 

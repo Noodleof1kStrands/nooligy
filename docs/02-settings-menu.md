@@ -175,6 +175,11 @@ current working set for review.
   with it. Raven is not guaranteed to run a given program; `.bat` support is
   best-effort and interactive scripts need a terminal. It does not affect Steam
   or Proton, and it uses Raven's default prefix unless `RAVEN_PREFIX` is set.
+  A failed launch writes a report under `${XDG_STATE_HOME:-$HOME/.local/state}/ojuny/raven`
+  and opens a floating dialog with the log, the Raven revision, hardware, OS
+  including `ID_LIKE`, kernel, compositor, selected session environment, the Raven issue tracker
+  link, and a survey-mode relaunch button. Survey mode warns that it may break
+  the Raven configuration and is gated by a confirmation.
 
 ### 06-utility
 
@@ -222,6 +227,10 @@ current working set for review.
   Applying a change rewrites `00-hardware-quirks.nix` with
   `nix run .#regenerate-hardware -- --profile-only`.
 - `07-plymouth.nix` `[menu]`. Stylix-coloured Plymouth boot splash with the Ojuny logo.
+- `12-multiboot.nix` `[menu]`. Optional rEFInd helper on UEFI. Off by default.
+  It adds an "Other systems" systemd-boot entry and scans internal drives at
+  boot. The installer enables it when another internal system is found. It is
+  documented in `09-multiboot.md`.
 
 ### patches
 

@@ -9,6 +9,8 @@
       self.modules.nixos.system-hardware-profile
       self.modules.nixos.system-bootloader
       self.modules.nixos.system-secureboot
+      self.modules.nixos.system-multiboot
+      self.modules.nixos.system-multiboot-backend
       self.modules.nixos.system-networking
       self.modules.nixos.system-bluetooth
       self.modules.nixos.system-graphics

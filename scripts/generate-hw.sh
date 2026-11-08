@@ -52,6 +52,15 @@ if [ "$bootloader" = efi ]; then
   boot_module='
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;'
+  if findmnt -no SOURCE /efi >/dev/null 2>&1; then
+    boot_source="$(findmnt -no SOURCE /boot 2>/dev/null || true)"
+    if [ -n "$boot_source" ] &&
+      [ "$(lsblk -no PARTTYPE "$boot_source" 2>/dev/null || true)" = "bc13c2ff-59e6-4262-a352-b275fd6f7172" ]; then
+      boot_module="$boot_module
+    boot.loader.efi.efiSysMountPoint = \"/efi\";
+    boot.loader.systemd-boot.xbootldrMountPoint = \"/boot\";"
+    fi
+  fi
 else
   disk=""
   root_source="$(findmnt -no SOURCE / 2>/dev/null || true)"
