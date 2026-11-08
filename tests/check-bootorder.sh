@@ -17,6 +17,7 @@ WIN_UUID="22222222-2222-2222-2222-222222222222"
 LINUX_UUID="33333333-3333-3333-3333-333333333333"
 USB_UUID="44444444-4444-4444-4444-444444444444"
 FW_UUID="55555555-5555-5555-5555-555555555555"
+STALE_UUID="66666666-6666-6666-6666-666666666666"
 
 cat >"$WORK/bin/findmnt" <<'EOF'
 #!/bin/sh
@@ -82,6 +83,12 @@ NUMBER[N]=0005
 LABEL[X]="Firmware Update"
 PATH_OF[X]="HD(4,GPT,$FW_UUID,0x800,0x1000)/File(\\EFI\\firmware\\update.efi)"
 NUMBER[X]=0006
+LABEL[S]="Ojuny Recovery"
+PATH_OF[S]="HD(2,GPT,$STALE_UUID,0x800,0x40000)/File(\\EFI\\ojuny\\recovery\\ojuny-recovery.efi)"
+NUMBER[S]=0007
+LABEL[F]="Fallback Linux Boot Manager"
+PATH_OF[F]="HD(1,GPT,$OJUNY_UUID,0x120000,0x40000)/File(\\EFI\\systemd\\systemd-boot-fallbackx64.efi)"
+NUMBER[F]=0008
 
 FAILED=0
 
@@ -102,7 +109,7 @@ numbers_of() {
 tokens_of() {
     local order="$1" result="" number token
     for number in ${order//,/ }; do
-        for token in O R W L U N X; do
+        for token in O R W L U N X S F; do
             if [ "${NUMBER[$token]}" = "$number" ]; then
                 result="$result$token"
                 break
@@ -113,7 +120,7 @@ tokens_of() {
 }
 
 run_scenario() {
-    local name="$1" tokens="$2" expected="$3" recovery="${4:-true}"
+    local name="$1" tokens="$2" expected="$3" recovery="${4:-true}" expect_create="${5:-false}"
     local index token
 
     : >"$WORK/state/entries"
@@ -137,11 +144,15 @@ run_scenario() {
         fail "expected $expected, got $actual"
     fi
 
+    if [ "$expect_create" = "true" ] && [ ! -s "$WORK/state/creates" ]; then
+        fail "expected a firmware entry to be created"
+    fi
+
     local position external
     for ((position = 0; position < ${#tokens}; position++)); do
         external="${tokens:$position:1}"
         case "$external" in
-        U | N | X)
+        U | N | X | S)
             [ "${actual:$position:1}" = "$external" ] ||
                 fail "$external moved from position $((position + 1))"
             ;;
@@ -152,6 +163,55 @@ run_scenario() {
     : >"$WORK/state/creates"
     OJUNY_RECOVERY_ENABLED="$recovery" bash "$SCRIPT"
     [ ! -s "$WORK/state/order_writes" ] || fail "second run reordered again"
+    [ "$(tokens_of "$(cat "$WORK/state/order")")" = "$expected" ] || fail "order changed on second run"
+}
+
+all_entries() {
+    local tokens="$1" index token seen=" "
+    for ((index = 0; index < ${#tokens}; index++)); do
+        token="${tokens:$index:1}"
+        case "$seen" in
+        *" $token "*) continue ;;
+        esac
+        seen="$seen$token "
+        printf 'Boot%s* %s\t%s\n' "${NUMBER[$token]}" "${LABEL[$token]}" "${PATH_OF[$token]}"
+    done
+}
+
+run_install_scenario() {
+    local name="$1" previous="$2" current="$3" expected="$4" recovery="${5:-false}"
+    local entries actual position external
+
+    entries="$(all_entries "$previous$current")"
+    printf '%s\n' "$entries" >"$WORK/state/entries"
+    : >"$WORK/state/creates"
+    : >"$WORK/state/order_writes"
+    numbers_of "$current" >"$WORK/state/order"
+    {
+        printf 'BootCurrent: 0000\n'
+        printf 'BootOrder: %s\n' "$(numbers_of "$previous")"
+        printf '%s\n' "$entries"
+    } >"$WORK/state/previous"
+
+    printf '%s: ' "$name"
+    OJUNY_BOOTORDER_MODE=install \
+        OJUNY_RECOVERY_ENABLED="$recovery" \
+        OJUNY_BOOTORDER_PREVIOUS="$WORK/state/previous" \
+        bash "$SCRIPT"
+    actual="$(tokens_of "$(cat "$WORK/state/order")")"
+    if [ "$actual" = "$expected" ]; then
+        printf '%s\n' "$actual"
+    else
+        printf '%s (expected %s)\n' "$actual" "$expected"
+        fail "expected $expected, got $actual"
+    fi
+
+    : >"$WORK/state/order_writes"
+    OJUNY_BOOTORDER_MODE=install \
+        OJUNY_RECOVERY_ENABLED="$recovery" \
+        OJUNY_BOOTORDER_PREVIOUS="$WORK/state/previous" \
+        bash "$SCRIPT"
+    [ ! -s "$WORK/state/order_writes" ] || fail "second install run reordered again"
     [ "$(tokens_of "$(cat "$WORK/state/order")")" = "$expected" ] || fail "order changed on second run"
 }
 
@@ -169,7 +229,18 @@ run_scenario "recovery disabled, already correct" OW OW false
 run_scenario "recovery disabled, stale recovery entry" WRO ORW false
 run_scenario "ojuny entry missing" WU WU
 run_scenario "only ojuny and recovery" RO OR
+run_scenario "stale recovery entry on another ESP" WSO OSW true true
 run_scenario "usb, ojuny, recovery, ubuntu, windows, pxe" UORLWN UORLWN
+
+run_install_scenario "install: new entry at top" UW OUW UOW
+run_install_scenario "install: fallback entry after new entry" UW OFUW UOFW
+run_install_scenario "install: already above first internal" W OW OW
+run_install_scenario "install: entry moved from the middle" UOW OUW UOW
+run_install_scenario "install: entry already first" OWU OWU OWU
+run_install_scenario "install: no other internal entry" U OU UO
+run_install_scenario "install: ojuny entry missing" UW UW UW
+run_install_scenario "install: windows first" WU OWU OWU
+run_install_scenario "install: recovery on the current ESP" UW ORUW UORW true
 
 if [ "$FAILED" -eq 0 ]; then
     printf 'all scenarios passed\n'

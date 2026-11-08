@@ -170,10 +170,24 @@
             ];
             text = builtins.readFile ./scripts/generate-user.sh;
           };
+
+          ojuny-bootorder = pkgs.writeShellApplication {
+            name = "ojuny-bootorder";
+            runtimeInputs = with pkgs; [
+              coreutils
+              efibootmgr
+              findutils
+              gawk
+              gnugrep
+              gnused
+              util-linux
+            ];
+            text = builtins.readFile ./modules/07-system/bootorder.sh;
+          };
         in
         {
           packages = {
-            inherit prepare-repo regenerate-hardware;
+            inherit prepare-repo regenerate-hardware ojuny-bootorder;
 
             nix-settings-gui = inputs.nix-settings-gui.packages.${system}.default;
             nix-regedit = inputs.nix-regedit.packages.${system}.default;

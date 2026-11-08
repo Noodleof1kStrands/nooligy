@@ -12,19 +12,7 @@
       recoveryEnabled = config.ojuny.recovery.enable;
       recoveryFile = "${bootMountPoint}/EFI/ojuny/recovery/ojuny-recovery.efi";
 
-      bootorder = pkgs.writeShellApplication {
-        name = "ojuny-bootorder";
-        runtimeInputs = with pkgs; [
-          coreutils
-          efibootmgr
-          findutils
-          gawk
-          gnugrep
-          gnused
-          util-linux
-        ];
-        text = builtins.readFile ./bootorder.sh;
-      };
+      bootorder = self.packages.${pkgs.system}.ojuny-bootorder;
     in
     {
       systemd.services.ojuny-bootorder = {

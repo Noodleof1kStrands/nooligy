@@ -40,6 +40,13 @@ already correct, so a plugged-in USB drive is not forced above or below ojuny.
 If Windows resets the boot order, boot ojuny once from the firmware menu. The
 service restores the order.
 
+The installer applies the rule once, after `nixos-install`. It saves the
+firmware order before the install, restores it afterwards, and inserts
+`Linux Boot Manager` above the first internal entry. This undoes the one-time
+move to the top that `bootctl install` performs, so external entries keep their
+positions on devices whose firmware stores them in `BootOrder`. The recovery
+entry is added by the service on the first boot.
+
 ## No-USB recovery
 
 The recovery UKI is a backup boot path for a broken systemd-boot or rEFInd:

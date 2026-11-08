@@ -1,3 +1,10 @@
+mode="${OJUNY_BOOTORDER_MODE:-service}"
+
+if [ "$mode" = "snapshot" ]; then
+    efibootmgr -v 2>/dev/null || true
+    exit 0
+fi
+
 boot_mount="${OJUNY_BOOT_MOUNT:?}"
 recovery_file="${OJUNY_RECOVERY_FILE:-}"
 recovery_enabled="${OJUNY_RECOVERY_ENABLED:-false}"
@@ -29,26 +36,23 @@ find_by_path() {
 }
 
 ojuny_num="$(find_by_path 'systemd-bootx64.efi')"
-if [ -z "$ojuny_num" ]; then
+if [ -z "$ojuny_num" ] && [ "$mode" = "service" ]; then
     ojuny_num="$(find_by_path 'BOOTX64.EFI')"
 fi
-if [ -z "$ojuny_num" ]; then
+if [ -z "$ojuny_num" ] && [ "$mode" = "service" ]; then
     efibootmgr -c -d "/dev/$disk" -p "$partnum" -L 'Linux Boot Manager' -l '\EFI\systemd\systemd-bootx64.efi' >/dev/null 2>&1 || true
     efi="$(efibootmgr -v 2>/dev/null || true)"
     ojuny_num="$(find_by_path 'systemd-bootx64.efi')"
 fi
 
-recovery_num="$(printf '%s\n' "$efi" | awk '/^Boot[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]/ && /Ojuny Recovery/ { print substr($1, 5, 4); exit }')"
-if [ "$recovery_enabled" = "true" ] && [ -n "$recovery_file" ] && [ -f "$recovery_file" ] && [ -z "$recovery_num" ]; then
+recovery_num="$(find_by_path 'ojuny-recovery.efi')"
+if [ "$mode" = "service" ] && [ "$recovery_enabled" = "true" ] && [ -n "$recovery_file" ] && [ -f "$recovery_file" ] && [ -z "$recovery_num" ]; then
     efibootmgr -c -d "/dev/$disk" -p "$partnum" -L 'Ojuny Recovery' -l '\EFI\ojuny\recovery\ojuny-recovery.efi' >/dev/null 2>&1 || true
     efi="$(efibootmgr -v 2>/dev/null || true)"
-    recovery_num="$(printf '%s\n' "$efi" | awk '/^Boot[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]/ && /Ojuny Recovery/ { print substr($1, 5, 4); exit }')"
+    recovery_num="$(find_by_path 'ojuny-recovery.efi')"
 fi
 
 [ -n "$ojuny_num" ] || exit 0
-
-order="$(efibootmgr 2>/dev/null | sed -n 's/^BootOrder: //p' | head -n1 || true)"
-[ -n "$order" ] || exit 0
 
 entry_line() {
     printf '%s\n' "$efi" | awk -v number="$1" '
@@ -63,7 +67,7 @@ entry_line() {
 
 is_ojuny_entry() {
     [ "$1" = "$ojuny_num" ] && return 0
-    [ "$recovery_enabled" = "true" ] && [ "$1" = "$recovery_num" ] && return 0
+    [ "$recovery_enabled" = "true" ] && [ -n "$recovery_num" ] && [ "$1" = "$recovery_num" ] && return 0
     return 1
 }
 
@@ -83,7 +87,72 @@ is_internal_os() {
     return 1
 }
 
+order="$(efibootmgr 2>/dev/null | sed -n 's/^BootOrder: //p' | head -n1 || true)"
+[ -n "$order" ] || exit 0
 IFS=',' read -r -a current_order <<<"$order"
+
+if [ "$mode" = "install" ]; then
+    previous_file="${OJUNY_BOOTORDER_PREVIOUS:-}"
+    [ -n "$previous_file" ] && [ -f "$previous_file" ] || exit 0
+
+    previous_efi="$(cat "$previous_file")"
+    previous_order="$(printf '%s\n' "$previous_efi" | sed -n 's/^BootOrder: //p' | head -n1)"
+    [ -n "$previous_order" ] || exit 0
+    IFS=',' read -r -a previous <<<"$previous_order"
+
+    has_number() {
+        case ",$2," in
+        *",$1,"*) return 0 ;;
+        esac
+        return 1
+    }
+
+    current_numbers="$(IFS=,; printf '%s' "${current_order[*]}")"
+    previous_numbers="$(IFS=,; printf '%s' "${previous[*]}")"
+
+    restored=()
+    group=("$ojuny_num")
+    if [ "$recovery_enabled" = "true" ] && [ -n "$recovery_num" ]; then
+        group+=("$recovery_num")
+    fi
+
+    for number in "${previous[@]}"; do
+        [ -n "$number" ] || continue
+        is_ojuny_entry "$number" && continue
+        if has_number "$number" "$current_numbers"; then
+            restored+=("$number")
+        fi
+    done
+
+    for number in "${current_order[@]}"; do
+        [ -n "$number" ] || continue
+        is_ojuny_entry "$number" && continue
+        has_number "$number" "$previous_numbers" && continue
+        case "$(entry_line "$number")" in
+        *"$partuuid"*) group+=("$number") ;;
+        *) restored+=("$number") ;;
+        esac
+    done
+
+    new_order=()
+    inserted=0
+    for number in "${restored[@]}"; do
+        if [ "$inserted" -eq 0 ] && is_internal_os "$number"; then
+            new_order+=("${group[@]}")
+            inserted=1
+        fi
+        new_order+=("$number")
+    done
+    if [ "$inserted" -eq 0 ]; then
+        new_order+=("${group[@]}")
+    fi
+
+    new="$(IFS=,; printf '%s' "${new_order[*]}")"
+    if [ "$new" != "$order" ]; then
+        efibootmgr -o "$new" >/dev/null 2>&1 || true
+    fi
+    exit 0
+fi
 
 desired=("$ojuny_num")
 if [ "$recovery_enabled" = "true" ] && [ -n "$recovery_num" ]; then
