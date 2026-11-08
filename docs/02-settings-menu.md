@@ -194,6 +194,7 @@ current working set for review.
 
 ### 07-system
 
+- `00-bootlimits.nix` `[no menu]`. Keeps at most 50 systemd-boot generations.
 - `00-hardware.nix` `[no menu]` (generated). Filesystems, swap, kernel
   modules, microcode, hostPlatform (D5, D6).
 - `00-host.nix` `[no menu]`. The host configuration: system and module list.

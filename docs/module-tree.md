@@ -82,6 +82,7 @@ differs from the generator output.
 
 ## `07-system`
 
+- `modules/07-system/00-bootlimits.nix`
 - `modules/07-system/00-hardware.nix`
 - `modules/07-system/00-host.nix`
 - `modules/07-system/00-imports.nix`

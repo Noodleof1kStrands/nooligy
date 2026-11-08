@@ -8,6 +8,7 @@
       self.modules.nixos.system-facter
       self.modules.nixos.system-hardware-profile
       self.modules.nixos.system-bootloader
+      self.modules.nixos.system-bootloader-limits
       self.modules.nixos.system-secureboot
       self.modules.nixos.system-multiboot
       self.modules.nixos.system-multiboot-backend

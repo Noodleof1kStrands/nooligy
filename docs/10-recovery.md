@@ -65,16 +65,20 @@ The recovery path is designed for the separate-ESP layout:
 
 - Windows keeps its 200 MiB ESP, 16 MiB MSR, Windows partition and 750 MiB
   recovery partition.
-- A new 1 GiB ojuny ESP holds systemd-boot, rEFInd, the kernels, the initrds,
+- A new 4 GiB ojuny ESP holds systemd-boot, rEFInd, the kernels, the initrds,
   the loader entries and the recovery UKI.
+- The boot menu keeps the 50 newest generations
+  (`boot.loader.systemd-boot.configurationLimit`). Kernel and initrd files are
+  deduplicated and unused files are removed when old entries are pruned.
 - The Windows ESP is not mounted and is not modified by ojuny.
 - Windows updates can rebuild the Windows ESP without removing the ojuny
   bootloader or the recovery UKI.
 - rEFInd is the `Other systems` route for the Windows ESP.
 - BitLocker Windows is started through the firmware `BootNext` entry.
 
-The installer creates the 1 GiB ojuny ESP in the free space automatically. It
-rejects using the Windows ESP as the ojuny boot partition.
+The installer creates the 4 GiB ojuny ESP automatically, whether the replaced
+partition is free space or an existing partition. It rejects using the Windows
+ESP as the ojuny boot partition.
 
 ## Commands
 
