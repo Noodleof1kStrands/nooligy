@@ -50,6 +50,8 @@
           toString config.boot.lanzaboote.pkiBundle;
     in
     {
+      options.ojuny.recovery.enable = lib.mkEnableOption "the recovery UKI";
+
       config = lib.mkMerge [
         (lib.mkIf cfg.enable {
           systemd.services.ojuny-recovery = {

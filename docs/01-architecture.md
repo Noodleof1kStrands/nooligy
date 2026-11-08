@@ -90,6 +90,7 @@ ojuny-template/
     05-applications/
     06-utility/
     07-system/
+    backend/                  backend modules and their assets
   templates/                nix-settings-gui "Add file" scaffolds (_-prefixed)
   scripts/                  setup script + helpers
   packages/                 any local packages
@@ -157,7 +158,7 @@ generated or templated, not hand-written:
 - **simple-nix-update-gui** is an input
   (`services.simple-nix-update-gui.*`), placed in `02-core/10-updates.nix`
   together with nix-settings-gui.
-- **nixos-hardware** is an input. `07-system/10-hardware-profile.nix` maps the
+- **nixos-hardware** is an input. `backend/10-hardware-profile.nix` maps the
   facter report to one profile, including a GPU variant when `gpuProfiles`
   declares one, and generated `07-system/00-hardware-quirks.nix` imports it.
   The profile dropdown and the GPU ownership flags live on

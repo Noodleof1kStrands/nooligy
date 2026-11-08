@@ -108,7 +108,7 @@ the flake.
 `generate-hw` writes `modules/07-system/facter.json` with `nixos-facter`.
 `regenerate-hardware` maps `smbios.system.manufacturer` and
 `smbios.system.product` or `smbios.system.version` to one profile from
-`modules/07-system/10-hardware-profile.nix` and writes
+`modules/backend/10-hardware-profile.nix` and writes
 `modules/07-system/00-hardware-quirks.nix` with:
 
 ```nix

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Exercise modules/07-system/bootorder.sh against fake firmware state.
+# Exercise modules/backend/bootorder.sh against fake firmware state.
 set -uo pipefail
 
-SCRIPT="${SCRIPT:-$(dirname "$0")/../modules/07-system/bootorder.sh}"
+SCRIPT="${SCRIPT:-$(dirname "$0")/../modules/backend/bootorder.sh}"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 mkdir -p "$WORK/bin" "$WORK/state"

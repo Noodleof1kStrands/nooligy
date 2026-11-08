@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 
-# The coverage table lives in modules/07-system/10-hardware-profile.nix.
+# The coverage table lives in modules/backend/10-hardware-profile.nix.
 # tests/check-hardware-profile.py asserts that this table still matches it.
 HARDWARE_PROFILES = [
     ("apple", ".*macbookpro.*", "apple-macbook-pro", "untested"),

@@ -1,6 +1,6 @@
 # 10 - Recovery
 
-The Recovery page holds one switch:
+The Secure Boot page holds the recovery switch, under Boot entries:
 
 ```nix
 ojuny.recovery.enable = true;

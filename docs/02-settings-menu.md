@@ -71,8 +71,6 @@ current working set for review.
 
 ### 02-core
 
-- `00-colors.nix` `[no menu]`. Named color helpers derived from the stylix
-  palette.
 - `01-display.nix` `[menu]`. Monitors, tearing and HDR.
 - `02-input.nix` `[menu]`. Keyboard, mouse, trackpad, touch and Fcitx5 input
   methods.
@@ -194,15 +192,19 @@ current working set for review.
 
 ### 07-system
 
-- `00-bootlimits.nix` `[no menu]`. Keeps at most 50 systemd-boot generations.
 - `00-hardware.nix` `[no menu]` (generated). Filesystems, swap, kernel
   modules, microcode, hostPlatform (D5, D6).
 - `00-host.nix` `[no menu]`. The host configuration: system and module list.
 - `00-imports.nix` `[no menu]`. The import list that decides which pages a
   host loads.
+- `00-secureboot.nix` `[menu]`. Secure Boot with Lanzaboote, the "Other systems"
+  rEFInd helper switch and the recovery UKI switch. The recovery UKI is on by
+  default. The multiboot helper is off by default and the installer enables it
+  when another internal system is found.
 - `_00-ssh-test.nix` `[no menu]`. Temporary SSH test module.
 - `01-configuration.nix` `[menu]`. Hostname, time zone, locale, console
-  keymap, the patches switch, and the package source controls. The package
+  keymap, the patches switch, the systemd-boot generation limit, and the
+  package source controls. The package
   source group selects source, the newest release, or a named release from each
   repository's `binary-url.json`; the manual has its own selector and defaults
   to source. Options marked advanced are per-tool overrides and release tags.
@@ -228,15 +230,21 @@ current working set for review.
   Applying a change rewrites `00-hardware-quirks.nix` with
   `nix run .#regenerate-hardware -- --profile-only`.
 - `07-plymouth.nix` `[menu]`. Stylix-coloured Plymouth boot splash with the Ojuny logo.
-- `12-multiboot.nix` `[menu]`. Optional rEFInd helper on UEFI. Off by default.
-  It adds an "Other systems" systemd-boot entry and scans internal drives at
-  boot. The installer enables it when another internal system is found. It is
-  documented in `09-multiboot.md`.
-- `13-recovery.nix` `[menu]`. Recovery UKI switch, on by default. It builds a
-  signed UKI and adds an "Ojuny Recovery" firmware entry.
-- `13-recovery-backend.nix` `[no menu]`. Builds and signs the recovery UKI.
-- `13-bootorder.nix` `[no menu]`. Keeps the Ojuny systemd-boot entry first among
-  the internal firmware entries, with the recovery entry second.
+
+### backend
+
+- `00-colors.nix` `[no menu]`. Named color helpers derived from the stylix
+  palette.
+- `03-user-editor.nix` `[no menu]`. Editor selection, the micro colorscheme
+  and text MIME defaults.
+- `10-hardware-profile.nix` `[no menu]`. Hardware profile table and GPU
+  variant resolution from the facter report.
+- `11-boot.nix` `[no menu]`. First-boot timing, the rEFInd multiboot helper
+  option and service, and EFI boot order maintenance.
+- `13-recovery-backend.nix` `[no menu]`. Declares the recovery UKI switch, then
+  builds and signs the UKI.
+- `device-quirks.nix` `[no menu]`. Machine-specific kernel parameters, udev
+  rules, libinput overrides and modprobe options.
 
 ### patches
 

@@ -182,7 +182,7 @@
               gnused
               util-linux
             ];
-            text = builtins.readFile ./modules/07-system/bootorder.sh;
+            text = builtins.readFile ./modules/backend/bootorder.sh;
           };
         in
         {
@@ -407,7 +407,7 @@
                 ];
               }
               ''
-                SCRIPT=${source}/modules/07-system/bootorder.sh bash ${source}/tests/check-bootorder.sh
+                SCRIPT=${source}/modules/backend/bootorder.sh bash ${source}/tests/check-bootorder.sh
                 touch $out
               '';
 

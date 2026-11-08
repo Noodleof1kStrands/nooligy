@@ -17,7 +17,7 @@ other operating system on another ESP or another internal disk needs the
 helper. In the separate ojuny ESP layout in `10-recovery.md`, Windows is on the
 Windows ESP and the helper is required.
 
-The setting is on the Multiboot page:
+The setting is on the Secure Boot page, in the Boot entries group:
 
 ```nix
 ojuny.multiboot.enable = true;

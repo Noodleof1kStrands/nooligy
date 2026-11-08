@@ -88,7 +88,7 @@ after testing.
 
 Hardware profiles are split two ways. Automatic selection reads
 `modules/07-system/facter.json`, matches the SMBIOS vendor and product against
-the table in `modules/07-system/10-hardware-profile.nix`, and writes
+the table in `modules/backend/10-hardware-profile.nix`, and writes
 `modules/07-system/00-hardware-quirks.nix`. Manual selection is the profile
 dropdown on the Hardware report page (`modules/07-system/09-facter.nix`); it
 wins over automatic selection. The covered models and their states are listed

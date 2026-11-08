@@ -18,10 +18,14 @@ fi
 
 marker="$recovery_dir/.ojuny-recovery-version"
 if [ ! -f "$marker" ] || [ "$(cat "$marker")" != "$toplevel" ] || [ ! -f "$recovery_file" ]; then
-    kernel="$(jq -r '.org.nixos.bootspec.v1.kernel' "$boot_json")"
+    kernel="$(jq -r '.org.nixos.bootspec.v1.kernel // empty' "$boot_json")"
     initrd="$(jq -r '.org.nixos.bootspec.v1.initrd // empty' "$boot_json")"
-    init="$(jq -r '.org.nixos.bootspec.v1.init' "$boot_json")"
-    params="$(jq -r '.org.nixos.bootspec.v1.kernelParams | join(" ")' "$boot_json")"
+    init="$(jq -r '.org.nixos.bootspec.v1.init // empty' "$boot_json")"
+    params="$(jq -r '(.org.nixos.bootspec.v1.kernelParams // []) | join(" ")' "$boot_json")"
+    if [ -z "$kernel" ] || [ -z "$init" ]; then
+        echo "ojuny-recovery: bootspec document is missing kernel or init" >&2
+        exit 1
+    fi
     cmdline="init=$init${params:+ $params}"
 
     cmdline_file="$(mktemp)"

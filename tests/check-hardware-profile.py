@@ -176,7 +176,7 @@ def main():
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
-    module_path = root / "modules/07-system/10-hardware-profile.nix"
+    module_path = root / "modules/backend/10-hardware-profile.nix"
     page_path = root / "modules/07-system/09-facter.nix"
     script_path = root / "scripts/regenerate-hardware.py"
     fixture_path = root / "tests/fixtures/facter-surface-go.json"
@@ -220,19 +220,15 @@ def main():
     missing = sorted(set(nix_gpu) - table_profiles)
     check(not missing, "gpuProfiles key is not in the profile table: %s" % missing)
 
-    quirk_dir = root / "modules/07-system/quirks"
+    quirk_path = root / "modules/backend/device-quirks.nix"
+    check(quirk_path.exists(), "missing Ojuny quirk module file: %s" % quirk_path)
+    quirk_text = quirk_path.read_text() if quirk_path.exists() else ""
     for profile in sorted(p for p in table_profiles if p.startswith("ojuny-")):
-        quirk_path = quirk_dir / ("%s.nix" % profile[len("ojuny-"):])
         check(
-            quirk_path.exists(),
-            "missing Ojuny quirk module for %s: %s" % (profile, quirk_path),
+            ("flake.modules.nixos.%s" % profile) in quirk_text,
+            "Ojuny quirk module %s does not define flake.modules.nixos.%s"
+            % (quirk_path, profile),
         )
-        if quirk_path.exists():
-            check(
-                ("flake.modules.nixos.%s" % profile) in quirk_path.read_text(),
-                "Ojuny quirk module %s does not define flake.modules.nixos.%s"
-                % (quirk_path, profile),
-            )
 
     upstream = upstream_slugs()
     if upstream is not None:

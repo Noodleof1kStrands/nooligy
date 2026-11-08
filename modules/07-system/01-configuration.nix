@@ -396,4 +396,11 @@
 
     };
 
+  flake.modules.nixos.system-bootloader-limits =
+    { lib, ... }:
+    {
+      # @option widget = "spin"; label = "Boot generations"; group = "Boot"; groupOrder = 70; order = 10; description = "Maximum number of systemd-boot generations kept. A higher number may keep more kernels in the boot partition.";
+      boot.loader.systemd-boot.configurationLimit = lib.mkDefault 50;
+    };
+
 }

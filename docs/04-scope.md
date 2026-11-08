@@ -21,7 +21,7 @@ per `02-settings-menu.md`.
 | `terminal/ghostty.nix` | `02-core/08-terminal.nix` (D11) |
 | `terminal/font.nix` | `02-core/05-typography.nix` (fonts, D11) |
 | `styles/stylix.nix` + one palette | `02-core/05-theme.nix` |
-| `styles/colors.nix` helper | `02-core/00-colors.nix` |
+| `styles/colors.nix` helper | `backend/00-colors.nix` |
 | `utils/nix.nix`, `troubleshooting.nix` | `02-core/11-nixsettings.nix` |
 | `services/simple-nix-update-gui.nix` | `02-core/10-updates.nix` |
 | nix-settings-gui | `02-core/10-updates.nix` (T2) |

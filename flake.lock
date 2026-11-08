@@ -1326,11 +1326,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794171151,
-        "narHash": "sha256-nbBXOgz4iAqW80kFk7D5Y/LcwU65voJHaF/v5s5oLDU=",
+        "lastModified": 1794178510,
+        "narHash": "sha256-QpLuiQAOcGVR/CuQ1Ax4YFlEdHicQTgPAG+tL6I/mOQ=",
         "owner": "ojuny-project",
         "repo": "ojuny-manual",
-        "rev": "cd2ed95dbcfe5e8501f1d49a421aaace97026ff3",
+        "rev": "16cb78af5caeb37c2158b49e9b0a6e688071569f",
         "type": "github"
       },
       "original": {

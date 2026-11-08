@@ -1,7 +1,7 @@
 # Hardware coverage
 
 Generated from the `hardwareProfiles` table in
-`modules/07-system/10-hardware-profile.nix`. States are `tested`,
+`modules/backend/10-hardware-profile.nix`. States are `tested`,
 `untested` and `unsupported`. This is a test set, not a certification
 program.
 
@@ -167,7 +167,7 @@ automatically or offer it in the dropdown.
 
 ## GPU ownership
 
-`modules/07-system/10-hardware-profile.nix` also carries `gpuProfiles`.
+`modules/backend/10-hardware-profile.nix` also carries `gpuProfiles`.
 Each entry names the layouts the profile supports and, where nixos-hardware
 splits the model into GPU variants, the variant slug to import. A profile
 with `owns = true` imports its own video drivers, PRIME bus IDs and VA-API

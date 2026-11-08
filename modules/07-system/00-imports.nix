@@ -10,9 +10,7 @@
       self.modules.nixos.system-bootloader
       self.modules.nixos.system-bootloader-limits
       self.modules.nixos.system-secureboot
-      self.modules.nixos.system-multiboot
       self.modules.nixos.system-multiboot-backend
-      self.modules.nixos.system-recovery
       self.modules.nixos.system-recovery-backend
       self.modules.nixos.system-bootorder
       self.modules.nixos.system-networking

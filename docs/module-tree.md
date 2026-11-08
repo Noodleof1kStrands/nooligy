@@ -10,11 +10,9 @@ differs from the generator output.
 
 - `modules/01-users/01-user.nix`
 - `modules/01-users/02-commonsettings.nix`
-- `modules/01-users/03-user-editor.nix`
 
 ## `02-core`
 
-- `modules/02-core/00-colors.nix`
 - `modules/02-core/01-display.nix`
 - `modules/02-core/02-input.nix`
 - `modules/02-core/03-binds.nix`
@@ -82,7 +80,6 @@ differs from the generator output.
 
 ## `07-system`
 
-- `modules/07-system/00-bootlimits.nix`
 - `modules/07-system/00-hardware.nix`
 - `modules/07-system/00-host.nix`
 - `modules/07-system/00-imports.nix`
@@ -96,32 +93,26 @@ differs from the generator output.
 - `modules/07-system/07-plymouth.nix`
 - `modules/07-system/08-accessibility.nix`
 - `modules/07-system/09-facter.nix`
-- `modules/07-system/10-hardware-profile.nix`
-- `modules/07-system/11-first-boot.nix`
-- `modules/07-system/12-multiboot-backend.nix`
-- `modules/07-system/12-multiboot.nix`
-- `modules/07-system/13-bootorder.nix`
-- `modules/07-system/13-recovery-backend.nix`
-- `modules/07-system/13-recovery.nix`
 - `modules/07-system/_00-ssh-test.nix`
-- `modules/07-system/bootorder.sh`
-- `modules/07-system/multiboot-cleanup.sh`
-- `modules/07-system/multiboot.sh`
 - `modules/07-system/plymouth/_theme.nix`
 - `modules/07-system/plymouth/ojuny-logo.png`
 - `modules/07-system/plymouth/ojuny.plymouth`
 - `modules/07-system/plymouth/ojuny.script.in`
-- `modules/07-system/quirks/asus-expertbook-b9406.nix`
-- `modules/07-system/quirks/asus-rog-z13-gz302.nix`
-- `modules/07-system/quirks/asus-zenbook-ux5406aa.nix`
-- `modules/07-system/quirks/lenovo-yoga-pro-7-14iah10.nix`
-- `modules/07-system/recovery-cleanup.sh`
-- `modules/07-system/recovery-uki.sh`
 - `modules/07-system/wireguard-import.sh`
 
-## `home-manager`
+## `backend`
 
-- `modules/home-manager/10-first-boot.nix`
+- `modules/backend/00-colors.nix`
+- `modules/backend/03-user-editor.nix`
+- `modules/backend/10-hardware-profile.nix`
+- `modules/backend/11-boot.nix`
+- `modules/backend/13-recovery-backend.nix`
+- `modules/backend/bootorder.sh`
+- `modules/backend/device-quirks.nix`
+- `modules/backend/multiboot-cleanup.sh`
+- `modules/backend/multiboot.sh`
+- `modules/backend/recovery-cleanup.sh`
+- `modules/backend/recovery-uki.sh`
 
 ## `patches`
 
