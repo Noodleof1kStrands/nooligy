@@ -234,7 +234,8 @@ current working set for review.
 - `13-recovery.nix` `[menu]`. Recovery UKI switch, on by default. It builds a
   signed UKI and adds an "Ojuny Recovery" firmware entry.
 - `13-recovery-backend.nix` `[no menu]`. Builds and signs the recovery UKI.
-- `13-bootorder.nix` `[no menu]`. Keeps the Ojuny firmware entries first.
+- `13-bootorder.nix` `[no menu]`. Keeps the Ojuny systemd-boot entry first among
+  the internal firmware entries, with the recovery entry second.
 
 ### patches
 

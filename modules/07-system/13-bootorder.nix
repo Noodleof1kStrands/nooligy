@@ -28,7 +28,7 @@
     in
     {
       systemd.services.ojuny-bootorder = {
-        description = "Keep the Ojuny firmware entries first";
+        description = "Keep the Ojuny entries first among the internal boot entries";
         wantedBy = [ "multi-user.target" ];
         after =
           [ "local-fs.target" ]

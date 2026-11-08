@@ -381,6 +381,21 @@
                 python3 ${./tests/check-bind-args.py} --root ${source}
                 touch $out
               '';
+          checks.bootorder =
+            let
+              source = pkgs.lib.cleanSource ./.;
+            in
+            pkgs.runCommand "check-bootorder"
+              {
+                nativeBuildInputs = [
+                  pkgs.bash
+                  pkgs.coreutils
+                ];
+              }
+              ''
+                SCRIPT=${source}/modules/07-system/bootorder.sh bash ${source}/tests/check-bootorder.sh
+                touch $out
+              '';
 
           checks.module-tree-current =
             let
@@ -400,6 +415,7 @@
           checks.default = pkgs.runCommand "check-default" { } ''
             echo ${self.checks.${system}.hardware-profile} >/dev/null
             echo ${self.checks.${system}.bind-args} >/dev/null
+            echo ${self.checks.${system}.bootorder} >/dev/null
             echo ${self.checks.${system}.module-tree-current} >/dev/null
             touch $out
           '';

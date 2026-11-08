@@ -26,14 +26,16 @@ systemd-boot, rEFInd or the loader entries.
 
 ## Firmware entry
 
-The boot order service creates and maintains:
+The boot order service maintains two entries on the ojuny ESP:
 
-- `Linux Boot Manager` on the ojuny ESP
-- `Ojuny Recovery` on the ojuny ESP
-- `Windows Boot Manager` on the Windows ESP
+- `Linux Boot Manager`
+- `Ojuny Recovery`
 
-It puts the ojuny systemd-boot entry first, the recovery entry second, and the
-Windows entry next. It preserves the other entries.
+It asserts only that these two are the top two internal entries, in that order.
+External entries keep their exact positions. Other internal systems keep their
+relative order below the two Ojuny entries. The service rewrites only the slots
+already occupied by internal OS entries and does nothing when the order is
+already correct, so a plugged-in USB drive is not forced above or below ojuny.
 
 If Windows resets the boot order, boot ojuny once from the firmware menu. The
 service restores the order.

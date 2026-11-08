@@ -45,18 +45,74 @@ if [ "$recovery_enabled" = "true" ] && [ -n "$recovery_file" ] && [ -f "$recover
     recovery_num="$(printf '%s\n' "$efi" | awk '/^Boot[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]/ && /Ojuny Recovery/ { print substr($1, 5, 4); exit }')"
 fi
 
-windows_num="$(printf '%s\n' "$efi" | awk '/^Boot[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]/ && /bootmgfw.efi/ { print substr($1, 5, 4); exit }')"
+[ -n "$ojuny_num" ] || exit 0
 
 order="$(efibootmgr 2>/dev/null | sed -n 's/^BootOrder: //p' | head -n1 || true)"
-rest="$(printf '%s' "$order" | tr ',' '\n' | awk -v a="$ojuny_num" -v b="$recovery_num" -v c="$windows_num" '$0 != "" && $0 != a && $0 != b && $0 != c' | paste -sd, -)"
+[ -n "$order" ] || exit 0
 
-prefix=""
-for number in "$ojuny_num" "$recovery_num" "$windows_num"; do
-    [ -n "$number" ] || continue
-    prefix="${prefix:+$prefix,}$number"
+entry_line() {
+    printf '%s\n' "$efi" | awk -v number="$1" '
+        /^Boot[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]/ {
+            if (substr($1, 5, 4) == number) {
+                print
+                exit
+            }
+        }
+    '
+}
+
+is_ojuny_entry() {
+    [ "$1" = "$ojuny_num" ] && return 0
+    [ "$recovery_enabled" = "true" ] && [ "$1" = "$recovery_num" ] && return 0
+    return 1
+}
+
+is_internal_os() {
+    local line
+    line="$(entry_line "$1")" || return 1
+    [ -n "$line" ] || return 1
+    line="${line,,}"
+    case "$line" in
+    *usb\(*) return 1 ;;
+    esac
+    case "$line" in
+    *bootmgfw.efi* | *grubx64.efi* | *shimx64.efi* | *systemd-bootx64.efi* | *vmlinuz* | *efi/linux/* | *bootx64.efi*)
+        return 0
+        ;;
+    esac
+    return 1
+}
+
+IFS=',' read -r -a current_order <<<"$order"
+
+desired=("$ojuny_num")
+if [ "$recovery_enabled" = "true" ] && [ -n "$recovery_num" ]; then
+    desired+=("$recovery_num")
+fi
+internal_total=0
+for number in "${current_order[@]}"; do
+    if is_ojuny_entry "$number"; then
+        internal_total=$((internal_total + 1))
+    elif is_internal_os "$number"; then
+        desired+=("$number")
+        internal_total=$((internal_total + 1))
+    fi
 done
 
-new_order="$prefix${rest:+,$rest}"
-if [ -n "$new_order" ]; then
-    efibootmgr -o "$new_order" >/dev/null 2>&1 || true
+[ "${#desired[@]}" -eq "$internal_total" ] || exit 0
+
+new_order=()
+slot=0
+for number in "${current_order[@]}"; do
+    if is_ojuny_entry "$number" || is_internal_os "$number"; then
+        new_order+=("${desired[$slot]}")
+        slot=$((slot + 1))
+    else
+        new_order+=("$number")
+    fi
+done
+
+new="$(IFS=,; printf '%s' "${new_order[*]}")"
+if [ "$new" != "$order" ]; then
+    efibootmgr -o "$new" >/dev/null 2>&1 || true
 fi
