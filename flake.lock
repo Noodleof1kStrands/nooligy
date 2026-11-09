@@ -1465,11 +1465,11 @@
         "tinted-theming": "tinted-theming_3"
       },
       "locked": {
-        "lastModified": 1794234465,
-        "narHash": "sha256-jzq5kv6hpTz0M8jQ/DfBbOzTIHFoBueD1kaDQSGMyns=",
+        "lastModified": 1794235595,
+        "narHash": "sha256-lHAGwFfAiTyZWi9NLL7oJd8ZeItlVErlbUOmx/vtlkE=",
         "owner": "ojuny-project",
         "repo": "ojuny-welcome",
-        "rev": "02cf89cd33c51437d1c56f9dbe5080f9465d5ec9",
+        "rev": "0f9c7f22a09956a190e6916662736a015dbade18",
         "type": "github"
       },
       "original": {

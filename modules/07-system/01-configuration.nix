@@ -392,6 +392,12 @@
         # @option widget = "text"; label = "Settings GUI release tag"; group = "Binaries"; groupOrder = 60; order = 61; advanced = true; description = "Release tag for nix-settings-gui when its package source is tag.";
         ojuny.binaries.settingsGuiTag = "";
 
+        # @option widget = "dropdown"; label = "Welcome"; group = "Binaries"; groupOrder = 60; order = 62; advanced = true; choices = [ "auto" "source" "latest" "tag" ]; description = "Override the package source for ojuny-welcome.";
+        ojuny.binaries.welcome = "auto";
+
+        # @option widget = "text"; label = "Welcome release tag"; group = "Binaries"; groupOrder = 60; order = 63; advanced = true; description = "Release tag for ojuny-welcome when its package source is tag.";
+        ojuny.binaries.welcomeTag = "";
+
         # @option widget = "dropdown"; label = "Shell GUI"; group = "Binaries"; groupOrder = 60; order = 70; advanced = true; choices = [ "auto" "source" "latest" "tag" ]; description = "Override the package source for nix-shell-gui.";
         ojuny.binaries.shellGui = "auto";
 

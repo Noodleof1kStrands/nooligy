@@ -159,6 +159,12 @@
             unfocused_opacity = 0.7;
           }
           {
+            app_id = "org.ojuny.Welcome";
+            is_floating = 1;
+            width = 0.85;
+            height = 0.85;
+          }
+          {
             title = "Floating-Menu";
             is_floating = 1;
             height = 0.6;
