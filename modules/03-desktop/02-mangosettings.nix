@@ -161,8 +161,8 @@
           {
             app_id = "org.ojuny.Welcome";
             is_floating = 1;
-            width = 0.85;
-            height = 0.85;
+            width = 1200;
+            height = 850;
           }
           {
             title = "Floating-Menu";
