@@ -112,6 +112,8 @@ rolling repository.
 - `docs/09-multiboot.md`: the optional rEFInd helper for other operating
   systems.
 - `docs/10-recovery.md`: the optional recovery UKI and firmware boot order.
+- `docs/11-agent.md`: the optional maintenance agent, read-only assistant and
+  flake-safe agent CLI.
 
 ## Contributing
 
