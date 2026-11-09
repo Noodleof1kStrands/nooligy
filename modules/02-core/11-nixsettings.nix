@@ -64,7 +64,7 @@
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
 
-    # @option widget = "text"; label = "Max build jobs"; group = "Build"; groupOrder = 50; description = "Number of parallel build processes, or auto to use every CPU core."; order = 100;
+    # @option widget = "dropdown"; label = "Max build jobs"; group = "Build"; groupOrder = 50; choices = [ "auto" "1" "2" "4" "8" "16" "32" ]; description = "Number of parallel build processes, or auto to use every CPU core."; order = 100;
     nix.settings.max-jobs = "auto";
 
     # @option widget = "spin"; label = "Cores per job"; group = "Build"; groupOrder = 50; description = "Cores each build uses; 0 means all of them."; min = 0; max = 128; order = 200;
