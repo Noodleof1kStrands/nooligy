@@ -144,3 +144,10 @@ inside the backend module. Do not collect the gated logic into a list.
 - The menu editor reads and writes only `desktop.ojuny.dankMenu.menu`. Rows a
   patch or module assigns to `desktop.ojuny.dankMenu.extraEntries` are merged at
   build time, do not appear in the editor, and are never removed by a GUI save.
+- Custom widgets own their data. `facter` reads `07-system/facter.json`,
+  `docker` reads and writes the container set, and neither resolves a Nix
+  expression. Keep their attached assignments literal or in the shape the
+  widget documents.
+- Numeric controls must state their unit through `unit` or through the label.
+  The settings check rejects a spin or slider that counts a quantity without
+  one.

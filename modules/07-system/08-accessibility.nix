@@ -45,54 +45,96 @@
         esac
       '';
 
-      accessibilityBinds = {
-        common =
-          (
-            lib.optionalAttrs config.services.orca.enable {
-              accessibilityScreenReader = {
-                modifier = [
-                  "SUPER"
-                  "ALT"
-                ];
-                keys = [ "s" ];
-                dispatcher = "spawn";
-                args = "${screenReaderToggle}";
-                description = "Toggle the Orca screen reader";
-                group = "Accessibility";
-                subcat = "Screen reader";
-              };
-            }
-            // lib.optionalAttrs config.desktop.ojuny.dux.plugins.virtualKeyboard.enable {
-              accessibilityKeyboard = {
-                modifier = [
-                  "SUPER"
-                  "ALT"
-                ];
-                keys = [ "o" ];
-                dispatcher = "spawn";
-                args = "dms ipc call virtualKeyboard toggle";
-                description = "Toggle the on-screen keyboard (Super+Alt+O)";
-                group = "Accessibility";
-                subcat = "Keyboard";
-              };
-            }
-          )
-          // {
-            accessibilityMouseMode = {
-              modifier = [
-                "SUPER"
-                "ALT"
-              ];
-              keys = [ "m" ];
-              dispatcher = "spawn";
-              args = "${mouseModeToggle}";
-              description = "Toggle the keyboard mouse mode";
-              group = "Accessibility";
-              subcat = "Mouse mode";
-            };
-          };
+    in
+    {
+      options.ojuny.accessibility = {
+        highContrast = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Use a high-contrast base16 palette instead of the normal palette.";
+        };
+        highContrastPalette = lib.mkOption {
+          type = lib.types.enum highContrastPalettes;
+          default = "windows-highcontrast";
+          description = "High-contrast base16 scheme.";
+        };
+        iccProfile = lib.mkOption {
+          type = lib.types.nullOr lib.types.path;
+          default = null;
+          description = "ICC profile applied to every monitor as a build-time output color transform. HDR must be off for the output.";
+        };
+        reduceMotion = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = "Disable DMS and Mango window animations.";
+        };
+      };
 
-        mouse = {
+      config = {
+
+        # @option widget = "switch"; label = "Screen reader (Orca)"; group = "Vision"; groupOrder = 10; order = 10; description = "Install Orca, Speech Dispatcher and AT-SPI, and enable Qt and DMS accessibility. Save and rebuild; Orca starts with the session.";
+        services.orca.enable = false;
+
+        # @option widget = "switch"; label = "Braille (BRLTTY)"; group = "Vision"; groupOrder = 10; order = 20; description = "Enable the BRLTTY daemon. Requires a refreshable braille display.";
+        services.brltty.enable = false;
+
+        # @option widget = "switch"; label = "High contrast"; group = "Vision"; groupOrder = 10; order = 30; description = "Use a high-contrast base16 palette instead of the normal palette. Save and rebuild.";
+        ojuny.accessibility.highContrast = false;
+
+        # @option widget = "dropdown"; label = "High-contrast palette"; group = "Vision"; groupOrder = 10; order = 40; choices = [ "windows-highcontrast" "windows-highcontrast-light" "penumbra-dark-contrast-plus-plus" "penumbra-light-contrast-plus-plus" ]; visibleWhen.path = "ojuny.accessibility.highContrast"; visibleWhen.equals = true; description = "High-contrast base16 scheme used while the switch is on.";
+        ojuny.accessibility.highContrastPalette = "windows-highcontrast";
+
+        # @option widget = "path"; label = "ICC color profile"; group = "Vision"; groupOrder = 10; order = 50; nullable = true; description = "ICC profile applied to every monitor as a build-time output color transform. HDR must be off for the output. A color inversion or colorblindness profile goes here. Save and rebuild.";
+        ojuny.accessibility.iccProfile = null;
+
+        # @option widget = "switch"; label = "Mono audio"; group = "Hearing"; groupOrder = 20; order = 10; description = "Mix all stereo content into a single channel.";
+        desktop.ojuny.dux.settings.audioMono = false;
+
+        # @option widget = "switch"; label = "Reduce motion"; group = "Motion"; groupOrder = 30; order = 10; applyCommand = "dms ipc call settings set reduceMotion %%val%%"; description = "Disable DMS motion and force Mango window animations off. Window animations apply on rebuild.";
+        ojuny.accessibility.reduceMotion = false;
+
+        # @option widget = "keybinds"; label = "Common binds"; group = "Keybinds"; groupOrder = 40; order = 10; description = "Accessibility binds. The screen reader bind works when Orca is enabled, the on-screen keyboard bind works when the virtual keyboard plugin is enabled, and the mouse mode toggle is always active.";
+        desktop.ojuny.mango.binds.common = {
+          accessibilityScreenReader = {
+            modifier = [
+              "SUPER"
+              "ALT"
+            ];
+            keys = [ "s" ];
+            dispatcher = "spawn";
+            args = "${screenReaderToggle}";
+            description = "Toggle the Orca screen reader";
+            group = "Accessibility";
+            subcat = "Screen reader";
+          };
+          accessibilityKeyboard = {
+            modifier = [
+              "SUPER"
+              "ALT"
+            ];
+            keys = [ "o" ];
+            dispatcher = "spawn";
+            args = "dms ipc call virtualKeyboard toggle";
+            description = "Toggle the on-screen keyboard (Super+Alt+O)";
+            group = "Accessibility";
+            subcat = "Keyboard";
+          };
+          accessibilityMouseMode = {
+            modifier = [
+              "SUPER"
+              "ALT"
+            ];
+            keys = [ "m" ];
+            dispatcher = "spawn";
+            args = "${mouseModeToggle}";
+            description = "Toggle the keyboard mouse mode";
+            group = "Accessibility";
+            subcat = "Mouse mode";
+          };
+        };
+
+        # @option widget = "keybinds"; label = "Mouse mode binds"; group = "Mouse mode"; groupOrder = 45; order = 10; description = "Pointer controls for the mouse keymode. Enter with SUPER+ALT+M; the mode is active only while set. Movement is 15 px per press; edit the commands to change speed. Escape or the toggle exits.";
+        desktop.ojuny.mango.binds.mouse = {
           mouseUpW = {
             modifier = [ "NONE" ];
             keys = [ "w" ];
@@ -220,60 +262,6 @@
             subcat = "Mouse mode";
           };
         };
-      };
-    in
-    {
-      options.ojuny.accessibility = {
-        highContrast = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = "Use a high-contrast base16 palette instead of the normal palette.";
-        };
-        highContrastPalette = lib.mkOption {
-          type = lib.types.enum highContrastPalettes;
-          default = "windows-highcontrast";
-          description = "High-contrast base16 scheme.";
-        };
-        iccProfile = lib.mkOption {
-          type = lib.types.nullOr lib.types.path;
-          default = null;
-          description = "ICC profile applied to every monitor as a build-time output color transform. HDR must be off for the output.";
-        };
-        reduceMotion = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = "Disable DMS and Mango window animations.";
-        };
-      };
-
-      config = {
-
-        # @option widget = "switch"; label = "Screen reader (Orca)"; group = "Vision"; groupOrder = 10; order = 10; description = "Install Orca, Speech Dispatcher and AT-SPI, and enable Qt and DMS accessibility. Save and rebuild; Orca starts with the session.";
-        services.orca.enable = false;
-
-        # @option widget = "switch"; label = "Braille (BRLTTY)"; group = "Vision"; groupOrder = 10; order = 20; description = "Enable the BRLTTY daemon. Requires a refreshable braille display.";
-        services.brltty.enable = false;
-
-        # @option widget = "switch"; label = "High contrast"; group = "Vision"; groupOrder = 10; order = 30; description = "Use a high-contrast base16 palette instead of the normal palette. Save and rebuild.";
-        ojuny.accessibility.highContrast = false;
-
-        # @option widget = "dropdown"; label = "High-contrast palette"; group = "Vision"; groupOrder = 10; order = 40; choices = [ "windows-highcontrast" "windows-highcontrast-light" "penumbra-dark-contrast-plus-plus" "penumbra-light-contrast-plus-plus" ]; visibleWhen.path = "ojuny.accessibility.highContrast"; visibleWhen.equals = true; description = "High-contrast base16 scheme used while the switch is on.";
-        ojuny.accessibility.highContrastPalette = "windows-highcontrast";
-
-        # @option widget = "path"; label = "ICC color profile"; group = "Vision"; groupOrder = 10; order = 50; nullable = true; description = "ICC profile applied to every monitor as a build-time output color transform. HDR must be off for the output. A color inversion or colorblindness profile goes here. Save and rebuild.";
-        ojuny.accessibility.iccProfile = null;
-
-        # @option widget = "switch"; label = "Mono audio"; group = "Hearing"; groupOrder = 20; order = 10; description = "Mix all stereo content into a single channel.";
-        desktop.ojuny.dux.settings.audioMono = false;
-
-        # @option widget = "switch"; label = "Reduce motion"; group = "Motion"; groupOrder = 30; order = 10; applyCommand = "dms ipc call settings set reduceMotion %%val%%"; description = "Disable DMS motion and force Mango window animations off. Window animations apply on rebuild.";
-        ojuny.accessibility.reduceMotion = false;
-
-        # @option widget = "keybinds"; label = "Common binds"; group = "Keybinds"; groupOrder = 40; order = 10; description = "All common binds. Accessibility entries use the Accessibility group and are always active. The screen reader bind appears when Orca is enabled; the on-screen keyboard bind appears when the plugin is enabled; the mouse mode toggle is always here.";
-        desktop.ojuny.mango.binds.common = accessibilityBinds.common;
-
-        # @option widget = "keybinds"; label = "Mouse mode binds"; group = "Mouse mode"; groupOrder = 45; order = 10; description = "Pointer controls for the mouse keymode. Enter with SUPER+ALT+M; the mode is active only while set. Movement is 15 px per press; edit the commands to change speed. Escape or the toggle exits.";
-        desktop.ojuny.mango.binds.mouse = accessibilityBinds.mouse;
 
         environment.sessionVariables.QT_ACCESSIBILITY =
           lib.mkIf config.services.orca.enable "1";

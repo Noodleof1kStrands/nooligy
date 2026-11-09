@@ -39,7 +39,7 @@ in
 
       config = {
 
-        # @option widget = "switch"; label = "KAlarm"; group = "Notices"; groupOrder = 70; order = 10; description = "Date, time and recurring notices with command alarms. Battery alerts remain on the Power page.";
+        # @option widget = "switch"; label = "KAlarm reminder app"; group = "Notices"; groupOrder = 70; order = 10; description = "Install KAlarm and start it in the tray. Create and edit the date, time and recurring reminders inside KAlarm; this switch does not define alarms. Battery alerts remain on the Power page.";
         ojuny.apps.kalarm.enable = false;
 
         environment.systemPackages = lib.optional config.ojuny.apps.kalarm.enable pkgs.kdePackages.kalarm;

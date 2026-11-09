@@ -9,9 +9,49 @@
 
 { self, inputs, ... }: {
 
-  flake.modules.nixos.desktop-menu = { config, pkgs, ... }: {
+  flake.modules.nixos.desktop-menu =
+    { config, lib, pkgs, ... }:
+    let
+      toggleCommand =
+        if config.ojuny.menu.toggleTarget == "winmenu" then
+          "ojuny-WinMenu"
+        else
+          "dms ipc call dankMenu toggle root";
+    in
+    {
+
+    options.ojuny.menu.toggleTarget = lib.mkOption {
+      type = lib.types.enum [ "ojuny" "winmenu" ];
+      default = "ojuny";
+      description = "Menu opened by SUPER+X and SUPER+Escape.";
+    };
+
+    config = {
+
+    # @option widget = "dropdown"; label = "SUPER+X opens"; group = "Menu"; groupOrder = 5; order = 5; choices = [ "ojuny" "winmenu" ]; description = "Choose the Ojuny application menu or the Quick Links menu.";
+    ojuny.menu.toggleTarget = "ojuny";
 
     desktop.ojuny.dankMenu.enable = true;
+
+    desktop.ojuny.mango.binds.common.menuToggle = {
+      modifier = [ "SUPER" ];
+      keys = [ "X" ];
+      dispatcher = "spawn";
+      args = toggleCommand;
+      description = "Toggle menu";
+      group = "Applications";
+      subcat = "Launch";
+    };
+
+    desktop.ojuny.mango.binds.common.menuToggleAlt = {
+      modifier = [ "SUPER" ];
+      keys = [ "Escape" ];
+      dispatcher = "spawn";
+      args = toggleCommand;
+      description = "Toggle menu";
+      group = "Applications";
+      subcat = "Launch";
+    };
 
     /* @option
        widget = "menu";
@@ -300,6 +340,7 @@
     # @option widget = "raw"; label = "Extra plugin settings"; group = "Menu"; rows = 6; groupOrder = 20; order = 20; description = "Raw settings passed through to menu plugins.";
     desktop.ojuny.dankMenu.settings = { };
 
+    };
   };
 
 }

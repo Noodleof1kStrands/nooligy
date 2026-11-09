@@ -9,10 +9,33 @@
 
 { self, inputs, ... }: {
 
-  flake.modules.nixos.desktop-osd = { config, pkgs, ... }: {
+  flake.modules.nixos.desktop-osd = { config, lib, pkgs, ... }:
+    let
+      positions = {
+        "top-left" = 2;
+        "top-center" = 4;
+        "top-right" = 0;
+        "left-center" = 6;
+        "right-center" = 7;
+        "bottom-left" = 1;
+        "bottom-center" = 5;
+        "bottom-right" = 3;
+      };
+    in
+    {
 
-    # @option widget = "dropdown"; label = "Position"; group = "General"; groupOrder = 10; order = 10; choices = [ "2" "4" "0" "6" "7" "1" "5" "3" ]; description = "2 = top left, 4 = top center, 0 = top right, 6 = left center, 7 = right center, 1 = bottom left, 5 = bottom center, 3 = bottom right.";
-    desktop.ojuny.dux.settings.osdPosition = 5;
+    options.ojuny.dux.osdPosition = lib.mkOption {
+      type = lib.types.enum (lib.attrNames positions);
+      default = "bottom-center";
+      description = "On-screen display position.";
+    };
+
+    config = {
+
+    # @option widget = "dropdown"; label = "Position"; group = "General"; groupOrder = 10; order = 10; choices = [ "top-left" "top-center" "top-right" "left-center" "right-center" "bottom-left" "bottom-center" "bottom-right" ];
+    ojuny.dux.osdPosition = "bottom-center";
+
+    desktop.ojuny.dux.settings.osdPosition = positions.${config.ojuny.dux.osdPosition};
 
     # @option widget = "switch"; label = "Always show percentage"; group = "General"; groupOrder = 10; order = 20; description = "Keep the on-screen volume and brightness readout visible.";
     desktop.ojuny.dux.settings.osdAlwaysShowValue = true;
@@ -53,6 +76,7 @@
     # @option widget = "switch"; label = "Workspace switch"; group = "Events"; groupOrder = 20; order = 120; applyCommand = "dms ipc call settings set osdWorkspaceEnabled %%val%%";
     desktop.ojuny.dux.settings.osdWorkspaceEnabled = false;
 
+    };
   };
 
 }

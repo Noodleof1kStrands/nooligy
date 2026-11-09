@@ -253,7 +253,45 @@
         description = "Release tag for the offline manual when its package source is tag.";
       };
 
+      options.ojuny.kernel = lib.mkOption {
+        type = lib.types.enum [
+          "lts"
+          "latest"
+          "zen"
+          "cachyos-latest"
+          "cachyos-lts"
+        ];
+        default = "lts";
+        description = "Linux kernel package set. LTS uses the nixpkgs default LTS kernel, latest follows nixpkgs unstable, Zen is the nixpkgs Zen kernel, and the CachyOS choices come from the nix-cachyos-kernel input.";
+      };
+
       config = {
+        nixpkgs.overlays = lib.mkIf (lib.hasPrefix "cachyos" config.ojuny.kernel) [
+          inputs.nix-cachyos-kernel.overlays.pinned
+        ];
+
+        nix.settings = lib.mkIf (lib.hasPrefix "cachyos" config.ojuny.kernel) {
+          substituters = [ "https://cache.lantian.pub/lantian" ];
+          trusted-public-keys = [
+            "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
+          ];
+        };
+
+        # @option widget = "dropdown"; label = "Kernel"; group = "Kernel"; groupOrder = 5; order = 10; choices = [ "lts" "latest" "zen" "cachyos-latest" "cachyos-lts" ]; description = "LTS is the nixpkgs default LTS kernel. Latest follows nixpkgs unstable. Zen is the nixpkgs Zen kernel. CachyOS latest and LTS use the nix-cachyos-kernel input. A patch or host can override this with a normal boot.kernelPackages assignment.";
+        ojuny.kernel = "lts";
+
+        boot.kernelPackages = lib.mkDefault (
+          if config.ojuny.kernel == "latest" then
+            pkgs.linuxPackages_latest
+          else if config.ojuny.kernel == "zen" then
+            pkgs.linuxPackages_zen
+          else if config.ojuny.kernel == "cachyos-latest" then
+            pkgs.cachyosKernels.linuxPackages-cachyos-latest
+          else if config.ojuny.kernel == "cachyos-lts" then
+            pkgs.cachyosKernels.linuxPackages-cachyos-lts-lto
+          else
+            pkgs.linuxPackages
+        );
 
         # @option widget = "switch"; label = "Enable patches"; group = "Patches"; description = "Automatically import patch- modules placed in the repository.";
         ojuny.patches = true;

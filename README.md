@@ -88,9 +88,13 @@ rolling repository.
   configuration.
 - The settings scanner does not reorder keys inside a list, so a setting that
   needs a fixed order must declare it in the module.
-- Seven patches are pre-included in `modules/patches`: development, docker,
-  flatpak, impermanence, nixshell, remote desktop and virtualization. More can
-  be installed with `ojuny-patches`.
+- Six patches are pre-included in `modules/patches`: development, docker,
+  flatpak, nixshell, remote desktop and virtualization. More can be installed
+  with `ojuny-patches`; impermanence is available from the registry.
+- The System page selects the kernel. LTS, latest and Zen come from nixpkgs.
+  CachyOS latest and LTS use the `nix-cachyos-kernel` input and its binary
+  cache. A patch or host can override the choice with a normal
+  `boot.kernelPackages` assignment.
 
 ## Documentation
 

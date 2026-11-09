@@ -106,11 +106,15 @@ differs from the generator output.
 - `modules/backend/03-user-editor.nix`
 - `modules/backend/10-hardware-profile.nix`
 - `modules/backend/11-boot.nix`
+- `modules/backend/12-mount-image.nix`
 - `modules/backend/13-recovery-backend.nix`
+- `modules/backend/14-deploy-rs.nix`
+- `modules/backend/15-overflow-layout.nix`
 - `modules/backend/bootorder.sh`
 - `modules/backend/device-quirks.nix`
 - `modules/backend/multiboot-cleanup.sh`
 - `modules/backend/multiboot.sh`
+- `modules/backend/overflow-layout.sh`
 - `modules/backend/recovery-cleanup.sh`
 - `modules/backend/recovery-uki.sh`
 
@@ -121,7 +125,6 @@ differs from the generator output.
 - `modules/patches/patch-development.nix`
 - `modules/patches/patch-docker.nix`
 - `modules/patches/patch-flatpak.nix`
-- `modules/patches/patch-impermanence.nix`
 - `modules/patches/patch-nixshell.nix`
 - `modules/patches/patch-remote-desktop.nix`
 - `modules/patches/patch-virtualization.nix`

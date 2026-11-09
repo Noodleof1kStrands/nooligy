@@ -27,8 +27,11 @@
 
   flake.modules.nixos.desktop-launcher = { config, pkgs, ... }: {
 
-    # @option widget = "dropdown"; label = "Launcher style"; group = "Launcher"; description = "DMS launcher style."; choices = [ "island" "bar" "floating" "compact" ]; applyCommand = "dms ipc call settings set launcherStyle %%val%%";
-    desktop.ojuny.dux.settings.launcherStyle = "island";
+    # @option widget = "dropdown"; label = "Launcher style"; group = "Launcher"; order = 10; choices = [ "full" "spotlight" "island" ]; description = "DMS launcher style. Full is the large app drawer, Spotlight is the small centered search bar, Island opens from the island bar."; applyCommand = "dms ipc call settings set launcherStyle %%val%%";
+    desktop.ojuny.dux.settings.launcherStyle = "full";
+
+    # @option widget = "dropdown"; label = "Launcher size"; group = "Launcher"; order = 20; choices = [ "micro" "compact" "medium" "large" ]; visibleWhen.path = "desktop.ojuny.dux.settings.launcherStyle"; visibleWhen.equals = [ "full" "island" ]; description = "Size of the full and island launchers. Spotlight uses its own fixed size."; applyCommand = "dms ipc call settings set dankLauncherV2Size %%val%%";
+    desktop.ojuny.dux.settings.dankLauncherV2Size = "compact";
 
     # @option widget = "switch"; label = "Show mode chips"; group = "Launcher"; applyCommand = "dms ipc call settings set spotlightBarShowModeChips %%val%%";
     desktop.ojuny.dux.settings.spotlightBarShowModeChips = true;
@@ -121,9 +124,6 @@
     desktop.ojuny.dux.session.showThirdPartyPlugins = false;
 
     # The dock's own launcher button and logo options live on the Dock page.
-
-    # @option widget = "dropdown"; label = "Size"; group = "Appearance"; groupOrder = 10; order = 10; choices = [ "micro" "compact" "medium" "large" ]; applyCommand = "dms ipc call settings set dankLauncherV2Size %%val%%";
-    desktop.ojuny.dux.settings.dankLauncherV2Size = "compact";
 
     # @option widget = "switch"; label = "Show footer"; group = "Appearance"; groupOrder = 10; order = 20; description = "Footer with mode tabs and shortcut hints."; visibleWhen.path = "desktop.ojuny.dux.settings.dankLauncherV2Size"; visibleWhen.notEquals = "micro"; applyCommand = "dms ipc call settings set dankLauncherV2ShowFooter %%val%%";
     desktop.ojuny.dux.settings.dankLauncherV2ShowFooter = true;

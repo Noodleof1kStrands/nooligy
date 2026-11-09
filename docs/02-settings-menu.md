@@ -21,7 +21,11 @@ each page contains and is the spec the repo is built from.
   `multiline`, `path`, `package`, `packages`, `list`, `color`, `submodule`,
   `raw`.
 - Custom widgets: `bar`, `dock`, `menu`, `monitors`, `plugins`, `keybinds`,
-  `theme`, `horizontal-submodule`, `table-attrset`, `table-list`.
+  `theme`, `facter`, `docker`, `horizontal-submodule`, `table-attrset`,
+  `table-list`.
+- Page ordering: put the master enable and the highest-effect controls first.
+  Layout, style, kernel and other broad choices come before per-item behavior,
+  appearance and advanced tuning. Keep related controls in the same group.
 - Type, description, default, and choices come from nixd (fallback `nix eval`),
   so a page only needs the assignment plus the `@option` comment.
 
@@ -52,7 +56,7 @@ category; the `@menu` `category` string is authoritative.
 | `05-Applications` | applist, screenshot, multimedia, office, vesktop, steam, kdeconnect, app format compatibility |
 | `06-Utility` | dux-tools, webapps, plugins |
 | `07-System` | configuration, networking, bluetooth, graphics, plymouth |
-| `Patches` | pre-included: patch-development, patch-docker, patch-flatpak, patch-impermanence, patch-nixshell, patch-remote-desktop, patch-virtualization; installed patches add more |
+| `Patches` | pre-included: patch-development, patch-docker, patch-flatpak, patch-nixshell, patch-remote-desktop, patch-virtualization; installed patches add more |
 
 Pages marked "(proposed)" below are additions to the scaffold and are the
 current working set for review.
@@ -71,7 +75,8 @@ current working set for review.
 
 ### 02-core
 
-- `01-display.nix` `[menu]`. Monitors, tearing and HDR.
+- `01-display.nix` `[menu]`. Monitors, tearing and HDR. Monitor refresh rates
+  accept fractional values so 59.94 Hz and similar modes are written exactly.
 - `02-input.nix` `[menu]`. Keyboard, mouse, trackpad, touch and Fcitx5 input
   methods.
 - `03-binds.nix` `[menu]`. Key, mouse, axis and gesture bindings, plus the
@@ -105,11 +110,15 @@ current working set for review.
 - `00-mango.nix` `[no menu]`. Under-the-hood mangoWM + Dux Modular Shell session
   switch (D5).
 - `01-login.nix` `[menu]`. Greeter and display manager (D9).
-- `02-mangosettings.nix` `[menu]`. Layouts, focus, tiling and workspaces.
+- `02-mangosettings.nix` `[menu]`. Focus, tiling, window rules and overview.
+  Default and per-workspace layouts live on the Workspaces page.
 - `03-mangomaster.nix` `[menu]`. Master and stack layout.
 - `04-mangodwindle.nix` `[menu]`. Dwindle tiling layout.
 - `05-scroller.nix` `[menu]`. Horizontal scrolling window layout.
-- `06-mangoworkspaces.nix` `[menu]`. Workspace and tag settings.
+- `06-mangoworkspaces.nix` `[menu]`. Workspace and tag settings, the special
+  workspace, default and per-workspace layouts, and the overflow layout
+  daemon. Overflow switches a workspace to a chosen layout at a window count
+  and restores the previous layout when the count drops.
 - `07-notifications.nix` `[menu]`. Notification popups. Date, time and recurring
   notices are created in KAlarm and Nix seeds no alarms; battery alerts remain
   on the Power page, and weather is a KAlarm command alarm that displays a
@@ -202,9 +211,10 @@ current working set for review.
   default. The multiboot helper is off by default and the installer enables it
   when another internal system is found.
 - `_00-ssh-test.nix` `[no menu]`. Temporary SSH test module.
-- `01-configuration.nix` `[menu]`. Hostname, time zone, locale, console
-  keymap, the patches switch, the systemd-boot generation limit, and the
-  package source controls. The package
+- `01-configuration.nix` `[menu]`. Kernel selection, hostname, time zone,
+  locale, console keymap, the patches switch, the systemd-boot generation
+  limit, and the package source controls. Kernel choices are LTS, latest, Zen,
+  CachyOS latest and CachyOS LTS. The package
   source group selects source, the newest release, or a named release from each
   repository's `binary-url.json`; the manual has its own selector and defaults
   to source. Options marked advanced are per-tool overrides and release tags.
@@ -224,9 +234,10 @@ current working set for review.
   profile page marks them managed and the manual driver, PRIME and bus ID
   controls do not take effect. The supported combinations are listed in
   `hardware-matrix.md`.
-- `09-facter.nix` `[menu]`. Hardware profile selection, the detected model,
-  profile and coverage state, and the effective GPU layout and its source.
-  `auto` uses `regenerate-hardware`; a concrete profile is a manual override.
+- `09-facter.nix` `[menu]`. Hardware profile selection through the `facter`
+  widget, which reads `facter.json` and shows the detected model, profile,
+  coverage state, effective GPU layout and its source. `auto` uses
+  `regenerate-hardware`; a concrete profile is a manual override.
   Applying a change rewrites `00-hardware-quirks.nix` with
   `nix run .#regenerate-hardware -- --profile-only`.
 - `07-plymouth.nix` `[menu]`. Stylix-coloured Plymouth boot splash with the Ojuny logo.
@@ -250,13 +261,12 @@ current working set for review.
 
 - `00-patches.nix` `[no menu]`. Imports every `patch-*` module under
   `modules/patches/` while `ojuny.patches` is enabled.
-- The template pre-includes seven patches: `patch-development`, `patch-docker`,
-  `patch-flatpak`, `patch-impermanence`, `patch-nixshell`,
-  `patch-remote-desktop` and `patch-virtualization`. Six have counterparts in
-  the `ojuny-patches` registry and must be kept in sync with it;
-  `patch-impermanence.nix` has no registry counterpart, so the pre-included
-  set does not mirror the registry. Do not edit a pre-included copy only in the
-  template.
+- The template pre-includes six patches: `patch-development`, `patch-docker`,
+  `patch-flatpak`, `patch-nixshell`, `patch-remote-desktop` and
+  `patch-virtualization`. All six have counterparts in the `ojuny-patches`
+  registry and must be kept in sync with it. Impermanence is not pre-included;
+  install `patch-impermanence` from the registry when needed. Do not edit a
+  pre-included copy only in the template.
 - Additional patches are installed with `ojuny-patches install <id>`, which
   places `<id>.nix` in `modules/patches/`; `00-patches.nix` imports it as a
   local module. The settings menu then shows one page per installed patch.

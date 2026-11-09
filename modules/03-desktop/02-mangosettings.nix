@@ -53,8 +53,6 @@
           };
         };
       };
-      # @option widget = "dropdown"; label = "Default Layout"; group = "Layout"; choices = [ "tile" "dwindle" "scroller" "monocle" "deck" "grid" "fair" "vertical_scroller" "vertical_tile" "vertical_fair" "vertical_grid" "vertical_deck" "right_tile" "center_tile"];
-      defaultLayout = "tile";
     in
     {
 
@@ -165,13 +163,6 @@
             is_floating = 1;
             height = 0.6;
             width = 0.6;
-          }
-        ];
-
-        desktop.ojuny.mango.rules.tag_rule = lib.mkBefore [
-          {
-            id = "*";
-            layout_name = defaultLayout;
           }
         ];
 

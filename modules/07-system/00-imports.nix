@@ -44,6 +44,7 @@
       self.modules.nixos.desktop-dock
       self.modules.nixos.desktop-dashboard
       self.modules.nixos.desktop-notifications
+      self.modules.nixos.desktop-osd
       self.modules.nixos.desktop-screensaver
       self.modules.nixos.desktop-nightlight
       self.modules.nixos.desktop-audio

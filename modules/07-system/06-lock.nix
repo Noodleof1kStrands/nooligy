@@ -47,7 +47,7 @@
         # @option widget = "switch"; label = "loginctl integration"; group = "Behavior"; groupOrder = 10; order = 40; advanced = true; description = "Lets loginctl lock requests reach the shell."; applyCommand = "dms ipc call settings set loginctlLockIntegration %%val%%";
         desktop.ojuny.dux.settings.loginctlLockIntegration = true;
 
-        # @option widget = "switch"; label = "Fingerprint"; group = "Authentication"; groupOrder = 20; order = 10; description = "Enable fprintd and fingerprint prompts for login, greetd, sudo, polkit and the lock screen. Password fallback stays enabled.";
+        # @option widget = "switch"; label = "Fingerprint login and unlock"; group = "Authentication"; groupOrder = 20; order = 10; description = "Enable fprintd and fingerprint prompts for login, greetd, sudo, polkit and the lock screen. Enroll a finger with fprintd-enroll. Password fallback stays enabled.";
         ojuny.authentication.fingerprint.enable = false;
 
         desktop.ojuny.dux.settings.enableFprint = config.ojuny.authentication.fingerprint.enable;
@@ -55,24 +55,21 @@
         # @option widget = "spin"; label = "Fingerprint attempts"; group = "Authentication"; groupOrder = 20; order = 20; min = 1; max = 30; advanced = true; visibleWhen.path = "desktop.ojuny.dux.settings.enableFprint"; visibleWhen.equals = true; description = "Failed attempts before the reader is locked out."; applyCommand = "dms ipc call settings set maxFprintTries %%val%%";
         desktop.ojuny.dux.settings.maxFprintTries = 15;
 
-        # @option widget = "switch"; label = "Security key"; group = "Authentication"; groupOrder = 20; order = 30; description = "Unlock with a FIDO security key."; applyCommand = "dms ipc call settings set enableU2f %%val%%";
+        # @option widget = "switch"; label = "Security key unlock"; group = "Authentication"; groupOrder = 20; order = 30; description = "Unlock with a FIDO2 security key. Register a key with fido2-token or pamu2fcfg first. The password still works unless the mode below is set to security-key-only."; applyCommand = "dms ipc call settings set enableU2f %%val%%";
         desktop.ojuny.dux.settings.enableU2f = false;
 
-        # @option widget = "dropdown"; label = "Security key mode"; group = "Authentication"; groupOrder = 20; order = 40; choices = [ "security-key-only" "second-factor" ]; visibleWhen.path = "desktop.ojuny.dux.settings.enableU2f"; visibleWhen.equals = true; applyCommand = "case %%val%% in security-key-only) v=or;; second-factor) v=and;; esac; dms ipc call settings set u2fMode $v";
+        # @option widget = "dropdown"; label = "Security key mode"; group = "Authentication"; groupOrder = 20; order = 40; choices = [ "security-key-only" "second-factor" ]; visibleWhen.path = "desktop.ojuny.dux.settings.enableU2f"; visibleWhen.equals = true; description = "Security key only unlocks with the key and does not require the password. Second factor requires the password and then the key."; applyCommand = "case %%val%% in security-key-only) v=or;; second-factor) v=and;; esac; dms ipc call settings set u2fMode $v";
         ojuny.dux.u2fMode = "security-key-only";
 
         desktop.ojuny.dux.settings.u2fMode = u2fModes.${config.ojuny.dux.u2fMode};
 
-        # @option widget = "switch"; label = "Security key shortcut"; group = "Authentication"; groupOrder = 20; order = 50; visibleWhen.path = "desktop.ojuny.dux.settings.enableU2f"; visibleWhen.equals = true; applyCommand = "dms ipc call settings set lockScreenSecurityKeyShortcutEnabled %%val%%";
+        # @option widget = "switch"; label = "Security key shortcut"; group = "Authentication"; groupOrder = 20; order = 50; visibleWhen.path = "desktop.ojuny.dux.settings.enableU2f"; visibleWhen.equals = true; description = "Bind a key combination that asks for the security key instead of the password on the lock screen."; applyCommand = "dms ipc call settings set lockScreenSecurityKeyShortcutEnabled %%val%%";
         desktop.ojuny.dux.settings.lockScreenSecurityKeyShortcutEnabled = false;
 
-        # @option widget = "text"; label = "Key combination"; group = "Authentication"; groupOrder = 20; order = 60; visibleWhen.path = "desktop.ojuny.dux.settings.lockScreenSecurityKeyShortcutEnabled"; visibleWhen.equals = true; description = "Format: Ctrl+Q."; applyCommand = "dms ipc call settings set lockScreenSecurityKeyShortcut %%val%%";
+        # @option widget = "text"; label = "Key combination"; group = "Authentication"; groupOrder = 20; order = 60; visibleWhen.path = "desktop.ojuny.dux.settings.lockScreenSecurityKeyShortcutEnabled"; visibleWhen.equals = true; description = "Key combination that triggers the security key prompt, for example Ctrl+Q."; applyCommand = "dms ipc call settings set lockScreenSecurityKeyShortcut %%val%%";
         desktop.ojuny.dux.settings.lockScreenSecurityKeyShortcut = "Ctrl+Q";
 
         # Lock screen surface
-        # @option widget = "table-attrset"; label = "Lock screen widget grid"; group = "Lock screen"; groupOrder = 25; order = 4; keyEditable = true; columns = [ "enabled" "size" ]; columnTypes = [ "bool" "int" ]; description = "Per-screen snap-to-grid settings for lock screen widgets, keyed by screen name. size is the grid step in pixels.";
-        desktop.ojuny.dux.session.lockScreenWidgetGridSettings = { };
-
         # @option widget = "raw"; label = "Widget layout"; group = "Lock screen"; groupOrder = 25; order = 5; hidden = true; advanced = true; description = "Lock screen widget instances with id, widgetType, enabled and config. Defaults to the clock, date, authentication, notifications, status and power rows. Save and Rebuild is required.";
         desktop.ojuny.dux.settings.lockScreenWidgetInstances = [
           {
@@ -157,11 +154,11 @@
         # @option widget = "color"; label = "Inactive display color"; group = "Displays"; groupOrder = 30; order = 10; description = "Solid colour for locked-off displays (OLED burn-in protection)."; applyCommand = "dms ipc call settings set lockScreenInactiveColor %%val%%";
         desktop.ojuny.dux.settings.lockScreenInactiveColor = "#000000";
 
-        # @option widget = "switch"; label = "Play video on lock"; group = "Video screensaver"; groupOrder = 40; order = 10; applyCommand = "dms ipc call settings set lockScreenVideoEnabled %%val%%";
-        desktop.ojuny.dux.settings.lockScreenVideoEnabled = false;
-
-        # @option widget = "text"; label = "Video path"; group = "Video screensaver"; groupOrder = 40; order = 20; advanced = true; visibleWhen.path = "desktop.ojuny.dux.settings.lockScreenVideoEnabled"; visibleWhen.equals = true; description = "Absolute path to a video file; kept as a runtime string, not a store path."; applyCommand = "dms ipc call settings set lockScreenVideoPath %%val%%";
+        # @option widget = "path"; label = "Video file"; group = "Video screensaver"; groupOrder = 40; order = 10; description = "Video file played on the lock screen. The path is kept as a runtime string, not a store path."; applyCommand = "dms ipc call settings set lockScreenVideoPath %%val%%";
         desktop.ojuny.dux.settings.lockScreenVideoPath = "";
+
+        # @option widget = "switch"; label = "Play video on lock"; group = "Video screensaver"; groupOrder = 40; order = 20; visibleWhen.path = "desktop.ojuny.dux.settings.lockScreenVideoPath"; description = "Play the selected video while the screen is locked."; applyCommand = "dms ipc call settings set lockScreenVideoEnabled %%val%%";
+        desktop.ojuny.dux.settings.lockScreenVideoEnabled = false;
 
         # @option widget = "switch"; label = "Automatic cycling"; group = "Video screensaver"; groupOrder = 40; order = 30; advanced = true; visibleWhen.path = "desktop.ojuny.dux.settings.lockScreenVideoEnabled"; visibleWhen.equals = true; applyCommand = "dms ipc call settings set lockScreenVideoCycling %%val%%";
         desktop.ojuny.dux.settings.lockScreenVideoCycling = false;

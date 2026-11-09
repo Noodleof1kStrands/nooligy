@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.2.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -114,11 +116,6 @@
 
     nixos-anywhere = {
       url = "github:numtide/nixos-anywhere";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    impermanence = {
-      url = "github:nix-community/impermanence";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -395,6 +392,34 @@
                 python3 ${./tests/check-bind-args.py} --root ${source}
                 touch $out
               '';
+          checks.settings-options =
+            let
+              source = pkgs.lib.cleanSource ./.;
+            in
+            pkgs.runCommand "check-settings-options"
+              {
+                nativeBuildInputs = [ pkgs.python3 ];
+              }
+              ''
+                python3 ${./tests/check-settings-options.py} --root ${source}
+                touch $out
+              '';
+          checks.overflow-layout =
+            let
+              source = pkgs.lib.cleanSource ./.;
+            in
+            pkgs.runCommand "check-overflow-layout"
+              {
+                nativeBuildInputs = [
+                  pkgs.bash
+                  pkgs.coreutils
+                  pkgs.jq
+                ];
+              }
+              ''
+                bash ${source}/tests/check-overflow-layout.sh ${source}/modules/backend/overflow-layout.sh
+                touch $out
+              '';
           checks.bootorder =
             let
               source = pkgs.lib.cleanSource ./.;
@@ -429,6 +454,8 @@
           checks.default = pkgs.runCommand "check-default" { } ''
             echo ${self.checks.${system}.hardware-profile} >/dev/null
             echo ${self.checks.${system}.bind-args} >/dev/null
+            echo ${self.checks.${system}.settings-options} >/dev/null
+            echo ${self.checks.${system}.overflow-layout} >/dev/null
             echo ${self.checks.${system}.bootorder} >/dev/null
             echo ${self.checks.${system}.module-tree-current} >/dev/null
             touch $out

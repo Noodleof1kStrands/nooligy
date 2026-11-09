@@ -39,6 +39,7 @@
       importSettings = pkgs.writeText "ojuny-wireguard-settings" "${toString cfg.autoconnect}:${cfg.autoconnectProfile}";
     in
     {
+      imports = [ self.modules.nixos.system-deploy-rs ];
 
       options.ojuny.network.deploy-rs.enable = lib.mkEnableOption "deploy-rs and remote deployment";
 
@@ -83,22 +84,6 @@
       };
 
       config = {
-
-        environment.systemPackages = lib.mkIf config.ojuny.network.deploy-rs.enable [
-          inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
-          inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
-          inputs.nixos-anywhere.packages.${pkgs.stdenv.hostPlatform.system}.default
-          pkgs.git
-          pkgs.openssh
-        ];
-
-        services.openssh = lib.mkIf config.ojuny.network.deploy-rs.enable {
-          enable = true;
-          settings = {
-            PermitRootLogin = "prohibit-password";
-            PasswordAuthentication = false;
-          };
-        };
 
         # @option widget = "switch"; label = "NetworkManager"; group = "Network";
         networking.networkmanager.enable = true;
@@ -163,7 +148,7 @@
         networking.firewall.logRefusedConnections = true;
 
         # @option widget = "list"; label = "Open TCP ports"; group = "Firewall"; visibleWhen.path = "networking.firewall.enable"; visibleWhen.equals = true;
-        networking.firewall.allowedTCPPorts = lib.mkIf config.ojuny.network.deploy-rs.enable [ 22 ];
+        networking.firewall.allowedTCPPorts = [ ];
 
         # @option widget = "list"; label = "Open UDP ports"; group = "Firewall"; visibleWhen.path = "networking.firewall.enable"; visibleWhen.equals = true;
         networking.firewall.allowedUDPPorts = [ ];

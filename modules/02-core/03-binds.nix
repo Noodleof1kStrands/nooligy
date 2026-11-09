@@ -368,24 +368,6 @@
           subcat = "Utilities";
         };
 
-        settings = {
-          modifier = [ "SUPER" ];
-          keys = [ "X" ];
-          dispatcher = "spawn";
-          args = "dms ipc call dankMenu toggle root";
-          description = "Toggle Menu";
-          group = "Applications";
-          subcat = "Launch";
-        };
-        settingsAlt = {
-          modifier = [ "SUPER" ];
-          keys = [ "Escape" ];
-          dispatcher = "spawn";
-          args = "dms ipc call dankMenu toggle root";
-          description = "Toggle Menu";
-          group = "Applications";
-          subcat = "Launch";
-        };
         terminal = {
           modifier = [ "SUPER" ];
           keys = [ "Return" ];

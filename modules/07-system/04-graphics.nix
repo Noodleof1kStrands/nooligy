@@ -235,13 +235,8 @@
         # @option widget = "dropdown"; label = "GPU vendor"; group = "Graphics"; groupOrder = 10; order = 10; description = "auto reads the GPU layout and bus IDs from the facter report. The other choices are manual overrides. Use none for a VM or a machine without a usable GPU: it enables software rendering, allows the wlroots software renderer and switches Qt to the basic render loop."; choices = [ "auto" "intel" "amd" "nvidia" "hybrid-intel-nvidia" "hybrid-amd-nvidia" "hybrid-intel-amd" "none" ]; visibleWhen.path = "ojuny.hardware.gpu.managed"; visibleWhen.equals = false;
         ojuny.gpu = "auto";
 
-        # @option widget = "text"; label = "Effective GPU"; readonly = true; visibleWhen.path = "ojuny.gpu"; visibleWhen.equals = "auto"; description = "Layout resolved from hardware.graphics_card in the facter report.";
         ojuny.hardware.gpu.detected = lib.mkDefault "unknown";
-
-        # @option widget = "switch"; label = "GPU managed by hardware profile"; readonly = true; visibleWhen.path = "ojuny.hardware.gpu.managed"; visibleWhen.equals = true; description = "The selected nixos-hardware profile owns the GPU driver, PRIME and bus ID settings. The manual GPU controls do not take effect.";
         ojuny.hardware.gpu.managed = lib.mkDefault false;
-
-        # @option widget = "text"; label = "GPU source"; readonly = true; visibleWhen.path = "ojuny.hardware.gpu.managed"; visibleWhen.equals = true;
         ojuny.hardware.gpu.source = lib.mkDefault "unknown";
 
         ojuny.hardware.gpu.busIds = lib.mkDefault {
