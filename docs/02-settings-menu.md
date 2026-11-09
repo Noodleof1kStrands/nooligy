@@ -118,7 +118,12 @@ current working set for review.
 - `06-mangoworkspaces.nix` `[menu]`. Workspace and tag settings, the special
   workspace, default and per-workspace layouts, and the overflow layout
   daemon. Overflow switches a workspace to a chosen layout at a window count
-  and restores the previous layout when the count drops.
+  and restores the previous layout when the count drops. Floating windows are
+  not counted. Upstream mango has no watch that fires on window spawn and close
+  without also firing on focus, so the daemon streams raw `mmsg watch all-tags`
+  lines through `uniq`. A focus-only event produces an identical line and is
+  dropped before any JSON parsing or IPC call. Spawn and close change the tag
+  count, and tag or layout changes alter the line, so those reach the handler.
 - `07-notifications.nix` `[menu]`. Notification popups. Date, time and recurring
   notices are created in KAlarm and Nix seeds no alarms; battery alerts remain
   on the Power page, and weather is a KAlarm command alarm that displays a

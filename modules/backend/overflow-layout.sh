@@ -3,7 +3,7 @@ set -euo pipefail
 
 threshold="${1:?window count is required}"
 overflow_layout="${2:?overflow layout is required}"
-interval="${3:-1}"
+restart_interval="${3:-1}"
 
 cache_dir="${XDG_RUNTIME_DIR:-/tmp}/ojuny-overflow-layout"
 mkdir -p "$cache_dir"
@@ -23,21 +23,41 @@ layout_name() {
   mmsg get layouts | jq -r --arg symbol "$symbol" '.layouts[] | select(.symbol == $symbol) | .name' | head -n 1
 }
 
-while :; do
-  if ! monitor="$(active_monitor)" || [ -z "$monitor" ]; then
-    sleep "$interval"
-    continue
-  fi
+tiled_count() {
+  local monitor="$1"
+  local tag="$2"
+  mmsg get all-clients | jq -r --arg monitor "$monitor" --argjson tag "$tag" '
+    [ .clients[]
+      | select(.monitor == $monitor)
+      | select(.tags | index($tag))
+      | select(.is_floating | not)
+    ] | length
+  '
+}
 
-  tag="$(tag_field "$monitor" index)"
-  count="$(tag_field "$monitor" client_count)"
-  symbol="$(tag_field "$monitor" layout)"
-  current="$(layout_name "$symbol")"
+handle_state() {
+  local state="$1"
+  local monitor tag symbol current count cache original
 
-  if [ -z "$tag" ] || [ -z "$count" ] || [ -z "$current" ]; then
-    sleep "$interval"
-    continue
-  fi
+  monitor="$(active_monitor)" || return 0
+  [ -n "$monitor" ] || return 0
+
+  tag="$(printf '%s' "$state" | jq -r --arg monitor "$monitor" '
+    .all_tags[] | select(.monitor == $monitor) | .active_tags[0] // empty
+  ' | head -n 1)"
+  [ -n "$tag" ] || return 0
+
+  symbol="$(printf '%s' "$state" | jq -r --arg monitor "$monitor" --argjson tag "$tag" '
+    .all_tags[] | select(.monitor == $monitor)
+    | .tags[] | select(.index == $tag) | .layout
+  ' | head -n 1)"
+  [ -n "$symbol" ] || return 0
+
+  current="$(layout_name "$symbol")" || return 0
+  [ -n "$current" ] || return 0
+
+  count="$(tiled_count "$monitor" "$tag")" || return 0
+  [ -n "$count" ] || return 0
 
   cache="$cache_dir/${monitor//[^A-Za-z0-9_.-]/_}_${tag}"
 
@@ -59,10 +79,23 @@ while :; do
     fi
     mmsg dispatch setlayout,"$overflow_layout"
   fi
+}
 
-  if [ "${OJUNY_OVERFLOW_ONCE:-0}" = "1" ]; then
-    exit 0
-  fi
+seen_events=0
 
-  sleep "$interval"
+while :; do
+  while IFS= read -r state; do
+    [ -n "$state" ] || continue
+    handle_state "$state"
+    seen_events=$((seen_events + 1))
+
+    if [ "${OJUNY_OVERFLOW_ONCE:-0}" != "0" ] && [ "$seen_events" -ge "${OJUNY_OVERFLOW_ONCE}" ]; then
+      exit 0
+    fi
+  done < <(
+    mmsg watch all-tags |
+      stdbuf -oL uniq
+  )
+
+  sleep "$restart_interval"
 done

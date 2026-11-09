@@ -19,8 +19,30 @@ case "$1 $2" in
     printf '{"monitor":"%s","tags":[{"index":1,"is_active":true,"client_count":%s,"layout":"%s"}]}\n' \
       "$3" "${OJUNY_TEST_COUNT}" "$symbol"
     ;;
+  "get all-clients")
+    printf '{"clients":['
+    first=1
+    for _ in $(seq 1 "${OJUNY_TEST_COUNT}"); do
+      [ "$first" = 1 ] || printf ','
+      first=0
+      printf '{"monitor":"eDP-1","tags":[1],"is_floating":false}'
+    done
+    for _ in $(seq 1 "${OJUNY_TEST_FLOATING}"); do
+      [ "$first" = 1 ] || printf ','
+      first=0
+      printf '{"monitor":"eDP-1","tags":[1],"is_floating":true}'
+    done
+    printf ']}\n'
+    ;;
   "get layouts")
     printf '{"layouts":[{"symbol":"T","name":"tile"},{"symbol":"M","name":"monocle"}]}\n'
+    ;;
+  "watch all-tags")
+    symbol="$(cat "${OJUNY_TEST_STATE}" 2>/dev/null || printf '%s' "${OJUNY_TEST_SYMBOL}")"
+    for _ in $(seq 1 "${OJUNY_TEST_WATCH_EVENTS:-1}"); do
+      printf '{"all_tags":[{"monitor":"eDP-1","active_tags":[1],"tags":[{"index":1,"is_active":true,"client_count":%s,"layout":"%s"}]}]}\n' \
+        "${OJUNY_TEST_COUNT}" "$symbol"
+    done
     ;;
   "dispatch "*)
     printf '%s\n' "$2" >> "${OJUNY_TEST_DISPATCH_LOG}"
@@ -41,14 +63,24 @@ export XDG_RUNTIME_DIR="$tmp/run"
 export OJUNY_OVERFLOW_ONCE=1
 export OJUNY_TEST_DISPATCH_LOG="$tmp/dispatch"
 export OJUNY_TEST_STATE="$tmp/state"
-export OJUNY_TEST_COUNT=5
+export OJUNY_TEST_FLOATING=2
 export OJUNY_TEST_SYMBOL=T
+export OJUNY_TEST_WATCH_EVENTS=2
+export OJUNY_OVERFLOW_ONCE=2
 printf 'T\n' > "$OJUNY_TEST_STATE"
-
-bash "$script" 5 monocle 1
+: > "$OJUNY_TEST_DISPATCH_LOG"
 
 cache="$tmp/run/ojuny-overflow-layout/eDP-1_1"
+
+export OJUNY_TEST_COUNT=4
+bash "$script" 5 monocle 1
+[ ! -f "$cache" ]
+[ ! -s "$tmp/dispatch" ]
+
+export OJUNY_TEST_COUNT=5
+bash "$script" 5 monocle 1
 [ "$(cat "$cache")" = "tile" ]
+[ "$(wc -l < "$tmp/dispatch")" -eq 1 ]
 [ "$(tail -n 1 "$tmp/dispatch")" = "setlayout,monocle" ]
 
 : > "$tmp/dispatch"
@@ -59,6 +91,7 @@ printf 'M\n' > "$OJUNY_TEST_STATE"
 bash "$script" 5 monocle 1
 
 [ ! -f "$cache" ]
+[ "$(wc -l < "$tmp/dispatch")" -eq 1 ]
 [ "$(tail -n 1 "$tmp/dispatch")" = "setlayout,tile" ]
 
 printf 'overflow layout check ok\n'
