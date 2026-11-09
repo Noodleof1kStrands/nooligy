@@ -52,6 +52,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ojuny-welcome = {
+      url = "github:ojuny-project/ojuny-welcome";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-regedit = {
       url = "github:ojuny-project/nix-regedit";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -187,6 +192,7 @@
             inherit prepare-repo regenerate-hardware ojuny-bootorder;
 
             nix-settings-gui = inputs.nix-settings-gui.packages.${system}.default;
+            ojuny-welcome = inputs.ojuny-welcome.packages.${system}.default;
             nix-regedit = inputs.nix-regedit.packages.${system}.default;
             nix-shell-gui = inputs.nix-shell-gui.packages.${system}.default;
             nix-cache-discovery = inputs.nix-cache-discovery.packages.${system}.default;

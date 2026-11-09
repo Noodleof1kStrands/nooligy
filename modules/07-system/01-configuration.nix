@@ -203,6 +203,23 @@
         description = "Release tag for nix-settings-gui when its package source is tag.";
       };
 
+      options.ojuny.binaries.welcome = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "source"
+          "latest"
+          "tag"
+        ];
+        default = "auto";
+        description = "Package source for ojuny-welcome.";
+      };
+
+      options.ojuny.binaries.welcomeTag = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "Release tag for ojuny-welcome when its package source is tag.";
+      };
+
       options.ojuny.binaries.shellGui = lib.mkOption {
         type = lib.types.enum [
           "auto"
@@ -311,6 +328,10 @@
         services.nix-settings-gui.package =
           pick "settingsGui" inputs.nix-settings-gui.packages.${system}.default "nix-settings-gui"
             "nix-settings-gui";
+
+        services.ojuny-welcome.package =
+          pick "welcome" inputs.ojuny-welcome.packages.${system}.default "ojuny-welcome"
+            "ojuny-welcome";
 
         services.nix-shell-gui.package =
           pick "shellGui" inputs.nix-shell-gui.packages.${system}.default "nix-shell-gui"

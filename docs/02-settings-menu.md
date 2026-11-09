@@ -314,8 +314,8 @@ At migration time 1099 of 1418 rows are covered under `desktop.ojuny.dux` (count
 - D17 fastfetch included, default `fastfetch-den`, `user` as default user.
 - D18a experimental-features flag on every nix call until the applied config
   enables the features permanently.
-- T1 the template includes nix-settings-gui, nix-regedit, nix-shell-gui, and
-  simple-nix-update-gui; dendrite-menu is dropped.
+- T1 the template includes nix-settings-gui, ojuny-welcome, nix-regedit,
+  nix-shell-gui, and simple-nix-update-gui; dendrite-menu is dropped.
 - T2 nix-shell-gui and nix-regedit in `02-core/11-nixsettings.nix`;
   nix-settings-gui and simple-nix-update-gui in `02-core/10-updates.nix`.
 - Lockscreen and power in `07-system/06-lock.nix` and `07-system/05-power.nix`.

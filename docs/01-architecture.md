@@ -152,6 +152,9 @@ generated or templated, not hand-written:
   `desktop.ojuny.dux.*` options plus the wrapped session package.
 - **nix-settings-gui** is an input; enabling it installs the GUI
   (`services.nix-settings-gui.enable`) and it renders one menu per page file.
+- **ojuny-welcome** is an input; enabling it installs the first-boot wizard
+  (`services.ojuny-welcome.enable`). The installer carries the package but
+  leaves the service disabled on the live ISO.
 - **nix-shell-gui** is an input (`services.nix-shell-gui.enable`) and
   **nix-regedit** is an input (`services.nix-regedit.enable`); both are placed
   in `02-core/11-nixsettings.nix`.
@@ -177,8 +180,8 @@ generated or templated, not hand-written:
 - D13a system-specific settings in the system directory, per-user settings in
   that user's `user.nix`; all system files templated except generated
   `hardware.nix`.
-- T1 the template includes nix-settings-gui, nix-regedit, nix-shell-gui, and
-  simple-nix-update-gui; dendrite-menu is dropped.
+- T1 the template includes nix-settings-gui, ojuny-welcome, nix-regedit,
+  nix-shell-gui, and simple-nix-update-gui; dendrite-menu is dropped.
 - T2 nix-shell-gui and nix-regedit in `02-core/11-nixsettings.nix`;
   nix-settings-gui and simple-nix-update-gui in `02-core/10-updates.nix`.
 

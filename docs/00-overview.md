@@ -70,6 +70,7 @@ Binding for the rest of the spec.
 - `home-manager`
 - `ojuny-desktop` (mangoWM + Dux Modular Shell and the `desktop.ojuny.*` options)
 - `nix-settings-gui` (the settings menu)
+- `ojuny-welcome` (the first-boot setup wizard)
 - `nix-regedit` (registry-editor style GUI for flakes)
 - `nix-shell-gui` (temporary `nix run`/`nix shell` app store)
 - `raven` (optional experimental Windows runtime; `ojuny-project/raven` on the

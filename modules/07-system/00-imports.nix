@@ -1,8 +1,9 @@
-{ self, ... }: {
+{ self, inputs, ... }: {
 
   flake.modules.nixos.host-imports = {
 
     imports = [
+      inputs.ojuny-welcome.nixosModules.default
       self.modules.nixos.system-configuration
       self.modules.nixos.system-hardware
       self.modules.nixos.system-facter
@@ -81,6 +82,8 @@
       else
         [ ]
     );
+
+    services.ojuny-welcome.enable = true;
 
     home-manager.sharedModules = [
       self.modules.homeManager.stylix-colors
