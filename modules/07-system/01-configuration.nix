@@ -311,7 +311,7 @@
         );
 
         # @option widget = "switch"; label = "Enable patches"; group = "Patches"; description = "Automatically import patch- modules placed in the repository.";
-        ojuny.patches = true;
+        ojuny.patches = false;
 
         programs.nix-cleaner.package =
           pick "cleaner" inputs.nix-cleaner.packages.${system}.default "nix-cleaner"
