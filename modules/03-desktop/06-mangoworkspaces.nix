@@ -276,13 +276,13 @@
         # @option widget = "switch"; label = "Tag carousel"; group = "Workspaces"; groupOrder = 5; order = 50; hidden = true; applyCommand = "mmsg dispatch setoption,tag_carousel,$(case %%val%% in true) echo 1;; *) echo 0;; esac)";
         ojuny.mango.flag.tag_carousel = false;
 
-        # @option widget = "dropdown"; label = "Default Layout"; group = "Workspaces"; groupOrder = 5; order = 20; description = "Layout used by tags without an explicit per-workspace row.";
+        # @option widget = "dropdown"; label = "Default Layout"; group = "Workspaces"; groupOrder = 5; order = 20; choices = [ "tile" "dwindle" "scroller" "monocle" "deck" "grid" "fair" "vertical_scroller" "vertical_tile" "vertical_fair" "vertical_grid" "vertical_deck" "right_tile" "center_tile" ]; description = "Layout used by tags without an explicit per-workspace row.";
         ojuny.workspaces.defaultLayout = "tile";
 
         # @option widget = "spin"; label = "Overflow after this many windows"; group = "Overflow layout"; groupOrder = 15; order = 10; min = 0; max = 99; unit = "windows"; description = "Switch the active workspace to the overflow layout when it holds at least this many tiled windows. Floating windows are not counted. 0 disables overflow switching.";
         ojuny.workspaces.overflow.windowCount = 0;
 
-        # @option widget = "dropdown"; label = "Overflow layout"; group = "Overflow layout"; groupOrder = 15; order = 20; visibleWhen.path = "ojuny.workspaces.overflow.windowCount"; visibleWhen.notEquals = 0; description = "Layout used when a workspace reaches the overflow window count. The previous layout is restored when the count drops below it.";
+        # @option widget = "dropdown"; label = "Overflow layout"; group = "Overflow layout"; groupOrder = 15; order = 20; choices = [ "tile" "dwindle" "scroller" "monocle" "deck" "grid" "fair" "vertical_scroller" "vertical_tile" "vertical_fair" "vertical_grid" "vertical_deck" "right_tile" "center_tile" ]; visibleWhen.path = "ojuny.workspaces.overflow.windowCount"; visibleWhen.notEquals = 0; description = "Layout used when a workspace reaches the overflow window count. The previous layout is restored when the count drops below it.";
         ojuny.workspaces.overflow.layout = "monocle";
 
         # Per-workspace layout

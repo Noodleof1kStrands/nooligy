@@ -62,8 +62,9 @@ delete or replace the bundle after enrollment unless you intend to enroll again.
 In the settings GUI, open Secure Boot and enable the switch. The setup flow
 stages key creation, writes the Lanzaboote configuration, and runs the rebuild
 command from `~/.config/nix-settings-gui/config.json`. The installers and
-`setup.sh` write `nixos-rebuild boot`, so the rebuild does not switch the running
-system and a reboot is part of the flow.
+`setup.sh` write `nixos-rebuild switch`. For Secure Boot setup, replace
+`switch` with `boot` first if you do not want the running system switched
+before the keys are enrolled.
 
 The same change can be made by hand. The module already holds the annotated
 toggle, the PKI bundle path, and `sbctl`:
@@ -88,8 +89,8 @@ Verifying file database and EFI images in /boot...
 ✓ /boot/EFI/systemd/systemd-bootx64.efi is signed
 ```
 
-Unsigned kernel files under `/boot/EFI/nixos/` are expected. Reboot before
-continuing if the rebuild used `nixos-rebuild boot`.
+Unsigned kernel files under `/boot/EFI/nixos/` are expected. Reboot after the
+rebuild if you changed the seeded command from `switch` to `boot`.
 
 ## 4. Put the firmware in Setup Mode
 
